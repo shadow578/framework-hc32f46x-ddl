@@ -1,4 +1,6 @@
 #pragma once
+#include "hc32_common.h"
+#include "ddl_config.h"
 #if (DDL_GPIO_ENABLE == DDL_ON)
 
 #include "hc32f46x_gpio.h"
