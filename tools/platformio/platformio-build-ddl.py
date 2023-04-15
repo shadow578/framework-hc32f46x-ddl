@@ -112,7 +112,7 @@ def get_ld_params():
     for key, def_name in ld_arg_keys_to_def_mapping.items():
         if key in board:
             print("linker script param {0} = {1}".format(def_name, board.get(key)))
-            ld_args.append("-Wl,'--defsym={0}={1}'".format(def_name, board.get(key)))
+            ld_args.append("-Wl,--defsym={0}={1}".format(def_name, board.get(key)))
     
     return ld_args
 
