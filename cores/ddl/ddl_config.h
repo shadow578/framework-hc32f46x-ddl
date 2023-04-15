@@ -294,13 +294,4 @@
 #define DDL_WDT_ENABLE DDL_OFF
 #endif
 
-//
-// Middleware (always off)
-//
-#define MW_ON 1u
-#define MW_OFF 0u
-
-#define MW_SD_CARD_ENABLE MW_OFF
-#define MW_USB_ENABLE MW_OFF
-
 #endif // __DDL_CONFIG_H__

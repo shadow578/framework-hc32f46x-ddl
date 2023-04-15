@@ -132,3 +132,32 @@ drivers not specified will be disabled by default.
 board_build.ddl.adc = true
 board_build.ddl.aes = false
 ```
+
+## Middleware options
+
+middleware placed in `middleware/` must be enabled before they can be used. this is done by setting the `mw` option in the board configuration, either in the board definition file, or in the platformio.ini file.
+middleware not specified will be disabled by default.
+
+> Note: middleware is added to the include path, and can be included with `#include "<middleware_header>.h"`
+
+### board definition
+
+```json
+{
+  // ...
+  "build": {
+    // ...
+    "mw": {
+      "sd_card": "true"
+    }
+  }
+}
+```
+
+### platformio.ini
+
+```ini
+[env:myenv]
+# ...
+board_build.mw.sd_card = true
+```

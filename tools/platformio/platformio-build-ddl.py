@@ -2,7 +2,7 @@
 HC32F46x DDL
 Device Driver Libraries for the HC32F46x series of microcontrollers
 """
-
+import os
 from os.path import isdir, join
 
 from SCons.Script import DefaultEnvironment
@@ -111,6 +111,7 @@ def get_ld_params():
     # get all the keys from the board manifest, append to arguments list
     for key, def_name in ld_arg_keys_to_def_mapping.items():
         if key in board:
+            print("linker script param {0} = {1}".format(def_name, board.get(key)))
             ld_args.append("-Wl,'--defsym={0}={1}'".format(def_name, board.get(key)))
     
     return ld_args
@@ -168,6 +169,7 @@ def get_ddl_config_defines():
     # get all the keys from the board manifest, append to arguments list
     for key, def_name in ddl_config_keys_to_def_mapping.items():
         if board.get(key, "false") == "true":
+            print("Driver Library '{0}' enabled".format(def_name))
             ddl_config_defines.append(def_name)
     
     # return list without duplicates
@@ -178,7 +180,22 @@ def get_ddl_config_defines():
 env.Append(CPPDEFINES=get_ddl_config_defines())
 
 
-#
-# Target: Build Core Library
-#
+# resolve middleware configuration and build
+# middleware configuration is defined in the board manifest, just like ddl configuration
+# however, middleware is not just a list of defines, but instead a change in the include paths and source files
+MW_DIR = join(FRAMEWORK_DIR, "middleware")
+if isdir(MW_DIR):
+    # find all available middleware, by folder name
+    for mw in [f.name for f in os.scandir(MW_DIR) if f.is_dir()]: # [sd_card, w25q]
+        # check if middleware is enabled in the board manifest
+        if board.get("build.mw." + mw, "false") == "true":
+            print("Middleware '{0}' enabled".format(mw))
+
+            # add middleware include paths to the build
+            env.Append(CPPPATH=[join(MW_DIR, mw, "inc")])
+
+            # build middleware
+            env.BuildSources(join("$BUILD_DIR", "FrameworkDDL_" + mw), join(MW_DIR, mw, "src"))
+
+# build ddl core
 env.BuildSources(join("$BUILD_DIR", "FrameworkDDL"), DDL_DIR)
