@@ -69,8 +69,6 @@ env.Append(
     # c/c++ defines
     CPPDEFINES=[
         "HC32F46x",
-        ("ARDUINO", 100),
-        "ARDUINO_ARCH_HC32",
         "USE_DEVICE_DRIVER_LIB",
         "__TARGET_FPU_VFP",
 	    "__FPU_PRESENT=1",

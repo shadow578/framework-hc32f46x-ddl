@@ -229,7 +229,7 @@ extern "C"
 
     } IRQn_Type;
 
-#include "../include/core_cm4.h"
+#include <core_cm4.h>
 #include <stdint.h>
 
     /**
