@@ -3,7 +3,7 @@
 #include "ddl_config.h"
 #if (DDL_GPIO_ENABLE == DDL_ON)
 
-#include "hc32f46x_gpio.h"
+#include "hc32f460_gpio.h"
 
 #ifdef __cplusplus
 extern "C"
