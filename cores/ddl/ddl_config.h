@@ -21,6 +21,13 @@
 // other drivers are configured by the board manifest
 // if the macro for the ddl is defined, it is redefine to DDL_ON
 // otherwise it is defined as DDL_OFF
+#if defined(DDL_PRINT_ENABLE)
+#undef DDL_PRINT_ENABLE
+#define DDL_PRINT_ENABLE DDL_ON
+#else
+#define DDL_PRINT_ENABLE DDL_OFF
+#endif
+
 #if defined(DDL_ADC_ENABLE)
 #undef DDL_ADC_ENABLE
 #define DDL_ADC_ENABLE DDL_ON
@@ -42,18 +49,18 @@
 #define DDL_CAN_ENABLE DDL_OFF
 #endif
 
-#if defined(DDL_CMP_ENABLE)
-#undef DDL_CMP_ENABLE
-#define DDL_CMP_ENABLE DDL_ON
-#else
-#define DDL_CMP_ENABLE DDL_OFF
-#endif
-
 #if defined(DDL_CLK_ENABLE)
 #undef DDL_CLK_ENABLE
 #define DDL_CLK_ENABLE DDL_ON
 #else
 #define DDL_CLK_ENABLE DDL_OFF
+#endif
+
+#if defined(DDL_CMP_ENABLE)
+#undef DDL_CMP_ENABLE
+#define DDL_CMP_ENABLE DDL_ON
+#else
+#define DDL_CMP_ENABLE DDL_OFF
 #endif
 
 #if defined(DDL_DCU_ENABLE)
@@ -82,6 +89,13 @@
 #define DDL_EMB_ENABLE DDL_ON
 #else
 #define DDL_EMB_ENABLE DDL_OFF
+#endif
+
+#if defined(DDL_EVENT_PORT_ENABLE)
+#undef DDL_EVENT_PORT_ENABLE
+#define DDL_EVENT_PORT_ENABLE DDL_ON
+#else
+#define DDL_EVENT_PORT_ENABLE DDL_OFF
 #endif
 
 #if defined(DDL_EXINT_NMI_SWI_ENABLE)
@@ -126,6 +140,13 @@
 #define DDL_INTERRUPTS_ENABLE DDL_OFF
 #endif
 
+#if defined(DDL_INTERRUPTS_SHARE_ENABLE)
+#undef DDL_INTERRUPTS_SHARE_ENABLE
+#define DDL_INTERRUPTS_SHARE_ENABLE DDL_ON
+#else
+#define DDL_INTERRUPTS_SHARE_ENABLE DDL_OFF
+#endif
+
 #if defined(DDL_KEYSCAN_ENABLE)
 #undef DDL_KEYSCAN_ENABLE
 #define DDL_KEYSCAN_ENABLE DDL_ON
@@ -145,13 +166,6 @@
 #define DDL_OTS_ENABLE DDL_ON
 #else
 #define DDL_OTS_ENABLE DDL_OFF
-#endif
-
-#if defined(DDL_PGA_ENABLE)
-#undef DDL_PGA_ENABLE
-#define DDL_PGA_ENABLE DDL_ON
-#else
-#define DDL_PGA_ENABLE DDL_OFF
 #endif
 
 #if defined(DDL_PWC_ENABLE)
@@ -294,4 +308,13 @@
 #define DDL_WDT_ENABLE DDL_OFF
 #endif
 
+//
+// BSP board select (dev boards ?)
+// required because the selection logic freaks out without it
+//
+#define BSP_NONE (0u)
+#define BSP_EV_HC32F460_LQFP100_V1 (1u)
+#define BSP_EV_HC32F460_LQFP100_V2 (2u)
+
+#define BSP_EV_HC32F460 BSP_NONE
 #endif // __DDL_CONFIG_H__

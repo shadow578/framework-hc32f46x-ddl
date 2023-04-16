@@ -68,7 +68,7 @@ env.Append(
 
     # c/c++ defines
     CPPDEFINES=[
-        "HC32F46x",
+        "HC32F460",
         "USE_DEVICE_DRIVER_LIB",
         "__TARGET_FPU_VFP",
 	    "__FPU_PRESENT=1",
@@ -125,6 +125,7 @@ def get_ddl_config_defines():
     # ddl config key to define mapping
     ddl_config_defines = []
     ddl_config_keys_to_def_mapping = {
+        "build.ddl.print" : "DDL_PRINT_ENABLE",
         "build.ddl.adc" : "DDL_ADC_ENABLE", 
         "build.ddl.aes" : "DDL_AES_ENABLE", 
         "build.ddl.can" : "DDL_CAN_ENABLE", 
@@ -134,12 +135,14 @@ def get_ddl_config_defines():
         "build.ddl.dmac" : "DDL_DMAC_ENABLE", 
         "build.ddl.efm" : "DDL_EFM_ENABLE", 
         "build.ddl.emb" : "DDL_EMB_ENABLE", 
+        "build.ddl.event_port": "DDL_EVENT_PORT_ENABLE",
         "build.ddl.extint" : "DDL_EXINT_NMI_SWI_ENABLE", 
         "build.ddl.gpio" : "DDL_GPIO_ENABLE", 
         "build.ddl.hash" : "DDL_HASH_ENABLE", 
         "build.ddl.i2c" : "DDL_I2C_ENABLE", 
         "build.ddl.i2s" : "DDL_I2S_ENABLE", 
         "build.ddl.interrupts" : "DDL_INTERRUPTS_ENABLE", 
+        "build.ddl.interrupts_share": "DDL_INTERRUPTS_SHARE_ENABLE",
         "build.ddl.keyscan" : "DDL_KEYSCAN_ENABLE", 
         "build.ddl.mpu" : "DDL_MPU_ENABLE", 
         "build.ddl.ots" : "DDL_OTS_ENABLE", 
