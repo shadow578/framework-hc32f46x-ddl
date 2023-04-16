@@ -102,10 +102,6 @@ def get_ld_params():
     ld_arg_keys_to_def_mapping = {
         "build.ld_args.flash_start": "FLASH_START",
         "build.ld_args.flash_size": "FLASH_SIZE",
-        "build.ld_args.ram_start": "RAM_START",
-        "build.ld_args.ram_size": "RAM_SIZE",
-        "build.ld_args.ram_ret_start": "RAM_RET_START",
-        "build.ld_args.ram_ret_size": "RAM_RET_SIZE",
     }
 
     # get all the keys from the board manifest, append to arguments list
