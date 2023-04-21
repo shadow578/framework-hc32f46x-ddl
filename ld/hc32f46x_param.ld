@@ -40,18 +40,22 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
+    /* 1024 bytes fixed size */
     .vectors :
     {
-        . = ALIGN(4);
         KEEP(*(.vectors))
-        . = ALIGN(4);
+        . = 1024;
     } >FLASH
 
-    .icg_sec (FLASH_START + 0x00000400) :
+
+    /* 32 bytes fixed size */
+    .icg_sec :
     {
         KEEP(*(.icg_sec))
+        . = 1024 + 32;
     } >FLASH
 
+    /* append all other FLASH sections after */
     .text :
     {
         . = ALIGN(4);
