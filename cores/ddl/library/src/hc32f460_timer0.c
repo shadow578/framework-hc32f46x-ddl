@@ -648,6 +648,7 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                        const stc_tim0_base_init_t* pstcBaseInit)
 {
     stc_tmr0_bconr_field_t stcBconrTmp;
+    uint32_t stcBconrTmpRaw;
     en_result_t enRet = Ok;
     uint32_t u32TimeOut = 0ul;
 
@@ -666,19 +667,19 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
         }
 
         /*Read current BCONR register */
-        stcBconrTmp = pstcTim0Reg->BCONR_f;
+        stcBconrTmpRaw = pstcTim0Reg->BCONR;
         /* Clear current configurate CH */
         if(Tim0_ChannelA == enCh)
         {
-            *(uint32_t *)&stcBconrTmp &= 0xFFFF0000ul;
+            stcBconrTmpRaw &= 0xFFFF0000ul;
         }
         else
         {
-            *(uint32_t *)&stcBconrTmp &= 0x0000FFFFul;
+            stcBconrTmpRaw &= 0x0000FFFFul;
         }
-        pstcTim0Reg->BCONR_f = stcBconrTmp;
+        pstcTim0Reg->BCONR = stcBconrTmpRaw;
         AsyncDelay(pstcTim0Reg, enCh, Enable);
-        while(*(uint32_t *)&stcBconrTmp != *(uint32_t *)&(pstcTim0Reg->BCONR_f))
+        while(stcBconrTmpRaw != pstcTim0Reg->BCONR)
         {
             if(u32TimeOut++ > TIMER0_TMOUT)
             {
@@ -686,6 +687,7 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
                 break;
             }
         }
+        stcBconrTmp = pstcTim0Reg->BCONR_f;
 
         switch(enCh)
         {

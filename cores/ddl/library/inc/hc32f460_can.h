@@ -388,7 +388,7 @@ typedef struct stc_can_init_config
     en_can_stb_mode_t       enCanSTBMode;       ///< @ref en_can_stb_mode_t
     stc_can_bt_t            stcCanBt;           ///< @ref stc_can_bt_t
     stc_can_warning_limit_t stcWarningLimit;    ///< @ref stc_can_warning_limit_t
-    stc_can_filter_t        *pstcFilter;        ///< @ref stc_can_filter_t Pointer to a stc_can_filter_t type array that \
+    stc_can_filter_t        *pstcFilter;        ///< @ref stc_can_filter_t Pointer to a stc_can_filter_t type array that
                                                 ///<  contains the configuration informations of the acceptance filters.
     uint8_t                 u8FilterCount;      ///< Number of filters that to to initialized.
 }stc_can_init_config_t;

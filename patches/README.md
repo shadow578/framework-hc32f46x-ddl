@@ -89,3 +89,62 @@ to initialize libc, a call to `__libc_init_array` is added before calling `main`
     bl          main
 ```
 
+
+## `/cores/ddl/library/src/hc32f460_timer0.c`
+
+the timer0 driver creates a warning when compiled with a modern gcc version.
+While it does work, this quiets the build process making real errors easier to spot.
+
+### 1. Patch `TIMER0_BaseInit`
+
+during reset of BCONR register, the original ddl code uses a bitfield `pstcTim0Reg->BCONR_f` cast to a uint32_t to clear the register. This causes a type-pruning warning.
+To fix this, `pstcTim0Reg->BCONR_f` can be replaced with `pstcTim0Reg->BCONR` (which is the raw register value BCONR_f represents) in the register clear code. 
+
+Since the following code uses the value in the variable `stcBconrTmp`, it has to be set after the register clear code.
+
+
+See the following diff for the changes:
+```diff
+@@ -648,6 +648,7 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+                        const stc_tim0_base_init_t* pstcBaseInit)
+ {
+     stc_tmr0_bconr_field_t stcBconrTmp;
++    uint32_t stcBconrTmpRaw;
+     en_result_t enRet = Ok;
+     uint32_t u32TimeOut = 0ul;
+
+@@ -666,19 +667,19 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+         }
+
+         /*Read current BCONR register */
+-        stcBconrTmp = pstcTim0Reg->BCONR_f;
++        stcBconrTmpRaw = pstcTim0Reg->BCONR;
+         /* Clear current configurate CH */
+         if(Tim0_ChannelA == enCh)
+         {
+-            *(uint32_t *)&stcBconrTmp &= 0xFFFF0000ul;
++            stcBconrTmpRaw &= 0xFFFF0000ul;
+         }
+         else
+         {
+-            *(uint32_t *)&stcBconrTmp &= 0x0000FFFFul;
++            stcBconrTmpRaw &= 0x0000FFFFul;
+         }
+-        pstcTim0Reg->BCONR_f = stcBconrTmp;
++        pstcTim0Reg->BCONR = stcBconrTmpRaw;
+         AsyncDelay(pstcTim0Reg, enCh, Enable);
+-        while(*(uint32_t *)&stcBconrTmp != *(uint32_t *)&(pstcTim0Reg->BCONR_f))
++        while(stcBconrTmpRaw != pstcTim0Reg->BCONR)
+         {
+             if(u32TimeOut++ > TIMER0_TMOUT)
+             {
+@@ -686,6 +687,7 @@ en_result_t TIMER0_BaseInit(M4_TMR0_TypeDef* pstcTim0Reg,en_tim0_channel_t enCh,
+                 break;
+             }
+         }
++        stcBconrTmp = pstcTim0Reg->BCONR_f;
+
+         switch(enCh)
+```
+
+
