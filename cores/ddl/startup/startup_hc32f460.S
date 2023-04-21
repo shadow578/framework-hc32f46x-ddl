@@ -347,6 +347,8 @@ SetSRAM3Wait:
 
                 /* Call the clock system initialization function. */
                 bl          SystemInit
+                /* call __libc_init_array before calling main */
+                bl          __libc_init_array
                 /* Call the application's entry point. */
                 bl          main
                 bx          lr
