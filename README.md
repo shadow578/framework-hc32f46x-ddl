@@ -2,8 +2,9 @@
 
 platformio device driver library (ddl) framework for the hc32f46x, mainly for use with [marlin](https://github.com/shadow578/Marlin-H32).
 
-This platform adapts the official ddl to work with platformio, with some minor patches applied.
-For details on these patches, see [patches/README.md](patches/README.md).
+This platform adapts the official ddl to work with platformio, with some minor patches applied.   
+For details on how ddl files provided by HDSC map to the files in this core, see [docs/FILES_MAPPING.md](docs/FILES_MAPPING.md).
+For details on these patches, see [docs/PATCHES.md](docs/PATCHES.md).
 
 # Notice
 
