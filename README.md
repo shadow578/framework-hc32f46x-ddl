@@ -1,14 +1,15 @@
-# framework-hc32f46x-ddl
+# PlatformIO support for HUADA HC32F460 Series DDL
 
-platformio device driver library (ddl) framework for the hc32f46x, mainly for use with [marlin](https://github.com/shadow578/Marlin-H32).
+This repository contains the [HUADA HC32F460 Series DDL](https://www.hdsc.com.cn/Category83-1487), adapted to work with platformio and [the hc32f46x platform](https://github.com/shadow578/platform-hc32f46x).
 
-This platform adapts the official ddl to work with platformio, with some minor patches applied.   
-For details on how ddl files provided by HDSC map to the files in this core, see [docs/FILES_MAPPING.md](docs/FILES_MAPPING.md).
-For details on these patches, see [docs/PATCHES.md](docs/PATCHES.md).
+Primary usage is for [Marlin](https://github.com/shadow578/Marlin-H32), tho other use cases should work too.
+
+Mapping of HUADA DDL files to the files in this repository can be found in [docs/FILES_MAPPING.md](docs/FILES_MAPPING.md).
+More details on the patches applied to the DDL can be found in [docs/PATCHES.md](docs/PATCHES.md).
 
 # Notice
 
-this platform is still in development, and is not yet ready for use. expect bugs, and expect things to break.
+this framework is still in development, and not yet ready for production use. expect things to break over time.
 
 # Configuration Options
 
@@ -72,48 +73,48 @@ drivers not specified will be disabled by default.
 | ------------------ | ------------------------------------------------------- |
 | `print`            | ddl printf functionality, directed to a dedicated usart |
 | `adc`              | analog to digital converter driver (ADC)                |
-| `aes`              | aes driver                                              |
+| `aes`              | AES (encryption / decryption) driver                    |
 | `can`              | can bus driver                                          |
-| `cmp`              | analog comparator driver                                |
+| `cmp`              | on-chip analog comparator driver                        |
 | `clk`              | clock generator driver                                  |
-| `dcu`              | data calculation unit driver                            |
+| `dcu`              | data computing unit driver                              |
 | `dmac`             | DMA controller driver                                   |
 | `efm`              | Embedded Flash Memory driver                            |
-| `emb`              |
-| `event_port`       |
+| `emb`              | Emergency / Software Brake mode driver                  |
+| `event_port`       | Event Port driver                                       |
 | `extint`           | external interrupt driver                               |
 | `gpio`             | gpio driver                                             |
 | `hash`             | hash driver                                             |
 | `i2c`              | i2c peripheral driver                                   |
 | `i2s`              | i2s peripheral driver                                   |
 | `interrupts`       | interrupt controller driver                             |
-| `interrupts_share` |
+| `interrupts_share` | ?                                                       |
 | `keyscan`          | keyboard matrix scan driver                             |
-| `mpu`              |
+| `mpu`              | Memory Protection Unit (?) driver                       |
 | `ots`              | on-chip temperature sensor driver                       |
-| `pwc`              |
+| `pwc`              | power controller driver                                 |
 | `qspi`             | quad spi peripheral driver                              |
-| `rmu`              |
-| `rtc`              |
+| `rmu`              | Reset Management Unit driver                            |
+| `rtc`              | Real Time Clock driver                                  |
 | `sdioc`            | sdio peripheral driver                                  |
 | `spi`              | spi peripheral driver                                   |
 | `sram`             | sram driver                                             |
 | `swdt`             | special watchdog timer driver                           |
 | `timer0`           | timer0 driver                                           |
 | `timer4.cnt`       | timer4 counter driver                                   |
-| `timer4.emb`       |
-| `timer4.oco`       |
+| `timer4.emb`       | timer4 emergency brake driver                           |
+| `timer4.oco`       | timer4 compare output driver                            |
 | `timer4.pwm`       | timer4 pwm driver                                       |
-| `timer4.sevt`      |
+| `timer4.sevt`      | timer4 special event driver                             |
 | `timer6`           | timer6 driver                                           |
 | `timera`           | timerA driver                                           |
 | `trng`             | true random number generator driver                     |
 | `usart`            | usart peripheral driver                                 |
-| `usbfs`            | N/A                                                     |
 | `wdt`              | watchdog timer driver                                   |
 
 > Note: ddl drivers can be included either with `#include "hc32_ddl.h"` or `#include "hc32f46x_<driver>.h"`
-> Note: some descriptions may be inaccurate.
+
+> Note: while this list should be up-to-date, you can always check in [ddl_options.py](./tools/platformio/ddl_options.py) for the latest.
 
 ### board definition
 
@@ -151,6 +152,8 @@ middleware not specified will be disabled by default.
 | `wm8731`        | wm8731 audio codec middleware  |
 
 > Note: middleware is added to the include path, and can be included with `#include "<middleware_header>.h"`
+
+> Note: while this list should be up-to-date, you can always check the [middleware directory](./middleware) for the latest.
 
 ### board definition
 
