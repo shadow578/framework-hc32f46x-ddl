@@ -3,6 +3,7 @@ HC32F46x DDL
 Device Driver Libraries for the HC32F46x series of microcontrollers
 """
 import os
+import re
 from os.path import isdir, join
 
 from SCons.Script import DefaultEnvironment
@@ -19,6 +20,17 @@ build_core = board.get("build.core", "")
 FRAMEWORK_DIR = platform.get_package_dir("framework-hc32f46x-ddl")
 DDL_DIR = join(FRAMEWORK_DIR, "cores", "ddl")
 assert isdir(DDL_DIR)
+
+# find and print ddl version from version.txt
+def get_ddl_version(version_file: str) -> str:
+    with open(version_file, "r") as f:
+        for line in f.readlines():
+            if re.match(r"\d+\.\d+\.\d+", line):
+                return line.split()[0]
+    
+    return "unknown"
+ddl_version = get_ddl_version(join(DDL_DIR, "version.txt"))
+print(f"Using DDL version {ddl_version}")
 
 # prepare basic compile environment
 # as far as i understood, the flags in 'CCFLAGS' should be added to all the other flags, but it doesn't seem to work that way...
