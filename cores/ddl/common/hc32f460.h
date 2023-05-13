@@ -5,7 +5,7 @@
  @verbatim
    Change Logs:
    Date             Author          Notes
-   2021-05-24       CDT          First version
+   2021-10-13       CDT          First version
  @endverbatim
  *******************************************************************************
  * Copyright (C) 2020, Huada Semiconductor Co., Ltd. All rights reserved.
@@ -1060,14 +1060,14 @@ typedef struct
     __IO uint32_t TRGSEL                    : 9;
     uint32_t RESERVED9                      :21;
     __IO uint32_t COMTRG_EN                 : 2;
-} stc_aos_port_pevnttrgsr12_field_t;
+} stc_aos_pevnttrgsr12_field_t;
 
 typedef struct
 {
     __IO uint32_t TRGSEL                    : 9;
     uint32_t RESERVED9                      :21;
     __IO uint32_t COMTRG_EN                 : 2;
-} stc_aos_port_pevnttrgsr34_field_t;
+} stc_aos_pevnttrgsr34_field_t;
 
 typedef struct
 {
@@ -1291,7 +1291,7 @@ typedef struct
     __IO uint8_t TSONE                      : 1;
     __IO uint8_t TPA                        : 1;
     __IO uint8_t TPE                        : 1;
-    __IO uint8_t STBY                       : 1;
+    uint8_t RESERVED5                       : 1;
     __IO uint8_t LOM                        : 1;
     __IO uint8_t TBSEL                      : 1;
 } stc_can_tcmd_field_t;
@@ -1300,7 +1300,7 @@ typedef struct
 {
     __I  uint8_t TSSTAT                     : 2;
     uint8_t RESERVED2                       : 2;
-    __IO uint8_t TTBM                       : 1;
+    __IO uint8_t TTTBM                      : 1;
     __IO uint8_t TSMODE                     : 1;
     __IO uint8_t TSNEXT                     : 1;
     uint8_t RESERVED7                       : 1;
@@ -1308,7 +1308,7 @@ typedef struct
 
 typedef struct
 {
-    __I  uint8_t RSSTAT                     : 2;
+    __I  uint8_t RSTAT                      : 2;
     uint8_t RESERVED2                       : 1;
     __IO uint8_t RBALL                      : 1;
     __IO uint8_t RREL                       : 1;
@@ -1466,7 +1466,7 @@ typedef struct
     uint16_t RESERVED1                      : 7;
     __I  uint16_t CVST                      : 4;
     uint16_t RESERVED12                     : 4;
-} stc_cmp_mon_field_t;
+} stc_cmp_outmon_field_t;
 
 typedef struct
 {
@@ -1518,6 +1518,13 @@ typedef struct
     __IO uint32_t XOROUT                    : 1;
     uint32_t RESERVED5                      :27;
 } stc_crc_cr_field_t;
+
+typedef struct
+{
+    __IO uint32_t CRC_REG                   :16;
+    __I  uint32_t CRCFLAG_16                : 1;
+    uint32_t RESERVED17                     :15;
+} stc_crc_reslt_field_t;
 
 typedef struct
 {
@@ -1703,6 +1710,14 @@ typedef struct
 
 typedef struct
 {
+    __I  uint32_t CHREQ                     : 4;
+    uint32_t RESERVED4                      :11;
+    __I  uint32_t RCFGREQ                   : 1;
+    uint32_t RESERVED16                     :16;
+} stc_dma_reqstat_field_t;
+
+typedef struct
+{
     __I  uint32_t DMAACT                    : 1;
     __I  uint32_t RCFGACT                   : 1;
     uint32_t RESERVED2                      :14;
@@ -1789,7 +1804,7 @@ typedef struct
     __IO uint32_t LLPRUN                    : 1;
     __IO uint32_t IE                        : 1;
     uint32_t RESERVED13                     :19;
-} stc_dma_ch0ctl_field_t;
+} stc_dma_chctl_field_t;
 
 typedef struct
 {
@@ -1817,51 +1832,6 @@ typedef struct
     __I  uint32_t DOFFSET                   :20;
     __I  uint32_t DNSCNT                    :12;
 } stc_dma_mondnseqctl_field_t;
-
-typedef struct
-{
-    __IO uint32_t SINC                      : 2;
-    __IO uint32_t DINC                      : 2;
-    __IO uint32_t SRPTEN                    : 1;
-    __IO uint32_t DRPTEN                    : 1;
-    __IO uint32_t SNSEQEN                   : 1;
-    __IO uint32_t DNSEQEN                   : 1;
-    __IO uint32_t HSIZE                     : 2;
-    __IO uint32_t LLPEN                     : 1;
-    __IO uint32_t LLPRUN                    : 1;
-    __IO uint32_t IE                        : 1;
-    uint32_t RESERVED13                     :19;
-} stc_dma_ch1ctl_field_t;
-
-typedef struct
-{
-    __IO uint32_t SINC                      : 2;
-    __IO uint32_t DINC                      : 2;
-    __IO uint32_t SRPTEN                    : 1;
-    __IO uint32_t DRPTEN                    : 1;
-    __IO uint32_t SNSEQEN                   : 1;
-    __IO uint32_t DNSEQEN                   : 1;
-    __IO uint32_t HSIZE                     : 2;
-    __IO uint32_t LLPEN                     : 1;
-    __IO uint32_t LLPRUN                    : 1;
-    __IO uint32_t IE                        : 1;
-    uint32_t RESERVED13                     :19;
-} stc_dma_ch2ctl_field_t;
-
-typedef struct
-{
-    __IO uint32_t SINC                      : 2;
-    __IO uint32_t DINC                      : 2;
-    __IO uint32_t SRPTEN                    : 1;
-    __IO uint32_t DRPTEN                    : 1;
-    __IO uint32_t SNSEQEN                   : 1;
-    __IO uint32_t DNSEQEN                   : 1;
-    __IO uint32_t HSIZE                     : 2;
-    __IO uint32_t LLPEN                     : 1;
-    __IO uint32_t LLPRUN                    : 1;
-    __IO uint32_t IE                        : 1;
-    uint32_t RESERVED13                     :19;
-} stc_dma_ch3ctl_field_t;
 
 typedef struct
 {
@@ -2167,6 +2137,13 @@ typedef struct
     __IO uint32_t FACKEN                    : 1;
     uint32_t RESERVED8                      :24;
 } stc_i2c_cr3_field_t;
+
+typedef struct
+{
+    uint32_t RESERVED0                      :10;
+    __IO uint32_t BUSWAIT                   : 1;
+    uint32_t RESERVED11                     :21;
+} stc_i2c_cr4_field_t;
 
 typedef struct
 {
@@ -2669,99 +2646,9 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t MPURG0SIZE                : 5;
-    __IO uint32_t MPURG0ADDR                :27;
-} stc_mpu_rgd0_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG1SIZE                : 5;
-    __IO uint32_t MPURG1ADDR                :27;
-} stc_mpu_rgd1_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG2SIZE                : 5;
-    __IO uint32_t MPURG2ADDR                :27;
-} stc_mpu_rgd2_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG3SIZE                : 5;
-    __IO uint32_t MPURG3ADDR                :27;
-} stc_mpu_rgd3_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG4SIZE                : 5;
-    __IO uint32_t MPURG4ADDR                :27;
-} stc_mpu_rgd4_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG5SIZE                : 5;
-    __IO uint32_t MPURG5ADDR                :27;
-} stc_mpu_rgd5_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG6SIZE                : 5;
-    __IO uint32_t MPURG6ADDR                :27;
-} stc_mpu_rgd6_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG7SIZE                : 5;
-    __IO uint32_t MPURG7ADDR                :27;
-} stc_mpu_rgd7_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG8SIZE                : 5;
-    __IO uint32_t MPURG8ADDR                :27;
-} stc_mpu_rgd8_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG9SIZE                : 5;
-    __IO uint32_t MPURG9ADDR                :27;
-} stc_mpu_rgd9_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG10SIZE               : 5;
-    __IO uint32_t MPURG10ADDR               :27;
-} stc_mpu_rgd10_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG11SIZE               : 5;
-    __IO uint32_t MPURG11ADDR               :27;
-} stc_mpu_rgd11_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG12SIZE               : 5;
-    __IO uint32_t MPURG12ADDR               :27;
-} stc_mpu_rgd12_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG13SIZE               : 5;
-    __IO uint32_t MPURG13ADDR               :27;
-} stc_mpu_rgd13_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG14SIZE               : 5;
-    __IO uint32_t MPURG14ADDR               :27;
-} stc_mpu_rgd14_field_t;
-
-typedef struct
-{
-    __IO uint32_t MPURG15SIZE               : 5;
-    __IO uint32_t MPURG15ADDR               :27;
-} stc_mpu_rgd15_field_t;
+    __IO uint32_t MPURGSIZE                 : 5;
+    __IO uint32_t MPURGADDR                 :27;
+} stc_mpu_rgd_field_t;
 
 typedef struct
 {
@@ -3238,62 +3125,62 @@ typedef struct
 
 typedef struct
 {
-    __O  uint16_t POS00                     : 1;
-    __O  uint16_t POS01                     : 1;
-    __O  uint16_t POS02                     : 1;
-    __O  uint16_t POS03                     : 1;
-    __O  uint16_t POS04                     : 1;
-    __O  uint16_t POS05                     : 1;
-    __O  uint16_t POS06                     : 1;
-    __O  uint16_t POS07                     : 1;
-    __O  uint16_t POS08                     : 1;
-    __O  uint16_t POS09                     : 1;
-    __O  uint16_t POS10                     : 1;
-    __O  uint16_t POS11                     : 1;
-    __O  uint16_t POS12                     : 1;
-    __O  uint16_t POS13                     : 1;
-    __O  uint16_t POS14                     : 1;
-    __O  uint16_t POS15                     : 1;
+    __IO uint16_t POS00                     : 1;
+    __IO uint16_t POS01                     : 1;
+    __IO uint16_t POS02                     : 1;
+    __IO uint16_t POS03                     : 1;
+    __IO uint16_t POS04                     : 1;
+    __IO uint16_t POS05                     : 1;
+    __IO uint16_t POS06                     : 1;
+    __IO uint16_t POS07                     : 1;
+    __IO uint16_t POS08                     : 1;
+    __IO uint16_t POS09                     : 1;
+    __IO uint16_t POS10                     : 1;
+    __IO uint16_t POS11                     : 1;
+    __IO uint16_t POS12                     : 1;
+    __IO uint16_t POS13                     : 1;
+    __IO uint16_t POS14                     : 1;
+    __IO uint16_t POS15                     : 1;
 } stc_port_posr_field_t;
 
 typedef struct
 {
-    __O  uint16_t POR00                     : 1;
-    __O  uint16_t POR01                     : 1;
-    __O  uint16_t POR02                     : 1;
-    __O  uint16_t POR03                     : 1;
-    __O  uint16_t POR04                     : 1;
-    __O  uint16_t POR05                     : 1;
-    __O  uint16_t POR06                     : 1;
-    __O  uint16_t POR07                     : 1;
-    __O  uint16_t POR08                     : 1;
-    __O  uint16_t POR09                     : 1;
-    __O  uint16_t POR10                     : 1;
-    __O  uint16_t POR11                     : 1;
-    __O  uint16_t POR12                     : 1;
-    __O  uint16_t POR13                     : 1;
-    __O  uint16_t POR14                     : 1;
-    __O  uint16_t POR15                     : 1;
+    __IO uint16_t POR00                     : 1;
+    __IO uint16_t POR01                     : 1;
+    __IO uint16_t POR02                     : 1;
+    __IO uint16_t POR03                     : 1;
+    __IO uint16_t POR04                     : 1;
+    __IO uint16_t POR05                     : 1;
+    __IO uint16_t POR06                     : 1;
+    __IO uint16_t POR07                     : 1;
+    __IO uint16_t POR08                     : 1;
+    __IO uint16_t POR09                     : 1;
+    __IO uint16_t POR10                     : 1;
+    __IO uint16_t POR11                     : 1;
+    __IO uint16_t POR12                     : 1;
+    __IO uint16_t POR13                     : 1;
+    __IO uint16_t POR14                     : 1;
+    __IO uint16_t POR15                     : 1;
 } stc_port_porr_field_t;
 
 typedef struct
 {
-    __O  uint16_t POT00                     : 1;
-    __O  uint16_t POT01                     : 1;
-    __O  uint16_t POT02                     : 1;
-    __O  uint16_t POT03                     : 1;
-    __O  uint16_t POT04                     : 1;
-    __O  uint16_t POT05                     : 1;
-    __O  uint16_t POT06                     : 1;
-    __O  uint16_t POT07                     : 1;
-    __O  uint16_t POT08                     : 1;
-    __O  uint16_t POT09                     : 1;
-    __O  uint16_t POT10                     : 1;
-    __O  uint16_t POT11                     : 1;
-    __O  uint16_t POT12                     : 1;
-    __O  uint16_t POT13                     : 1;
-    __O  uint16_t POT14                     : 1;
-    __O  uint16_t POT15                     : 1;
+    __IO uint16_t POT00                     : 1;
+    __IO uint16_t POT01                     : 1;
+    __IO uint16_t POT02                     : 1;
+    __IO uint16_t POT03                     : 1;
+    __IO uint16_t POT04                     : 1;
+    __IO uint16_t POT05                     : 1;
+    __IO uint16_t POT06                     : 1;
+    __IO uint16_t POT07                     : 1;
+    __IO uint16_t POT08                     : 1;
+    __IO uint16_t POT09                     : 1;
+    __IO uint16_t POT10                     : 1;
+    __IO uint16_t POT11                     : 1;
+    __IO uint16_t POT12                     : 1;
+    __IO uint16_t POT13                     : 1;
+    __IO uint16_t POT14                     : 1;
+    __IO uint16_t POT15                     : 1;
 } stc_port_potr_field_t;
 
 typedef struct
@@ -3322,25 +3209,25 @@ typedef struct
 
 typedef struct
 {
-    __O  uint16_t POS00                     : 1;
-    __O  uint16_t POS01                     : 1;
-    __O  uint16_t POS02                     : 1;
+    __IO uint16_t POS00                     : 1;
+    __IO uint16_t POS01                     : 1;
+    __IO uint16_t POS02                     : 1;
     uint16_t RESERVED3                      :13;
 } stc_port_posrh_field_t;
 
 typedef struct
 {
-    __O  uint16_t POR00                     : 1;
-    __O  uint16_t POR01                     : 1;
-    __O  uint16_t POR02                     : 1;
+    __IO uint16_t POR00                     : 1;
+    __IO uint16_t POR01                     : 1;
+    __IO uint16_t POR02                     : 1;
     uint16_t RESERVED3                      :13;
 } stc_port_porrh_field_t;
 
 typedef struct
 {
-    __O  uint16_t POT00                     : 1;
-    __O  uint16_t POT01                     : 1;
-    __O  uint16_t POT02                     : 1;
+    __IO uint16_t POT00                     : 1;
+    __IO uint16_t POT01                     : 1;
+    __IO uint16_t POT02                     : 1;
     uint16_t RESERVED3                      :13;
 } stc_port_potrh_field_t;
 
@@ -3480,122 +3367,116 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t RESET                     : 1;
-    uint32_t RESERVED1                      :31;
+    __IO uint8_t RESET                      : 1;
+    uint8_t RESERVED1                       : 7;
 } stc_rtc_cr0_field_t;
 
 typedef struct
 {
-    __IO uint32_t PRDS                      : 3;
-    __IO uint32_t AMPM                      : 1;
-    __IO uint32_t ALMFCLR                   : 1;
-    __IO uint32_t ONEHZOE                   : 1;
-    __IO uint32_t ONEHZSEL                  : 1;
-    __IO uint32_t START                     : 1;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t PRDS                       : 3;
+    __IO uint8_t AMPM                       : 1;
+    __IO uint8_t ALMFCLR                    : 1;
+    __IO uint8_t ONEHZOE                    : 1;
+    __IO uint8_t ONEHZSEL                   : 1;
+    __IO uint8_t START                      : 1;
 } stc_rtc_cr1_field_t;
 
 typedef struct
 {
-    __IO uint32_t RWREQ                     : 1;
-    __IO uint32_t RWEN                      : 1;
-    uint32_t RESERVED2                      : 1;
-    __IO uint32_t ALMF                      : 1;
-    uint32_t RESERVED4                      : 1;
-    __IO uint32_t PRDIE                     : 1;
-    __IO uint32_t ALMIE                     : 1;
-    __IO uint32_t ALME                      : 1;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t RWREQ                      : 1;
+    __IO uint8_t RWEN                       : 1;
+    uint8_t RESERVED2                       : 1;
+    __IO uint8_t ALMF                       : 1;
+    uint8_t RESERVED4                       : 1;
+    __IO uint8_t PRDIE                      : 1;
+    __IO uint8_t ALMIE                      : 1;
+    __IO uint8_t ALME                       : 1;
 } stc_rtc_cr2_field_t;
 
 typedef struct
 {
-    uint32_t RESERVED0                      : 4;
-    __IO uint32_t LRCEN                     : 1;
-    uint32_t RESERVED5                      : 2;
-    __IO uint32_t RCKSEL                    : 1;
-    uint32_t RESERVED8                      :24;
+    uint8_t RESERVED0                       : 4;
+    __IO uint8_t LRCEN                      : 1;
+    uint8_t RESERVED5                       : 2;
+    __IO uint8_t RCKSEL                     : 1;
 } stc_rtc_cr3_field_t;
 
 typedef struct
 {
-    __IO uint32_t SECU                      : 4;
-    __IO uint32_t SECD                      : 3;
-    uint32_t RESERVED7                      :25;
+    __IO uint8_t SECU                       : 4;
+    __IO uint8_t SECD                       : 3;
+    uint8_t RESERVED7                       : 1;
 } stc_rtc_sec_field_t;
 
 typedef struct
 {
-    __IO uint32_t MINU                      : 4;
-    __IO uint32_t MIND                      : 3;
-    uint32_t RESERVED7                      :25;
+    __IO uint8_t MINU                       : 4;
+    __IO uint8_t MIND                       : 3;
+    uint8_t RESERVED7                       : 1;
 } stc_rtc_min_field_t;
 
 typedef struct
 {
-    __IO uint32_t HOURU                     : 4;
-    __IO uint32_t HOURD                     : 2;
-    uint32_t RESERVED6                      :26;
+    __IO uint8_t HOURU                      : 4;
+    __IO uint8_t HOURD                      : 2;
+    uint8_t RESERVED6                       : 2;
 } stc_rtc_hour_field_t;
 
 typedef struct
 {
-    __IO uint32_t WEEK                      : 3;
-    uint32_t RESERVED3                      :29;
+    __IO uint8_t WEEK                       : 3;
+    uint8_t RESERVED3                       : 5;
 } stc_rtc_week_field_t;
 
 typedef struct
 {
-    __IO uint32_t DAYU                      : 4;
-    __IO uint32_t DAYD                      : 2;
-    uint32_t RESERVED6                      :26;
+    __IO uint8_t DAYU                       : 4;
+    __IO uint8_t DAYD                       : 2;
+    uint8_t RESERVED6                       : 2;
 } stc_rtc_day_field_t;
 
 typedef struct
 {
-    __IO uint32_t MON                       : 5;
-    uint32_t RESERVED5                      :27;
+    __IO uint8_t MON                        : 5;
+    uint8_t RESERVED5                       : 3;
 } stc_rtc_mon_field_t;
 
 typedef struct
 {
-    __IO uint32_t YEARU                     : 4;
-    __IO uint32_t YEARD                     : 4;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t YEARU                      : 4;
+    __IO uint8_t YEARD                      : 4;
 } stc_rtc_year_field_t;
 
 typedef struct
 {
-    __IO uint32_t ALMMINU                   : 4;
-    __IO uint32_t ALMMIND                   : 3;
-    uint32_t RESERVED7                      :25;
+    __IO uint8_t ALMMINU                    : 4;
+    __IO uint8_t ALMMIND                    : 3;
+    uint8_t RESERVED7                       : 1;
 } stc_rtc_almmin_field_t;
 
 typedef struct
 {
-    __IO uint32_t ALMHOURU                  : 4;
-    __IO uint32_t ALMHOURD                  : 2;
-    uint32_t RESERVED6                      :26;
+    __IO uint8_t ALMHOURU                   : 4;
+    __IO uint8_t ALMHOURD                   : 2;
+    uint8_t RESERVED6                       : 2;
 } stc_rtc_almhour_field_t;
 
 typedef struct
 {
-    __IO uint32_t ALMWEEK                   : 7;
-    uint32_t RESERVED7                      :25;
+    __IO uint8_t ALMWEEK                    : 7;
+    uint8_t RESERVED7                       : 1;
 } stc_rtc_almweek_field_t;
 
 typedef struct
 {
-    __IO uint32_t COMP8                     : 1;
-    uint32_t RESERVED1                      : 6;
-    __IO uint32_t COMPEN                    : 1;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t COMP8                      : 1;
+    uint8_t RESERVED1                       : 6;
+    __IO uint8_t COMPEN                     : 1;
 } stc_rtc_errcrh_field_t;
 
 typedef struct
 {
-    __IO uint32_t COMP                      : 8;
-    uint32_t RESERVED8                      :24;
+    __IO uint8_t COMP                       : 8;
 } stc_rtc_errcrl_field_t;
 
 typedef struct
@@ -3861,7 +3742,7 @@ typedef struct
 typedef struct
 {
     __IO uint32_t OVRERF                    : 1;
-    __IO uint32_t IDLNF                     : 1;
+    __I  uint32_t IDLNF                     : 1;
     __IO uint32_t MODFERF                   : 1;
     __IO uint32_t PERF                      : 1;
     __IO uint32_t UDRERF                    : 1;
@@ -3949,7 +3830,7 @@ typedef struct
 
 typedef struct
 {
-    __I  uint32_t RF                        :16;
+    __IO uint32_t RF                        :16;
     uint32_t RESERVED16                     :16;
 } stc_swdt_rr_field_t;
 
@@ -5029,180 +4910,175 @@ typedef struct
 
 typedef struct
 {
-    __IO uint32_t CNT                       :16;
-    uint32_t RESERVED16                     :16;
+    __IO uint16_t CNT                       :16;
 } stc_tmra_cnter_field_t;
 
 typedef struct
 {
-    __IO uint32_t PER                       :16;
-    uint32_t RESERVED16                     :16;
+    __IO uint16_t PER                       :16;
 } stc_tmra_perar_field_t;
 
 typedef struct
 {
-    __IO uint32_t CMP                       :16;
-    uint32_t RESERVED16                     :16;
+    __IO uint16_t CMP                       :16;
 } stc_tmra_cmpar_field_t;
 
 typedef struct
 {
-    __IO uint32_t START                     : 1;
-    __IO uint32_t DIR                       : 1;
-    __IO uint32_t MODE                      : 1;
-    __IO uint32_t SYNST                     : 1;
-    __IO uint32_t CKDIV                     : 4;
-    uint32_t RESERVED8                      : 4;
-    __IO uint32_t ITENOVF                   : 1;
-    __IO uint32_t ITENUDF                   : 1;
-    __IO uint32_t OVFF                      : 1;
-    __IO uint32_t UDFF                      : 1;
-    uint32_t RESERVED16                     :16;
+    __IO uint16_t START                     : 1;
+    __IO uint16_t DIR                       : 1;
+    __IO uint16_t MODE                      : 1;
+    __IO uint16_t SYNST                     : 1;
+    __IO uint16_t CKDIV                     : 4;
+    uint16_t RESERVED8                      : 4;
+    __IO uint16_t ITENOVF                   : 1;
+    __IO uint16_t ITENUDF                   : 1;
+    __IO uint16_t OVFF                      : 1;
+    __IO uint16_t UDFF                      : 1;
 } stc_tmra_bcstr_field_t;
 
 typedef struct
 {
-    __IO uint32_t HSTA0                     : 1;
-    __IO uint32_t HSTA1                     : 1;
-    __IO uint32_t HSTA2                     : 1;
-    uint32_t RESERVED3                      : 1;
-    __IO uint32_t HSTP0                     : 1;
-    __IO uint32_t HSTP1                     : 1;
-    __IO uint32_t HSTP2                     : 1;
-    uint32_t RESERVED7                      : 1;
-    __IO uint32_t HCLE0                     : 1;
-    __IO uint32_t HCLE1                     : 1;
-    __IO uint32_t HCLE2                     : 1;
-    uint32_t RESERVED11                     : 1;
-    __IO uint32_t HCLE3                     : 1;
-    __IO uint32_t HCLE4                     : 1;
-    __IO uint32_t HCLE5                     : 1;
-    __IO uint32_t HCLE6                     : 1;
-    uint32_t RESERVED16                     :16;
+    __IO uint16_t HSTA0                     : 1;
+    __IO uint16_t HSTA1                     : 1;
+    __IO uint16_t HSTA2                     : 1;
+    uint16_t RESERVED3                      : 1;
+    __IO uint16_t HSTP0                     : 1;
+    __IO uint16_t HSTP1                     : 1;
+    __IO uint16_t HSTP2                     : 1;
+    uint16_t RESERVED7                      : 1;
+    __IO uint16_t HCLE0                     : 1;
+    __IO uint16_t HCLE1                     : 1;
+    __IO uint16_t HCLE2                     : 1;
+    uint16_t RESERVED11                     : 1;
+    __IO uint16_t HCLE3                     : 1;
+    __IO uint16_t HCLE4                     : 1;
+    __IO uint16_t HCLE5                     : 1;
+    __IO uint16_t HCLE6                     : 1;
 } stc_tmra_hconr_field_t;
 
 typedef struct
 {
-    __IO uint32_t HCUP0                     : 1;
-    __IO uint32_t HCUP1                     : 1;
-    __IO uint32_t HCUP2                     : 1;
-    __IO uint32_t HCUP3                     : 1;
-    __IO uint32_t HCUP4                     : 1;
-    __IO uint32_t HCUP5                     : 1;
-    __IO uint32_t HCUP6                     : 1;
-    __IO uint32_t HCUP7                     : 1;
-    __IO uint32_t HCUP8                     : 1;
-    __IO uint32_t HCUP9                     : 1;
-    __IO uint32_t HCUP10                    : 1;
-    __IO uint32_t HCUP11                    : 1;
-    __IO uint32_t HCUP12                    : 1;
-    uint32_t RESERVED13                     :19;
+    __IO uint16_t HCUP0                     : 1;
+    __IO uint16_t HCUP1                     : 1;
+    __IO uint16_t HCUP2                     : 1;
+    __IO uint16_t HCUP3                     : 1;
+    __IO uint16_t HCUP4                     : 1;
+    __IO uint16_t HCUP5                     : 1;
+    __IO uint16_t HCUP6                     : 1;
+    __IO uint16_t HCUP7                     : 1;
+    __IO uint16_t HCUP8                     : 1;
+    __IO uint16_t HCUP9                     : 1;
+    __IO uint16_t HCUP10                    : 1;
+    __IO uint16_t HCUP11                    : 1;
+    __IO uint16_t HCUP12                    : 1;
+    uint16_t RESERVED13                     : 3;
 } stc_tmra_hcupr_field_t;
 
 typedef struct
 {
-    __IO uint32_t HCDO0                     : 1;
-    __IO uint32_t HCDO1                     : 1;
-    __IO uint32_t HCDO2                     : 1;
-    __IO uint32_t HCDO3                     : 1;
-    __IO uint32_t HCDO4                     : 1;
-    __IO uint32_t HCDO5                     : 1;
-    __IO uint32_t HCDO6                     : 1;
-    __IO uint32_t HCDO7                     : 1;
-    __IO uint32_t HCDO8                     : 1;
-    __IO uint32_t HCDO9                     : 1;
-    __IO uint32_t HCDO10                    : 1;
-    __IO uint32_t HCDO11                    : 1;
-    __IO uint32_t HCDO12                    : 1;
-    uint32_t RESERVED13                     :19;
+    __IO uint16_t HCDO0                     : 1;
+    __IO uint16_t HCDO1                     : 1;
+    __IO uint16_t HCDO2                     : 1;
+    __IO uint16_t HCDO3                     : 1;
+    __IO uint16_t HCDO4                     : 1;
+    __IO uint16_t HCDO5                     : 1;
+    __IO uint16_t HCDO6                     : 1;
+    __IO uint16_t HCDO7                     : 1;
+    __IO uint16_t HCDO8                     : 1;
+    __IO uint16_t HCDO9                     : 1;
+    __IO uint16_t HCDO10                    : 1;
+    __IO uint16_t HCDO11                    : 1;
+    __IO uint16_t HCDO12                    : 1;
+    uint16_t RESERVED13                     : 3;
 } stc_tmra_hcdor_field_t;
 
 typedef struct
 {
-    __IO uint32_t ITEN1                     : 1;
-    __IO uint32_t ITEN2                     : 1;
-    __IO uint32_t ITEN3                     : 1;
-    __IO uint32_t ITEN4                     : 1;
-    __IO uint32_t ITEN5                     : 1;
-    __IO uint32_t ITEN6                     : 1;
-    __IO uint32_t ITEN7                     : 1;
-    __IO uint32_t ITEN8                     : 1;
-    uint32_t RESERVED8                      :24;
+    __IO uint16_t ITEN1                     : 1;
+    __IO uint16_t ITEN2                     : 1;
+    __IO uint16_t ITEN3                     : 1;
+    __IO uint16_t ITEN4                     : 1;
+    __IO uint16_t ITEN5                     : 1;
+    __IO uint16_t ITEN6                     : 1;
+    __IO uint16_t ITEN7                     : 1;
+    __IO uint16_t ITEN8                     : 1;
+    uint16_t RESERVED8                      : 8;
 } stc_tmra_iconr_field_t;
 
 typedef struct
 {
-    __IO uint32_t ETEN1                     : 1;
-    __IO uint32_t ETEN2                     : 1;
-    __IO uint32_t ETEN3                     : 1;
-    __IO uint32_t ETEN4                     : 1;
-    __IO uint32_t ETEN5                     : 1;
-    __IO uint32_t ETEN6                     : 1;
-    __IO uint32_t ETEN7                     : 1;
-    __IO uint32_t ETEN8                     : 1;
-    uint32_t RESERVED8                      :24;
+    __IO uint16_t ETEN1                     : 1;
+    __IO uint16_t ETEN2                     : 1;
+    __IO uint16_t ETEN3                     : 1;
+    __IO uint16_t ETEN4                     : 1;
+    __IO uint16_t ETEN5                     : 1;
+    __IO uint16_t ETEN6                     : 1;
+    __IO uint16_t ETEN7                     : 1;
+    __IO uint16_t ETEN8                     : 1;
+    uint16_t RESERVED8                      : 8;
 } stc_tmra_econr_field_t;
 
 typedef struct
 {
-    __IO uint32_t NOFIENTG                  : 1;
-    __IO uint32_t NOFICKTG                  : 2;
-    uint32_t RESERVED3                      : 5;
-    __IO uint32_t NOFIENCA                  : 1;
-    __IO uint32_t NOFICKCA                  : 2;
-    uint32_t RESERVED11                     : 1;
-    __IO uint32_t NOFIENCB                  : 1;
-    __IO uint32_t NOFICKCB                  : 2;
-    uint32_t RESERVED15                     :17;
+    __IO uint16_t NOFIENTG                  : 1;
+    __IO uint16_t NOFICKTG                  : 2;
+    uint16_t RESERVED3                      : 5;
+    __IO uint16_t NOFIENCA                  : 1;
+    __IO uint16_t NOFICKCA                  : 2;
+    uint16_t RESERVED11                     : 1;
+    __IO uint16_t NOFIENCB                  : 1;
+    __IO uint16_t NOFICKCB                  : 2;
+    uint16_t RESERVED15                     : 1;
 } stc_tmra_fconr_field_t;
 
 typedef struct
 {
-    __IO uint32_t CMPF1                     : 1;
-    __IO uint32_t CMPF2                     : 1;
-    __IO uint32_t CMPF3                     : 1;
-    __IO uint32_t CMPF4                     : 1;
-    __IO uint32_t CMPF5                     : 1;
-    __IO uint32_t CMPF6                     : 1;
-    __IO uint32_t CMPF7                     : 1;
-    __IO uint32_t CMPF8                     : 1;
-    uint32_t RESERVED8                      :24;
+    __IO uint16_t CMPF1                     : 1;
+    __IO uint16_t CMPF2                     : 1;
+    __IO uint16_t CMPF3                     : 1;
+    __IO uint16_t CMPF4                     : 1;
+    __IO uint16_t CMPF5                     : 1;
+    __IO uint16_t CMPF6                     : 1;
+    __IO uint16_t CMPF7                     : 1;
+    __IO uint16_t CMPF8                     : 1;
+    uint16_t RESERVED8                      : 8;
 } stc_tmra_stflr_field_t;
 
 typedef struct
 {
-    __IO uint32_t BEN                       : 1;
-    __IO uint32_t BSE0                      : 1;
-    __IO uint32_t BSE1                      : 1;
-    uint32_t RESERVED3                      :29;
+    __IO uint16_t BEN                       : 1;
+    __IO uint16_t BSE0                      : 1;
+    __IO uint16_t BSE1                      : 1;
+    uint16_t RESERVED3                      :13;
 } stc_tmra_bconr_field_t;
 
 typedef struct
 {
-    __IO uint32_t CAPMD                     : 1;
-    uint32_t RESERVED1                      : 3;
-    __IO uint32_t HICP0                     : 1;
-    __IO uint32_t HICP1                     : 1;
-    __IO uint32_t HICP2                     : 1;
-    uint32_t RESERVED7                      : 1;
-    __IO uint32_t HICP3                     : 1;
-    __IO uint32_t HICP4                     : 1;
-    uint32_t RESERVED10                     : 2;
-    __IO uint32_t NOFIENCP                  : 1;
-    __IO uint32_t NOFICKCP                  : 2;
-    uint32_t RESERVED15                     :17;
+    __IO uint16_t CAPMD                     : 1;
+    uint16_t RESERVED1                      : 3;
+    __IO uint16_t HICP0                     : 1;
+    __IO uint16_t HICP1                     : 1;
+    __IO uint16_t HICP2                     : 1;
+    uint16_t RESERVED7                      : 1;
+    __IO uint16_t HICP3                     : 1;
+    __IO uint16_t HICP4                     : 1;
+    uint16_t RESERVED10                     : 2;
+    __IO uint16_t NOFIENCP                  : 1;
+    __IO uint16_t NOFICKCP                  : 2;
+    uint16_t RESERVED15                     : 1;
 } stc_tmra_cconr_field_t;
 
 typedef struct
 {
-    __IO uint32_t STAC                      : 2;
-    __IO uint32_t STPC                      : 2;
-    __IO uint32_t CMPC                      : 2;
-    __IO uint32_t PERC                      : 2;
-    __IO uint32_t FORC                      : 2;
-    uint32_t RESERVED10                     : 2;
-    __IO uint32_t OUTEN                     : 1;
-    uint32_t RESERVED13                     :19;
+    __IO uint16_t STAC                      : 2;
+    __IO uint16_t STPC                      : 2;
+    __IO uint16_t CMPC                      : 2;
+    __IO uint16_t PERC                      : 2;
+    __IO uint16_t FORC                      : 2;
+    uint16_t RESERVED10                     : 2;
+    __IO uint16_t OUTEN                     : 1;
+    uint16_t RESERVED13                     : 3;
 } stc_tmra_pconr_field_t;
 
 typedef struct
@@ -5853,7 +5729,7 @@ typedef struct
 
 typedef struct
 {
-    __I  uint32_t RF                        :16;
+    __IO uint32_t RF                        :16;
     uint32_t RESERVED16                     :16;
 } stc_wdt_rr_field_t;
 
@@ -6129,13 +6005,13 @@ typedef struct
     };
     union
     {
-        __IO uint32_t TMR6_HTSSR1;
-        stc_aos_tmr6_htssr_field_t TMR6_HTSSR1_f;
+        __IO uint32_t TMR6_HTSSR0;
+        stc_aos_tmr6_htssr_field_t TMR6_HTSSR0_f;
     };
     union
     {
-        __IO uint32_t TMR6_HTSSR2;
-        stc_aos_tmr6_htssr_field_t TMR6_HTSSR2_f;
+        __IO uint32_t TMR6_HTSSR1;
+        stc_aos_tmr6_htssr_field_t TMR6_HTSSR1_f;
     };
     union
     {
@@ -6144,13 +6020,13 @@ typedef struct
     };
     union
     {
-        __IO uint32_t PORT_PEVNTTRGSR12;
-        stc_aos_port_pevnttrgsr12_field_t PORT_PEVNTTRGSR12_f;
+        __IO uint32_t PEVNTTRGSR12;
+        stc_aos_pevnttrgsr12_field_t PEVNTTRGSR12_f;
     };
     union
     {
-        __IO uint32_t PORT_PEVNTTRGSR34;
-        stc_aos_port_pevnttrgsr34_field_t PORT_PEVNTTRGSR34_f;
+        __IO uint32_t PEVNTTRGSR34;
+        stc_aos_pevnttrgsr34_field_t PEVNTTRGSR34_f;
     };
     union
     {
@@ -6467,8 +6343,8 @@ typedef struct
     };
     union
     {
-        __IO uint16_t MON;
-        stc_cmp_mon_field_t MON_f;
+        __IO uint16_t OUTMON;
+        stc_cmp_outmon_field_t OUTMON_f;
     };
     union
     {
@@ -6522,7 +6398,11 @@ typedef struct
         __IO uint32_t CR;
         stc_crc_cr_field_t CR_f;
     };
-    __IO uint32_t RESLT;
+    union
+    {
+        __IO uint32_t RESLT;
+        stc_crc_reslt_field_t RESLT_f;
+    };
     uint8_t RESERVED0[4];
     union
     {
@@ -6680,19 +6560,23 @@ typedef struct
         __IO uint32_t CHEN;
         stc_dma_chen_field_t CHEN_f;
     };
-    uint8_t RESERVED0[4];
+    union
+    {
+        __IO uint32_t REQSTAT;
+        stc_dma_reqstat_field_t REQSTAT_f;
+    };
     union
     {
         __IO uint32_t CHSTAT;
         stc_dma_chstat_field_t CHSTAT_f;
     };
-    uint8_t RESERVED1[4];
+    uint8_t RESERVED0[4];
     union
     {
         __IO uint32_t RCFGCTL;
         stc_dma_rcfgctl_field_t RCFGCTL_f;
     };
-    uint8_t RESERVED2[16];
+    uint8_t RESERVED1[16];
     __IO uint32_t SAR0;
     __IO uint32_t DAR0;
     union
@@ -6728,8 +6612,8 @@ typedef struct
     };
     union
     {
-        __IO uint32_t CH0CTL;
-        stc_dma_ch0ctl_field_t CH0CTL_f;
+        __IO uint32_t CHCTL0;
+        stc_dma_chctl_field_t CHCTL0_f;
     };
     __IO uint32_t MONSAR0;
     __IO uint32_t MONDAR0;
@@ -6753,7 +6637,7 @@ typedef struct
         __IO uint32_t MONDNSEQCTL0;
         stc_dma_mondnseqctl_field_t MONDNSEQCTL0_f;
     };
-    uint8_t RESERVED3[8];
+    uint8_t RESERVED2[8];
     __IO uint32_t SAR1;
     __IO uint32_t DAR1;
     union
@@ -6789,8 +6673,8 @@ typedef struct
     };
     union
     {
-        __IO uint32_t CH1CTL;
-        stc_dma_ch1ctl_field_t CH1CTL_f;
+        __IO uint32_t CHCTL1;
+        stc_dma_chctl_field_t CHCTL1_f;
     };
     __IO uint32_t MONSAR1;
     __IO uint32_t MONDAR1;
@@ -6814,7 +6698,7 @@ typedef struct
         __IO uint32_t MONDNSEQCTL1;
         stc_dma_mondnseqctl_field_t MONDNSEQCTL1_f;
     };
-    uint8_t RESERVED4[8];
+    uint8_t RESERVED3[8];
     __IO uint32_t SAR2;
     __IO uint32_t DAR2;
     union
@@ -6850,8 +6734,8 @@ typedef struct
     };
     union
     {
-        __IO uint32_t CH2CTL;
-        stc_dma_ch2ctl_field_t CH2CTL_f;
+        __IO uint32_t CHCTL2;
+        stc_dma_chctl_field_t CHCTL2_f;
     };
     __IO uint32_t MONSAR2;
     __IO uint32_t MONDAR2;
@@ -6875,7 +6759,7 @@ typedef struct
         __IO uint32_t MONDNSEQCTL2;
         stc_dma_mondnseqctl_field_t MONDNSEQCTL2_f;
     };
-    uint8_t RESERVED5[8];
+    uint8_t RESERVED4[8];
     __IO uint32_t SAR3;
     __IO uint32_t DAR3;
     union
@@ -6911,8 +6795,8 @@ typedef struct
     };
     union
     {
-        __IO uint32_t CH3CTL;
-        stc_dma_ch3ctl_field_t CH3CTL_f;
+        __IO uint32_t CHCTL3;
+        stc_dma_chctl_field_t CHCTL3_f;
     };
     __IO uint32_t MONSAR3;
     __IO uint32_t MONDAR3;
@@ -7168,7 +7052,11 @@ typedef struct
         __IO uint32_t CR3;
         stc_i2c_cr3_field_t CR3_f;
     };
-    uint8_t RESERVED0[4];
+    union
+    {
+        __IO uint32_t CR4;
+        stc_i2c_cr4_field_t CR4_f;
+    };
     union
     {
         __IO uint32_t SLR0;
@@ -7199,13 +7087,13 @@ typedef struct
         __IO uint8_t DTR;
         stc_i2c_dtr_field_t DTR_f;
     };
-    uint8_t RESERVED1[3];
+    uint8_t RESERVED0[3];
     union
     {
         __IO uint8_t DRR;
         stc_i2c_drr_field_t DRR_f;
     };
-    uint8_t RESERVED2[3];
+    uint8_t RESERVED1[3];
     union
     {
         __IO uint32_t CCR;
@@ -8162,82 +8050,82 @@ typedef struct
     union
     {
         __IO uint32_t RGD0;
-        stc_mpu_rgd0_field_t RGD0_f;
+        stc_mpu_rgd_field_t RGD0_f;
     };
     union
     {
         __IO uint32_t RGD1;
-        stc_mpu_rgd1_field_t RGD1_f;
+        stc_mpu_rgd_field_t RGD1_f;
     };
     union
     {
         __IO uint32_t RGD2;
-        stc_mpu_rgd2_field_t RGD2_f;
+        stc_mpu_rgd_field_t RGD2_f;
     };
     union
     {
         __IO uint32_t RGD3;
-        stc_mpu_rgd3_field_t RGD3_f;
+        stc_mpu_rgd_field_t RGD3_f;
     };
     union
     {
         __IO uint32_t RGD4;
-        stc_mpu_rgd4_field_t RGD4_f;
+        stc_mpu_rgd_field_t RGD4_f;
     };
     union
     {
         __IO uint32_t RGD5;
-        stc_mpu_rgd5_field_t RGD5_f;
+        stc_mpu_rgd_field_t RGD5_f;
     };
     union
     {
         __IO uint32_t RGD6;
-        stc_mpu_rgd6_field_t RGD6_f;
+        stc_mpu_rgd_field_t RGD6_f;
     };
     union
     {
         __IO uint32_t RGD7;
-        stc_mpu_rgd7_field_t RGD7_f;
+        stc_mpu_rgd_field_t RGD7_f;
     };
     union
     {
         __IO uint32_t RGD8;
-        stc_mpu_rgd8_field_t RGD8_f;
+        stc_mpu_rgd_field_t RGD8_f;
     };
     union
     {
         __IO uint32_t RGD9;
-        stc_mpu_rgd9_field_t RGD9_f;
+        stc_mpu_rgd_field_t RGD9_f;
     };
     union
     {
         __IO uint32_t RGD10;
-        stc_mpu_rgd10_field_t RGD10_f;
+        stc_mpu_rgd_field_t RGD10_f;
     };
     union
     {
         __IO uint32_t RGD11;
-        stc_mpu_rgd11_field_t RGD11_f;
+        stc_mpu_rgd_field_t RGD11_f;
     };
     union
     {
         __IO uint32_t RGD12;
-        stc_mpu_rgd12_field_t RGD12_f;
+        stc_mpu_rgd_field_t RGD12_f;
     };
     union
     {
         __IO uint32_t RGD13;
-        stc_mpu_rgd13_field_t RGD13_f;
+        stc_mpu_rgd_field_t RGD13_f;
     };
     union
     {
         __IO uint32_t RGD14;
-        stc_mpu_rgd14_field_t RGD14_f;
+        stc_mpu_rgd_field_t RGD14_f;
     };
     union
     {
         __IO uint32_t RGD15;
-        stc_mpu_rgd15_field_t RGD15_f;
+        stc_mpu_rgd_field_t RGD15_f;
     };
     union
     {
@@ -9522,82 +9410,97 @@ typedef struct
 {
     union
     {
-        __IO uint32_t CR0;
+        __IO uint8_t CR0;
         stc_rtc_cr0_field_t CR0_f;
     };
+    uint8_t RESERVED0[3];
     union
     {
-        __IO uint32_t CR1;
+        __IO uint8_t CR1;
         stc_rtc_cr1_field_t CR1_f;
     };
+    uint8_t RESERVED1[3];
     union
     {
-        __IO uint32_t CR2;
+        __IO uint8_t CR2;
         stc_rtc_cr2_field_t CR2_f;
     };
+    uint8_t RESERVED2[3];
     union
     {
-        __IO uint32_t CR3;
+        __IO uint8_t CR3;
         stc_rtc_cr3_field_t CR3_f;
     };
+    uint8_t RESERVED3[3];
     union
     {
-        __IO uint32_t SEC;
+        __IO uint8_t SEC;
         stc_rtc_sec_field_t SEC_f;
     };
+    uint8_t RESERVED4[3];
     union
     {
-        __IO uint32_t MIN;
+        __IO uint8_t MIN;
         stc_rtc_min_field_t MIN_f;
     };
+    uint8_t RESERVED5[3];
     union
     {
-        __IO uint32_t HOUR;
+        __IO uint8_t HOUR;
         stc_rtc_hour_field_t HOUR_f;
     };
+    uint8_t RESERVED6[3];
     union
     {
-        __IO uint32_t WEEK;
+        __IO uint8_t WEEK;
         stc_rtc_week_field_t WEEK_f;
     };
+    uint8_t RESERVED7[3];
     union
     {
-        __IO uint32_t DAY;
+        __IO uint8_t DAY;
         stc_rtc_day_field_t DAY_f;
     };
+    uint8_t RESERVED8[3];
     union
     {
-        __IO uint32_t MON;
+        __IO uint8_t MON;
         stc_rtc_mon_field_t MON_f;
     };
+    uint8_t RESERVED9[3];
     union
     {
-        __IO uint32_t YEAR;
+        __IO uint8_t YEAR;
         stc_rtc_year_field_t YEAR_f;
     };
+    uint8_t RESERVED10[3];
     union
     {
-        __IO uint32_t ALMMIN;
+        __IO uint8_t ALMMIN;
         stc_rtc_almmin_field_t ALMMIN_f;
     };
+    uint8_t RESERVED11[3];
     union
     {
-        __IO uint32_t ALMHOUR;
+        __IO uint8_t ALMHOUR;
         stc_rtc_almhour_field_t ALMHOUR_f;
     };
+    uint8_t RESERVED12[3];
     union
     {
-        __IO uint32_t ALMWEEK;
+        __IO uint8_t ALMWEEK;
         stc_rtc_almweek_field_t ALMWEEK_f;
     };
+    uint8_t RESERVED13[3];
     union
     {
-        __IO uint32_t ERRCRH;
+        __IO uint8_t ERRCRH;
         stc_rtc_errcrh_field_t ERRCRH_f;
     };
+    uint8_t RESERVED14[3];
     union
     {
-        __IO uint32_t ERRCRL;
+        __IO uint8_t ERRCRL;
         stc_rtc_errcrl_field_t ERRCRL_f;
     };
 } M4_RTC_TypeDef;
@@ -10553,200 +10456,229 @@ typedef struct
 {
     union
     {
-        __IO uint32_t CNTER;
+        __IO uint16_t CNTER;
         stc_tmra_cnter_field_t CNTER_f;
     };
+    uint8_t RESERVED0[2];
     union
     {
-        __IO uint32_t PERAR;
+        __IO uint16_t PERAR;
         stc_tmra_perar_field_t PERAR_f;
     };
-    uint8_t RESERVED0[56];
+    uint8_t RESERVED1[58];
     union
     {
-        __IO uint32_t CMPAR1;
+        __IO uint16_t CMPAR1;
         stc_tmra_cmpar_field_t CMPAR1_f;
     };
+    uint8_t RESERVED2[2];
     union
     {
-        __IO uint32_t CMPAR2;
+        __IO uint16_t CMPAR2;
         stc_tmra_cmpar_field_t CMPAR2_f;
     };
+    uint8_t RESERVED3[2];
     union
     {
-        __IO uint32_t CMPAR3;
+        __IO uint16_t CMPAR3;
         stc_tmra_cmpar_field_t CMPAR3_f;
     };
+    uint8_t RESERVED4[2];
     union
     {
-        __IO uint32_t CMPAR4;
+        __IO uint16_t CMPAR4;
         stc_tmra_cmpar_field_t CMPAR4_f;
     };
+    uint8_t RESERVED5[2];
     union
     {
-        __IO uint32_t CMPAR5;
+        __IO uint16_t CMPAR5;
         stc_tmra_cmpar_field_t CMPAR5_f;
     };
+    uint8_t RESERVED6[2];
     union
     {
-        __IO uint32_t CMPAR6;
+        __IO uint16_t CMPAR6;
         stc_tmra_cmpar_field_t CMPAR6_f;
     };
+    uint8_t RESERVED7[2];
     union
     {
-        __IO uint32_t CMPAR7;
+        __IO uint16_t CMPAR7;
         stc_tmra_cmpar_field_t CMPAR7_f;
     };
+    uint8_t RESERVED8[2];
     union
     {
-        __IO uint32_t CMPAR8;
+        __IO uint16_t CMPAR8;
         stc_tmra_cmpar_field_t CMPAR8_f;
     };
-    uint8_t RESERVED1[32];
+    uint8_t RESERVED9[34];
     union
     {
-        __IO uint32_t BCSTR;
+        __IO uint16_t BCSTR;
         stc_tmra_bcstr_field_t BCSTR_f;
     };
+    uint8_t RESERVED10[2];
     union
     {
-        __IO uint32_t HCONR;
+        __IO uint16_t HCONR;
         stc_tmra_hconr_field_t HCONR_f;
     };
+    uint8_t RESERVED11[2];
     union
     {
-        __IO uint32_t HCUPR;
+        __IO uint16_t HCUPR;
         stc_tmra_hcupr_field_t HCUPR_f;
     };
+    uint8_t RESERVED12[2];
     union
     {
-        __IO uint32_t HCDOR;
+        __IO uint16_t HCDOR;
         stc_tmra_hcdor_field_t HCDOR_f;
     };
+    uint8_t RESERVED13[2];
     union
     {
-        __IO uint32_t ICONR;
+        __IO uint16_t ICONR;
         stc_tmra_iconr_field_t ICONR_f;
     };
+    uint8_t RESERVED14[2];
     union
     {
-        __IO uint32_t ECONR;
+        __IO uint16_t ECONR;
         stc_tmra_econr_field_t ECONR_f;
     };
+    uint8_t RESERVED15[2];
     union
     {
-        __IO uint32_t FCONR;
+        __IO uint16_t FCONR;
         stc_tmra_fconr_field_t FCONR_f;
     };
+    uint8_t RESERVED16[2];
     union
     {
-        __IO uint32_t STFLR;
+        __IO uint16_t STFLR;
         stc_tmra_stflr_field_t STFLR_f;
     };
-    uint8_t RESERVED2[32];
+    uint8_t RESERVED17[34];
     union
     {
-        __IO uint32_t BCONR1;
+        __IO uint16_t BCONR1;
         stc_tmra_bconr_field_t BCONR1_f;
     };
-    uint8_t RESERVED3[4];
+    uint8_t RESERVED18[6];
     union
     {
-        __IO uint32_t BCONR2;
+        __IO uint16_t BCONR2;
         stc_tmra_bconr_field_t BCONR2_f;
     };
-    uint8_t RESERVED4[4];
+    uint8_t RESERVED19[6];
     union
     {
-        __IO uint32_t BCONR3;
+        __IO uint16_t BCONR3;
         stc_tmra_bconr_field_t BCONR3_f;
     };
-    uint8_t RESERVED5[4];
+    uint8_t RESERVED20[6];
     union
     {
-        __IO uint32_t BCONR4;
+        __IO uint16_t BCONR4;
         stc_tmra_bconr_field_t BCONR4_f;
     };
-    uint8_t RESERVED6[36];
+    uint8_t RESERVED21[38];
     union
     {
-        __IO uint32_t CCONR1;
+        __IO uint16_t CCONR1;
         stc_tmra_cconr_field_t CCONR1_f;
     };
+    uint8_t RESERVED22[2];
     union
     {
-        __IO uint32_t CCONR2;
+        __IO uint16_t CCONR2;
         stc_tmra_cconr_field_t CCONR2_f;
     };
+    uint8_t RESERVED23[2];
     union
     {
-        __IO uint32_t CCONR3;
+        __IO uint16_t CCONR3;
         stc_tmra_cconr_field_t CCONR3_f;
     };
+    uint8_t RESERVED24[2];
     union
     {
-        __IO uint32_t CCONR4;
+        __IO uint16_t CCONR4;
         stc_tmra_cconr_field_t CCONR4_f;
     };
+    uint8_t RESERVED25[2];
     union
     {
-        __IO uint32_t CCONR5;
+        __IO uint16_t CCONR5;
         stc_tmra_cconr_field_t CCONR5_f;
     };
+    uint8_t RESERVED26[2];
     union
     {
-        __IO uint32_t CCONR6;
+        __IO uint16_t CCONR6;
         stc_tmra_cconr_field_t CCONR6_f;
     };
+    uint8_t RESERVED27[2];
     union
     {
-        __IO uint32_t CCONR7;
+        __IO uint16_t CCONR7;
         stc_tmra_cconr_field_t CCONR7_f;
     };
+    uint8_t RESERVED28[2];
     union
     {
-        __IO uint32_t CCONR8;
+        __IO uint16_t CCONR8;
         stc_tmra_cconr_field_t CCONR8_f;
     };
-    uint8_t RESERVED7[32];
+    uint8_t RESERVED29[34];
     union
     {
-        __IO uint32_t PCONR1;
+        __IO uint16_t PCONR1;
         stc_tmra_pconr_field_t PCONR1_f;
     };
+    uint8_t RESERVED30[2];
     union
     {
-        __IO uint32_t PCONR2;
+        __IO uint16_t PCONR2;
         stc_tmra_pconr_field_t PCONR2_f;
     };
+    uint8_t RESERVED31[2];
     union
     {
-        __IO uint32_t PCONR3;
+        __IO uint16_t PCONR3;
         stc_tmra_pconr_field_t PCONR3_f;
     };
+    uint8_t RESERVED32[2];
     union
     {
-        __IO uint32_t PCONR4;
+        __IO uint16_t PCONR4;
         stc_tmra_pconr_field_t PCONR4_f;
     };
+    uint8_t RESERVED33[2];
     union
     {
-        __IO uint32_t PCONR5;
+        __IO uint16_t PCONR5;
         stc_tmra_pconr_field_t PCONR5_f;
     };
+    uint8_t RESERVED34[2];
     union
     {
-        __IO uint32_t PCONR6;
+        __IO uint16_t PCONR6;
         stc_tmra_pconr_field_t PCONR6_f;
     };
+    uint8_t RESERVED35[2];
     union
     {
-        __IO uint32_t PCONR7;
+        __IO uint16_t PCONR7;
         stc_tmra_pconr_field_t PCONR7_f;
     };
+    uint8_t RESERVED36[2];
     union
     {
-        __IO uint32_t PCONR8;
+        __IO uint16_t PCONR8;
         stc_tmra_pconr_field_t PCONR8_f;
     };
 } M4_TMRA_TypeDef;
@@ -12050,28 +11982,28 @@ typedef struct
 #define bM4_AOS_DMA_TRGSELRC_TRGSEL8              (*((volatile unsigned int*)(0x422106A0UL)))
 #define bM4_AOS_DMA_TRGSELRC_COMTRG_EN0           (*((volatile unsigned int*)(0x422106F8UL)))
 #define bM4_AOS_DMA_TRGSELRC_COMTRG_EN1           (*((volatile unsigned int*)(0x422106FCUL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL0               (*((volatile unsigned int*)(0x42210700UL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL1               (*((volatile unsigned int*)(0x42210704UL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL2               (*((volatile unsigned int*)(0x42210708UL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL3               (*((volatile unsigned int*)(0x4221070CUL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL4               (*((volatile unsigned int*)(0x42210710UL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL5               (*((volatile unsigned int*)(0x42210714UL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL6               (*((volatile unsigned int*)(0x42210718UL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL7               (*((volatile unsigned int*)(0x4221071CUL)))
-#define bM4_AOS_TMR6_HTSSR1_TRGSEL8               (*((volatile unsigned int*)(0x42210720UL)))
-#define bM4_AOS_TMR6_HTSSR1_COMTRG_EN0            (*((volatile unsigned int*)(0x42210778UL)))
-#define bM4_AOS_TMR6_HTSSR1_COMTRG_EN1            (*((volatile unsigned int*)(0x4221077CUL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL0               (*((volatile unsigned int*)(0x42210780UL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL1               (*((volatile unsigned int*)(0x42210784UL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL2               (*((volatile unsigned int*)(0x42210788UL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL3               (*((volatile unsigned int*)(0x4221078CUL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL4               (*((volatile unsigned int*)(0x42210790UL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL5               (*((volatile unsigned int*)(0x42210794UL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL6               (*((volatile unsigned int*)(0x42210798UL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL7               (*((volatile unsigned int*)(0x4221079CUL)))
-#define bM4_AOS_TMR6_HTSSR2_TRGSEL8               (*((volatile unsigned int*)(0x422107A0UL)))
-#define bM4_AOS_TMR6_HTSSR2_COMTRG_EN0            (*((volatile unsigned int*)(0x422107F8UL)))
-#define bM4_AOS_TMR6_HTSSR2_COMTRG_EN1            (*((volatile unsigned int*)(0x422107FCUL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL0               (*((volatile unsigned int*)(0x42210700UL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL1               (*((volatile unsigned int*)(0x42210704UL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL2               (*((volatile unsigned int*)(0x42210708UL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL3               (*((volatile unsigned int*)(0x4221070CUL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL4               (*((volatile unsigned int*)(0x42210710UL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL5               (*((volatile unsigned int*)(0x42210714UL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL6               (*((volatile unsigned int*)(0x42210718UL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL7               (*((volatile unsigned int*)(0x4221071CUL)))
+#define bM4_AOS_TMR6_HTSSR0_TRGSEL8               (*((volatile unsigned int*)(0x42210720UL)))
+#define bM4_AOS_TMR6_HTSSR0_COMTRG_EN0            (*((volatile unsigned int*)(0x42210778UL)))
+#define bM4_AOS_TMR6_HTSSR0_COMTRG_EN1            (*((volatile unsigned int*)(0x4221077CUL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL0               (*((volatile unsigned int*)(0x42210780UL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL1               (*((volatile unsigned int*)(0x42210784UL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL2               (*((volatile unsigned int*)(0x42210788UL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL3               (*((volatile unsigned int*)(0x4221078CUL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL4               (*((volatile unsigned int*)(0x42210790UL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL5               (*((volatile unsigned int*)(0x42210794UL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL6               (*((volatile unsigned int*)(0x42210798UL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL7               (*((volatile unsigned int*)(0x4221079CUL)))
+#define bM4_AOS_TMR6_HTSSR1_TRGSEL8               (*((volatile unsigned int*)(0x422107A0UL)))
+#define bM4_AOS_TMR6_HTSSR1_COMTRG_EN0            (*((volatile unsigned int*)(0x422107F8UL)))
+#define bM4_AOS_TMR6_HTSSR1_COMTRG_EN1            (*((volatile unsigned int*)(0x422107FCUL)))
 #define bM4_AOS_TMR0_HTSSR_TRGSEL0                (*((volatile unsigned int*)(0x42210800UL)))
 #define bM4_AOS_TMR0_HTSSR_TRGSEL1                (*((volatile unsigned int*)(0x42210804UL)))
 #define bM4_AOS_TMR0_HTSSR_TRGSEL2                (*((volatile unsigned int*)(0x42210808UL)))
@@ -12083,28 +12015,28 @@ typedef struct
 #define bM4_AOS_TMR0_HTSSR_TRGSEL8                (*((volatile unsigned int*)(0x42210820UL)))
 #define bM4_AOS_TMR0_HTSSR_COMTRG_EN0             (*((volatile unsigned int*)(0x42210878UL)))
 #define bM4_AOS_TMR0_HTSSR_COMTRG_EN1             (*((volatile unsigned int*)(0x4221087CUL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL0         (*((volatile unsigned int*)(0x42210880UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL1         (*((volatile unsigned int*)(0x42210884UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL2         (*((volatile unsigned int*)(0x42210888UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL3         (*((volatile unsigned int*)(0x4221088CUL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL4         (*((volatile unsigned int*)(0x42210890UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL5         (*((volatile unsigned int*)(0x42210894UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL6         (*((volatile unsigned int*)(0x42210898UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL7         (*((volatile unsigned int*)(0x4221089CUL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_TRGSEL8         (*((volatile unsigned int*)(0x422108A0UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_COMTRG_EN0      (*((volatile unsigned int*)(0x422108F8UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR12_COMTRG_EN1      (*((volatile unsigned int*)(0x422108FCUL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL0         (*((volatile unsigned int*)(0x42210900UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL1         (*((volatile unsigned int*)(0x42210904UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL2         (*((volatile unsigned int*)(0x42210908UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL3         (*((volatile unsigned int*)(0x4221090CUL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL4         (*((volatile unsigned int*)(0x42210910UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL5         (*((volatile unsigned int*)(0x42210914UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL6         (*((volatile unsigned int*)(0x42210918UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL7         (*((volatile unsigned int*)(0x4221091CUL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_TRGSEL8         (*((volatile unsigned int*)(0x42210920UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_COMTRG_EN0      (*((volatile unsigned int*)(0x42210978UL)))
-#define bM4_AOS_PORT_PEVNTTRGSR34_COMTRG_EN1      (*((volatile unsigned int*)(0x4221097CUL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL0              (*((volatile unsigned int*)(0x42210880UL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL1              (*((volatile unsigned int*)(0x42210884UL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL2              (*((volatile unsigned int*)(0x42210888UL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL3              (*((volatile unsigned int*)(0x4221088CUL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL4              (*((volatile unsigned int*)(0x42210890UL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL5              (*((volatile unsigned int*)(0x42210894UL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL6              (*((volatile unsigned int*)(0x42210898UL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL7              (*((volatile unsigned int*)(0x4221089CUL)))
+#define bM4_AOS_PEVNTTRGSR12_TRGSEL8              (*((volatile unsigned int*)(0x422108A0UL)))
+#define bM4_AOS_PEVNTTRGSR12_COMTRG_EN0           (*((volatile unsigned int*)(0x422108F8UL)))
+#define bM4_AOS_PEVNTTRGSR12_COMTRG_EN1           (*((volatile unsigned int*)(0x422108FCUL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL0              (*((volatile unsigned int*)(0x42210900UL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL1              (*((volatile unsigned int*)(0x42210904UL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL2              (*((volatile unsigned int*)(0x42210908UL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL3              (*((volatile unsigned int*)(0x4221090CUL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL4              (*((volatile unsigned int*)(0x42210910UL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL5              (*((volatile unsigned int*)(0x42210914UL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL6              (*((volatile unsigned int*)(0x42210918UL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL7              (*((volatile unsigned int*)(0x4221091CUL)))
+#define bM4_AOS_PEVNTTRGSR34_TRGSEL8              (*((volatile unsigned int*)(0x42210920UL)))
+#define bM4_AOS_PEVNTTRGSR34_COMTRG_EN0           (*((volatile unsigned int*)(0x42210978UL)))
+#define bM4_AOS_PEVNTTRGSR34_COMTRG_EN1           (*((volatile unsigned int*)(0x4221097CUL)))
 #define bM4_AOS_TMRA_HTSSR0_TRGSEL0               (*((volatile unsigned int*)(0x42210980UL)))
 #define bM4_AOS_TMRA_HTSSR0_TRGSEL1               (*((volatile unsigned int*)(0x42210984UL)))
 #define bM4_AOS_TMRA_HTSSR0_TRGSEL2               (*((volatile unsigned int*)(0x42210988UL)))
@@ -12673,16 +12605,15 @@ typedef struct
 #define bM4_CAN_TCMD_TSONE                        (*((volatile unsigned int*)(0x42E09428UL)))
 #define bM4_CAN_TCMD_TPA                          (*((volatile unsigned int*)(0x42E0942CUL)))
 #define bM4_CAN_TCMD_TPE                          (*((volatile unsigned int*)(0x42E09430UL)))
-#define bM4_CAN_TCMD_STBY                         (*((volatile unsigned int*)(0x42E09434UL)))
 #define bM4_CAN_TCMD_LOM                          (*((volatile unsigned int*)(0x42E09438UL)))
 #define bM4_CAN_TCMD_TBSEL                        (*((volatile unsigned int*)(0x42E0943CUL)))
 #define bM4_CAN_TCTRL_TSSTAT0                     (*((volatile unsigned int*)(0x42E09440UL)))
 #define bM4_CAN_TCTRL_TSSTAT1                     (*((volatile unsigned int*)(0x42E09444UL)))
-#define bM4_CAN_TCTRL_TTBM                        (*((volatile unsigned int*)(0x42E09450UL)))
+#define bM4_CAN_TCTRL_TTTBM                       (*((volatile unsigned int*)(0x42E09450UL)))
 #define bM4_CAN_TCTRL_TSMODE                      (*((volatile unsigned int*)(0x42E09454UL)))
 #define bM4_CAN_TCTRL_TSNEXT                      (*((volatile unsigned int*)(0x42E09458UL)))
-#define bM4_CAN_RCTRL_RSSTAT0                     (*((volatile unsigned int*)(0x42E09460UL)))
-#define bM4_CAN_RCTRL_RSSTAT1                     (*((volatile unsigned int*)(0x42E09464UL)))
+#define bM4_CAN_RCTRL_RSTAT0                      (*((volatile unsigned int*)(0x42E09460UL)))
+#define bM4_CAN_RCTRL_RSTAT1                      (*((volatile unsigned int*)(0x42E09464UL)))
 #define bM4_CAN_RCTRL_RBALL                       (*((volatile unsigned int*)(0x42E0946CUL)))
 #define bM4_CAN_RCTRL_RREL                        (*((volatile unsigned int*)(0x42E09470UL)))
 #define bM4_CAN_RCTRL_ROV                         (*((volatile unsigned int*)(0x42E09474UL)))
@@ -12883,11 +12814,11 @@ typedef struct
 #define bM4_CMP1_VLTSEL_C4SL0                     (*((volatile unsigned int*)(0x42940070UL)))
 #define bM4_CMP1_VLTSEL_C4SL1                     (*((volatile unsigned int*)(0x42940074UL)))
 #define bM4_CMP1_VLTSEL_C4SL2                     (*((volatile unsigned int*)(0x42940078UL)))
-#define bM4_CMP1_MON_OMON                         (*((volatile unsigned int*)(0x42940080UL)))
-#define bM4_CMP1_MON_CVST0                        (*((volatile unsigned int*)(0x429400A0UL)))
-#define bM4_CMP1_MON_CVST1                        (*((volatile unsigned int*)(0x429400A4UL)))
-#define bM4_CMP1_MON_CVST2                        (*((volatile unsigned int*)(0x429400A8UL)))
-#define bM4_CMP1_MON_CVST3                        (*((volatile unsigned int*)(0x429400ACUL)))
+#define bM4_CMP1_OUTMON_OMON                      (*((volatile unsigned int*)(0x42940080UL)))
+#define bM4_CMP1_OUTMON_CVST0                     (*((volatile unsigned int*)(0x429400A0UL)))
+#define bM4_CMP1_OUTMON_CVST1                     (*((volatile unsigned int*)(0x429400A4UL)))
+#define bM4_CMP1_OUTMON_CVST2                     (*((volatile unsigned int*)(0x429400A8UL)))
+#define bM4_CMP1_OUTMON_CVST3                     (*((volatile unsigned int*)(0x429400ACUL)))
 #define bM4_CMP1_CVSSTB_STB0                      (*((volatile unsigned int*)(0x429400C0UL)))
 #define bM4_CMP1_CVSSTB_STB1                      (*((volatile unsigned int*)(0x429400C4UL)))
 #define bM4_CMP1_CVSSTB_STB2                      (*((volatile unsigned int*)(0x429400C8UL)))
@@ -12922,11 +12853,11 @@ typedef struct
 #define bM4_CMP2_VLTSEL_C4SL0                     (*((volatile unsigned int*)(0x42940270UL)))
 #define bM4_CMP2_VLTSEL_C4SL1                     (*((volatile unsigned int*)(0x42940274UL)))
 #define bM4_CMP2_VLTSEL_C4SL2                     (*((volatile unsigned int*)(0x42940278UL)))
-#define bM4_CMP2_MON_OMON                         (*((volatile unsigned int*)(0x42940280UL)))
-#define bM4_CMP2_MON_CVST0                        (*((volatile unsigned int*)(0x429402A0UL)))
-#define bM4_CMP2_MON_CVST1                        (*((volatile unsigned int*)(0x429402A4UL)))
-#define bM4_CMP2_MON_CVST2                        (*((volatile unsigned int*)(0x429402A8UL)))
-#define bM4_CMP2_MON_CVST3                        (*((volatile unsigned int*)(0x429402ACUL)))
+#define bM4_CMP2_OUTMON_OMON                      (*((volatile unsigned int*)(0x42940280UL)))
+#define bM4_CMP2_OUTMON_CVST0                     (*((volatile unsigned int*)(0x429402A0UL)))
+#define bM4_CMP2_OUTMON_CVST1                     (*((volatile unsigned int*)(0x429402A4UL)))
+#define bM4_CMP2_OUTMON_CVST2                     (*((volatile unsigned int*)(0x429402A8UL)))
+#define bM4_CMP2_OUTMON_CVST3                     (*((volatile unsigned int*)(0x429402ACUL)))
 #define bM4_CMP2_CVSSTB_STB0                      (*((volatile unsigned int*)(0x429402C0UL)))
 #define bM4_CMP2_CVSSTB_STB1                      (*((volatile unsigned int*)(0x429402C4UL)))
 #define bM4_CMP2_CVSSTB_STB2                      (*((volatile unsigned int*)(0x429402C8UL)))
@@ -12961,11 +12892,11 @@ typedef struct
 #define bM4_CMP3_VLTSEL_C4SL0                     (*((volatile unsigned int*)(0x42940470UL)))
 #define bM4_CMP3_VLTSEL_C4SL1                     (*((volatile unsigned int*)(0x42940474UL)))
 #define bM4_CMP3_VLTSEL_C4SL2                     (*((volatile unsigned int*)(0x42940478UL)))
-#define bM4_CMP3_MON_OMON                         (*((volatile unsigned int*)(0x42940480UL)))
-#define bM4_CMP3_MON_CVST0                        (*((volatile unsigned int*)(0x429404A0UL)))
-#define bM4_CMP3_MON_CVST1                        (*((volatile unsigned int*)(0x429404A4UL)))
-#define bM4_CMP3_MON_CVST2                        (*((volatile unsigned int*)(0x429404A8UL)))
-#define bM4_CMP3_MON_CVST3                        (*((volatile unsigned int*)(0x429404ACUL)))
+#define bM4_CMP3_OUTMON_OMON                      (*((volatile unsigned int*)(0x42940480UL)))
+#define bM4_CMP3_OUTMON_CVST0                     (*((volatile unsigned int*)(0x429404A0UL)))
+#define bM4_CMP3_OUTMON_CVST1                     (*((volatile unsigned int*)(0x429404A4UL)))
+#define bM4_CMP3_OUTMON_CVST2                     (*((volatile unsigned int*)(0x429404A8UL)))
+#define bM4_CMP3_OUTMON_CVST3                     (*((volatile unsigned int*)(0x429404ACUL)))
 #define bM4_CMP3_CVSSTB_STB0                      (*((volatile unsigned int*)(0x429404C0UL)))
 #define bM4_CMP3_CVSSTB_STB1                      (*((volatile unsigned int*)(0x429404C4UL)))
 #define bM4_CMP3_CVSSTB_STB2                      (*((volatile unsigned int*)(0x429404C8UL)))
@@ -13011,6 +12942,23 @@ typedef struct
 #define bM4_CRC_CR_REFIN                          (*((volatile unsigned int*)(0x42118008UL)))
 #define bM4_CRC_CR_REFOUT                         (*((volatile unsigned int*)(0x4211800CUL)))
 #define bM4_CRC_CR_XOROUT                         (*((volatile unsigned int*)(0x42118010UL)))
+#define bM4_CRC_RESLT_CRC_REG0                    (*((volatile unsigned int*)(0x42118080UL)))
+#define bM4_CRC_RESLT_CRC_REG1                    (*((volatile unsigned int*)(0x42118084UL)))
+#define bM4_CRC_RESLT_CRC_REG2                    (*((volatile unsigned int*)(0x42118088UL)))
+#define bM4_CRC_RESLT_CRC_REG3                    (*((volatile unsigned int*)(0x4211808CUL)))
+#define bM4_CRC_RESLT_CRC_REG4                    (*((volatile unsigned int*)(0x42118090UL)))
+#define bM4_CRC_RESLT_CRC_REG5                    (*((volatile unsigned int*)(0x42118094UL)))
+#define bM4_CRC_RESLT_CRC_REG6                    (*((volatile unsigned int*)(0x42118098UL)))
+#define bM4_CRC_RESLT_CRC_REG7                    (*((volatile unsigned int*)(0x4211809CUL)))
+#define bM4_CRC_RESLT_CRC_REG8                    (*((volatile unsigned int*)(0x421180A0UL)))
+#define bM4_CRC_RESLT_CRC_REG9                    (*((volatile unsigned int*)(0x421180A4UL)))
+#define bM4_CRC_RESLT_CRC_REG10                   (*((volatile unsigned int*)(0x421180A8UL)))
+#define bM4_CRC_RESLT_CRC_REG11                   (*((volatile unsigned int*)(0x421180ACUL)))
+#define bM4_CRC_RESLT_CRC_REG12                   (*((volatile unsigned int*)(0x421180B0UL)))
+#define bM4_CRC_RESLT_CRC_REG13                   (*((volatile unsigned int*)(0x421180B4UL)))
+#define bM4_CRC_RESLT_CRC_REG14                   (*((volatile unsigned int*)(0x421180B8UL)))
+#define bM4_CRC_RESLT_CRC_REG15                   (*((volatile unsigned int*)(0x421180BCUL)))
+#define bM4_CRC_RESLT_CRCFLAG_16                  (*((volatile unsigned int*)(0x421180C0UL)))
 #define bM4_CRC_FLG_FLAG                          (*((volatile unsigned int*)(0x42118180UL)))
 #define bM4_DCU1_CTL_MODE0                        (*((volatile unsigned int*)(0x42A40000UL)))
 #define bM4_DCU1_CTL_MODE1                        (*((volatile unsigned int*)(0x42A40004UL)))
@@ -13185,6 +13133,11 @@ typedef struct
 #define bM4_DMA1_CHEN_CHEN1                       (*((volatile unsigned int*)(0x42A60384UL)))
 #define bM4_DMA1_CHEN_CHEN2                       (*((volatile unsigned int*)(0x42A60388UL)))
 #define bM4_DMA1_CHEN_CHEN3                       (*((volatile unsigned int*)(0x42A6038CUL)))
+#define bM4_DMA1_REQSTAT_CHREQ0                   (*((volatile unsigned int*)(0x42A60400UL)))
+#define bM4_DMA1_REQSTAT_CHREQ1                   (*((volatile unsigned int*)(0x42A60404UL)))
+#define bM4_DMA1_REQSTAT_CHREQ2                   (*((volatile unsigned int*)(0x42A60408UL)))
+#define bM4_DMA1_REQSTAT_CHREQ3                   (*((volatile unsigned int*)(0x42A6040CUL)))
+#define bM4_DMA1_REQSTAT_RCFGREQ                  (*((volatile unsigned int*)(0x42A6043CUL)))
 #define bM4_DMA1_CHSTAT_DMAACT                    (*((volatile unsigned int*)(0x42A60480UL)))
 #define bM4_DMA1_CHSTAT_RCFGACT                   (*((volatile unsigned int*)(0x42A60484UL)))
 #define bM4_DMA1_CHSTAT_CHACT0                    (*((volatile unsigned int*)(0x42A604C0UL)))
@@ -13427,19 +13380,19 @@ typedef struct
 #define bM4_DMA1_LLP0_LLP27                       (*((volatile unsigned int*)(0x42A60B74UL)))
 #define bM4_DMA1_LLP0_LLP28                       (*((volatile unsigned int*)(0x42A60B78UL)))
 #define bM4_DMA1_LLP0_LLP29                       (*((volatile unsigned int*)(0x42A60B7CUL)))
-#define bM4_DMA1_CH0CTL_SINC0                     (*((volatile unsigned int*)(0x42A60B80UL)))
-#define bM4_DMA1_CH0CTL_SINC1                     (*((volatile unsigned int*)(0x42A60B84UL)))
-#define bM4_DMA1_CH0CTL_DINC0                     (*((volatile unsigned int*)(0x42A60B88UL)))
-#define bM4_DMA1_CH0CTL_DINC1                     (*((volatile unsigned int*)(0x42A60B8CUL)))
-#define bM4_DMA1_CH0CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A60B90UL)))
-#define bM4_DMA1_CH0CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A60B94UL)))
-#define bM4_DMA1_CH0CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A60B98UL)))
-#define bM4_DMA1_CH0CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A60B9CUL)))
-#define bM4_DMA1_CH0CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A60BA0UL)))
-#define bM4_DMA1_CH0CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A60BA4UL)))
-#define bM4_DMA1_CH0CTL_LLPEN                     (*((volatile unsigned int*)(0x42A60BA8UL)))
-#define bM4_DMA1_CH0CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A60BACUL)))
-#define bM4_DMA1_CH0CTL_IE                        (*((volatile unsigned int*)(0x42A60BB0UL)))
+#define bM4_DMA1_CHCTL0_SINC0                     (*((volatile unsigned int*)(0x42A60B80UL)))
+#define bM4_DMA1_CHCTL0_SINC1                     (*((volatile unsigned int*)(0x42A60B84UL)))
+#define bM4_DMA1_CHCTL0_DINC0                     (*((volatile unsigned int*)(0x42A60B88UL)))
+#define bM4_DMA1_CHCTL0_DINC1                     (*((volatile unsigned int*)(0x42A60B8CUL)))
+#define bM4_DMA1_CHCTL0_SRPTEN                    (*((volatile unsigned int*)(0x42A60B90UL)))
+#define bM4_DMA1_CHCTL0_DRPTEN                    (*((volatile unsigned int*)(0x42A60B94UL)))
+#define bM4_DMA1_CHCTL0_SNSEQEN                   (*((volatile unsigned int*)(0x42A60B98UL)))
+#define bM4_DMA1_CHCTL0_DNSEQEN                   (*((volatile unsigned int*)(0x42A60B9CUL)))
+#define bM4_DMA1_CHCTL0_HSIZE0                    (*((volatile unsigned int*)(0x42A60BA0UL)))
+#define bM4_DMA1_CHCTL0_HSIZE1                    (*((volatile unsigned int*)(0x42A60BA4UL)))
+#define bM4_DMA1_CHCTL0_LLPEN                     (*((volatile unsigned int*)(0x42A60BA8UL)))
+#define bM4_DMA1_CHCTL0_LLPRUN                    (*((volatile unsigned int*)(0x42A60BACUL)))
+#define bM4_DMA1_CHCTL0_IE                        (*((volatile unsigned int*)(0x42A60BB0UL)))
 #define bM4_DMA1_MONDTCTL0_BLKSIZE0               (*((volatile unsigned int*)(0x42A60D00UL)))
 #define bM4_DMA1_MONDTCTL0_BLKSIZE1               (*((volatile unsigned int*)(0x42A60D04UL)))
 #define bM4_DMA1_MONDTCTL0_BLKSIZE2               (*((volatile unsigned int*)(0x42A60D08UL)))
@@ -13774,19 +13727,19 @@ typedef struct
 #define bM4_DMA1_LLP1_LLP27                       (*((volatile unsigned int*)(0x42A61374UL)))
 #define bM4_DMA1_LLP1_LLP28                       (*((volatile unsigned int*)(0x42A61378UL)))
 #define bM4_DMA1_LLP1_LLP29                       (*((volatile unsigned int*)(0x42A6137CUL)))
-#define bM4_DMA1_CH1CTL_SINC0                     (*((volatile unsigned int*)(0x42A61380UL)))
-#define bM4_DMA1_CH1CTL_SINC1                     (*((volatile unsigned int*)(0x42A61384UL)))
-#define bM4_DMA1_CH1CTL_DINC0                     (*((volatile unsigned int*)(0x42A61388UL)))
-#define bM4_DMA1_CH1CTL_DINC1                     (*((volatile unsigned int*)(0x42A6138CUL)))
-#define bM4_DMA1_CH1CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A61390UL)))
-#define bM4_DMA1_CH1CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A61394UL)))
-#define bM4_DMA1_CH1CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A61398UL)))
-#define bM4_DMA1_CH1CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A6139CUL)))
-#define bM4_DMA1_CH1CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A613A0UL)))
-#define bM4_DMA1_CH1CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A613A4UL)))
-#define bM4_DMA1_CH1CTL_LLPEN                     (*((volatile unsigned int*)(0x42A613A8UL)))
-#define bM4_DMA1_CH1CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A613ACUL)))
-#define bM4_DMA1_CH1CTL_IE                        (*((volatile unsigned int*)(0x42A613B0UL)))
+#define bM4_DMA1_CHCTL1_SINC0                     (*((volatile unsigned int*)(0x42A61380UL)))
+#define bM4_DMA1_CHCTL1_SINC1                     (*((volatile unsigned int*)(0x42A61384UL)))
+#define bM4_DMA1_CHCTL1_DINC0                     (*((volatile unsigned int*)(0x42A61388UL)))
+#define bM4_DMA1_CHCTL1_DINC1                     (*((volatile unsigned int*)(0x42A6138CUL)))
+#define bM4_DMA1_CHCTL1_SRPTEN                    (*((volatile unsigned int*)(0x42A61390UL)))
+#define bM4_DMA1_CHCTL1_DRPTEN                    (*((volatile unsigned int*)(0x42A61394UL)))
+#define bM4_DMA1_CHCTL1_SNSEQEN                   (*((volatile unsigned int*)(0x42A61398UL)))
+#define bM4_DMA1_CHCTL1_DNSEQEN                   (*((volatile unsigned int*)(0x42A6139CUL)))
+#define bM4_DMA1_CHCTL1_HSIZE0                    (*((volatile unsigned int*)(0x42A613A0UL)))
+#define bM4_DMA1_CHCTL1_HSIZE1                    (*((volatile unsigned int*)(0x42A613A4UL)))
+#define bM4_DMA1_CHCTL1_LLPEN                     (*((volatile unsigned int*)(0x42A613A8UL)))
+#define bM4_DMA1_CHCTL1_LLPRUN                    (*((volatile unsigned int*)(0x42A613ACUL)))
+#define bM4_DMA1_CHCTL1_IE                        (*((volatile unsigned int*)(0x42A613B0UL)))
 #define bM4_DMA1_MONDTCTL1_BLKSIZE0               (*((volatile unsigned int*)(0x42A61500UL)))
 #define bM4_DMA1_MONDTCTL1_BLKSIZE1               (*((volatile unsigned int*)(0x42A61504UL)))
 #define bM4_DMA1_MONDTCTL1_BLKSIZE2               (*((volatile unsigned int*)(0x42A61508UL)))
@@ -14121,19 +14074,19 @@ typedef struct
 #define bM4_DMA1_LLP2_LLP27                       (*((volatile unsigned int*)(0x42A61B74UL)))
 #define bM4_DMA1_LLP2_LLP28                       (*((volatile unsigned int*)(0x42A61B78UL)))
 #define bM4_DMA1_LLP2_LLP29                       (*((volatile unsigned int*)(0x42A61B7CUL)))
-#define bM4_DMA1_CH2CTL_SINC0                     (*((volatile unsigned int*)(0x42A61B80UL)))
-#define bM4_DMA1_CH2CTL_SINC1                     (*((volatile unsigned int*)(0x42A61B84UL)))
-#define bM4_DMA1_CH2CTL_DINC0                     (*((volatile unsigned int*)(0x42A61B88UL)))
-#define bM4_DMA1_CH2CTL_DINC1                     (*((volatile unsigned int*)(0x42A61B8CUL)))
-#define bM4_DMA1_CH2CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A61B90UL)))
-#define bM4_DMA1_CH2CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A61B94UL)))
-#define bM4_DMA1_CH2CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A61B98UL)))
-#define bM4_DMA1_CH2CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A61B9CUL)))
-#define bM4_DMA1_CH2CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A61BA0UL)))
-#define bM4_DMA1_CH2CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A61BA4UL)))
-#define bM4_DMA1_CH2CTL_LLPEN                     (*((volatile unsigned int*)(0x42A61BA8UL)))
-#define bM4_DMA1_CH2CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A61BACUL)))
-#define bM4_DMA1_CH2CTL_IE                        (*((volatile unsigned int*)(0x42A61BB0UL)))
+#define bM4_DMA1_CHCTL2_SINC0                     (*((volatile unsigned int*)(0x42A61B80UL)))
+#define bM4_DMA1_CHCTL2_SINC1                     (*((volatile unsigned int*)(0x42A61B84UL)))
+#define bM4_DMA1_CHCTL2_DINC0                     (*((volatile unsigned int*)(0x42A61B88UL)))
+#define bM4_DMA1_CHCTL2_DINC1                     (*((volatile unsigned int*)(0x42A61B8CUL)))
+#define bM4_DMA1_CHCTL2_SRPTEN                    (*((volatile unsigned int*)(0x42A61B90UL)))
+#define bM4_DMA1_CHCTL2_DRPTEN                    (*((volatile unsigned int*)(0x42A61B94UL)))
+#define bM4_DMA1_CHCTL2_SNSEQEN                   (*((volatile unsigned int*)(0x42A61B98UL)))
+#define bM4_DMA1_CHCTL2_DNSEQEN                   (*((volatile unsigned int*)(0x42A61B9CUL)))
+#define bM4_DMA1_CHCTL2_HSIZE0                    (*((volatile unsigned int*)(0x42A61BA0UL)))
+#define bM4_DMA1_CHCTL2_HSIZE1                    (*((volatile unsigned int*)(0x42A61BA4UL)))
+#define bM4_DMA1_CHCTL2_LLPEN                     (*((volatile unsigned int*)(0x42A61BA8UL)))
+#define bM4_DMA1_CHCTL2_LLPRUN                    (*((volatile unsigned int*)(0x42A61BACUL)))
+#define bM4_DMA1_CHCTL2_IE                        (*((volatile unsigned int*)(0x42A61BB0UL)))
 #define bM4_DMA1_MONDTCTL2_BLKSIZE0               (*((volatile unsigned int*)(0x42A61D00UL)))
 #define bM4_DMA1_MONDTCTL2_BLKSIZE1               (*((volatile unsigned int*)(0x42A61D04UL)))
 #define bM4_DMA1_MONDTCTL2_BLKSIZE2               (*((volatile unsigned int*)(0x42A61D08UL)))
@@ -14468,19 +14421,19 @@ typedef struct
 #define bM4_DMA1_LLP3_LLP27                       (*((volatile unsigned int*)(0x42A62374UL)))
 #define bM4_DMA1_LLP3_LLP28                       (*((volatile unsigned int*)(0x42A62378UL)))
 #define bM4_DMA1_LLP3_LLP29                       (*((volatile unsigned int*)(0x42A6237CUL)))
-#define bM4_DMA1_CH3CTL_SINC0                     (*((volatile unsigned int*)(0x42A62380UL)))
-#define bM4_DMA1_CH3CTL_SINC1                     (*((volatile unsigned int*)(0x42A62384UL)))
-#define bM4_DMA1_CH3CTL_DINC0                     (*((volatile unsigned int*)(0x42A62388UL)))
-#define bM4_DMA1_CH3CTL_DINC1                     (*((volatile unsigned int*)(0x42A6238CUL)))
-#define bM4_DMA1_CH3CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A62390UL)))
-#define bM4_DMA1_CH3CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A62394UL)))
-#define bM4_DMA1_CH3CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A62398UL)))
-#define bM4_DMA1_CH3CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A6239CUL)))
-#define bM4_DMA1_CH3CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A623A0UL)))
-#define bM4_DMA1_CH3CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A623A4UL)))
-#define bM4_DMA1_CH3CTL_LLPEN                     (*((volatile unsigned int*)(0x42A623A8UL)))
-#define bM4_DMA1_CH3CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A623ACUL)))
-#define bM4_DMA1_CH3CTL_IE                        (*((volatile unsigned int*)(0x42A623B0UL)))
+#define bM4_DMA1_CHCTL3_SINC0                     (*((volatile unsigned int*)(0x42A62380UL)))
+#define bM4_DMA1_CHCTL3_SINC1                     (*((volatile unsigned int*)(0x42A62384UL)))
+#define bM4_DMA1_CHCTL3_DINC0                     (*((volatile unsigned int*)(0x42A62388UL)))
+#define bM4_DMA1_CHCTL3_DINC1                     (*((volatile unsigned int*)(0x42A6238CUL)))
+#define bM4_DMA1_CHCTL3_SRPTEN                    (*((volatile unsigned int*)(0x42A62390UL)))
+#define bM4_DMA1_CHCTL3_DRPTEN                    (*((volatile unsigned int*)(0x42A62394UL)))
+#define bM4_DMA1_CHCTL3_SNSEQEN                   (*((volatile unsigned int*)(0x42A62398UL)))
+#define bM4_DMA1_CHCTL3_DNSEQEN                   (*((volatile unsigned int*)(0x42A6239CUL)))
+#define bM4_DMA1_CHCTL3_HSIZE0                    (*((volatile unsigned int*)(0x42A623A0UL)))
+#define bM4_DMA1_CHCTL3_HSIZE1                    (*((volatile unsigned int*)(0x42A623A4UL)))
+#define bM4_DMA1_CHCTL3_LLPEN                     (*((volatile unsigned int*)(0x42A623A8UL)))
+#define bM4_DMA1_CHCTL3_LLPRUN                    (*((volatile unsigned int*)(0x42A623ACUL)))
+#define bM4_DMA1_CHCTL3_IE                        (*((volatile unsigned int*)(0x42A623B0UL)))
 #define bM4_DMA1_MONDTCTL3_BLKSIZE0               (*((volatile unsigned int*)(0x42A62500UL)))
 #define bM4_DMA1_MONDTCTL3_BLKSIZE1               (*((volatile unsigned int*)(0x42A62504UL)))
 #define bM4_DMA1_MONDTCTL3_BLKSIZE2               (*((volatile unsigned int*)(0x42A62508UL)))
@@ -14644,6 +14597,11 @@ typedef struct
 #define bM4_DMA2_CHEN_CHEN1                       (*((volatile unsigned int*)(0x42A68384UL)))
 #define bM4_DMA2_CHEN_CHEN2                       (*((volatile unsigned int*)(0x42A68388UL)))
 #define bM4_DMA2_CHEN_CHEN3                       (*((volatile unsigned int*)(0x42A6838CUL)))
+#define bM4_DMA2_REQSTAT_CHREQ0                   (*((volatile unsigned int*)(0x42A68400UL)))
+#define bM4_DMA2_REQSTAT_CHREQ1                   (*((volatile unsigned int*)(0x42A68404UL)))
+#define bM4_DMA2_REQSTAT_CHREQ2                   (*((volatile unsigned int*)(0x42A68408UL)))
+#define bM4_DMA2_REQSTAT_CHREQ3                   (*((volatile unsigned int*)(0x42A6840CUL)))
+#define bM4_DMA2_REQSTAT_RCFGREQ                  (*((volatile unsigned int*)(0x42A6843CUL)))
 #define bM4_DMA2_CHSTAT_DMAACT                    (*((volatile unsigned int*)(0x42A68480UL)))
 #define bM4_DMA2_CHSTAT_RCFGACT                   (*((volatile unsigned int*)(0x42A68484UL)))
 #define bM4_DMA2_CHSTAT_CHACT0                    (*((volatile unsigned int*)(0x42A684C0UL)))
@@ -14886,19 +14844,19 @@ typedef struct
 #define bM4_DMA2_LLP0_LLP27                       (*((volatile unsigned int*)(0x42A68B74UL)))
 #define bM4_DMA2_LLP0_LLP28                       (*((volatile unsigned int*)(0x42A68B78UL)))
 #define bM4_DMA2_LLP0_LLP29                       (*((volatile unsigned int*)(0x42A68B7CUL)))
-#define bM4_DMA2_CH0CTL_SINC0                     (*((volatile unsigned int*)(0x42A68B80UL)))
-#define bM4_DMA2_CH0CTL_SINC1                     (*((volatile unsigned int*)(0x42A68B84UL)))
-#define bM4_DMA2_CH0CTL_DINC0                     (*((volatile unsigned int*)(0x42A68B88UL)))
-#define bM4_DMA2_CH0CTL_DINC1                     (*((volatile unsigned int*)(0x42A68B8CUL)))
-#define bM4_DMA2_CH0CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A68B90UL)))
-#define bM4_DMA2_CH0CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A68B94UL)))
-#define bM4_DMA2_CH0CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A68B98UL)))
-#define bM4_DMA2_CH0CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A68B9CUL)))
-#define bM4_DMA2_CH0CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A68BA0UL)))
-#define bM4_DMA2_CH0CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A68BA4UL)))
-#define bM4_DMA2_CH0CTL_LLPEN                     (*((volatile unsigned int*)(0x42A68BA8UL)))
-#define bM4_DMA2_CH0CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A68BACUL)))
-#define bM4_DMA2_CH0CTL_IE                        (*((volatile unsigned int*)(0x42A68BB0UL)))
+#define bM4_DMA2_CHCTL0_SINC0                     (*((volatile unsigned int*)(0x42A68B80UL)))
+#define bM4_DMA2_CHCTL0_SINC1                     (*((volatile unsigned int*)(0x42A68B84UL)))
+#define bM4_DMA2_CHCTL0_DINC0                     (*((volatile unsigned int*)(0x42A68B88UL)))
+#define bM4_DMA2_CHCTL0_DINC1                     (*((volatile unsigned int*)(0x42A68B8CUL)))
+#define bM4_DMA2_CHCTL0_SRPTEN                    (*((volatile unsigned int*)(0x42A68B90UL)))
+#define bM4_DMA2_CHCTL0_DRPTEN                    (*((volatile unsigned int*)(0x42A68B94UL)))
+#define bM4_DMA2_CHCTL0_SNSEQEN                   (*((volatile unsigned int*)(0x42A68B98UL)))
+#define bM4_DMA2_CHCTL0_DNSEQEN                   (*((volatile unsigned int*)(0x42A68B9CUL)))
+#define bM4_DMA2_CHCTL0_HSIZE0                    (*((volatile unsigned int*)(0x42A68BA0UL)))
+#define bM4_DMA2_CHCTL0_HSIZE1                    (*((volatile unsigned int*)(0x42A68BA4UL)))
+#define bM4_DMA2_CHCTL0_LLPEN                     (*((volatile unsigned int*)(0x42A68BA8UL)))
+#define bM4_DMA2_CHCTL0_LLPRUN                    (*((volatile unsigned int*)(0x42A68BACUL)))
+#define bM4_DMA2_CHCTL0_IE                        (*((volatile unsigned int*)(0x42A68BB0UL)))
 #define bM4_DMA2_MONDTCTL0_BLKSIZE0               (*((volatile unsigned int*)(0x42A68D00UL)))
 #define bM4_DMA2_MONDTCTL0_BLKSIZE1               (*((volatile unsigned int*)(0x42A68D04UL)))
 #define bM4_DMA2_MONDTCTL0_BLKSIZE2               (*((volatile unsigned int*)(0x42A68D08UL)))
@@ -15233,19 +15191,19 @@ typedef struct
 #define bM4_DMA2_LLP1_LLP27                       (*((volatile unsigned int*)(0x42A69374UL)))
 #define bM4_DMA2_LLP1_LLP28                       (*((volatile unsigned int*)(0x42A69378UL)))
 #define bM4_DMA2_LLP1_LLP29                       (*((volatile unsigned int*)(0x42A6937CUL)))
-#define bM4_DMA2_CH1CTL_SINC0                     (*((volatile unsigned int*)(0x42A69380UL)))
-#define bM4_DMA2_CH1CTL_SINC1                     (*((volatile unsigned int*)(0x42A69384UL)))
-#define bM4_DMA2_CH1CTL_DINC0                     (*((volatile unsigned int*)(0x42A69388UL)))
-#define bM4_DMA2_CH1CTL_DINC1                     (*((volatile unsigned int*)(0x42A6938CUL)))
-#define bM4_DMA2_CH1CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A69390UL)))
-#define bM4_DMA2_CH1CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A69394UL)))
-#define bM4_DMA2_CH1CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A69398UL)))
-#define bM4_DMA2_CH1CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A6939CUL)))
-#define bM4_DMA2_CH1CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A693A0UL)))
-#define bM4_DMA2_CH1CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A693A4UL)))
-#define bM4_DMA2_CH1CTL_LLPEN                     (*((volatile unsigned int*)(0x42A693A8UL)))
-#define bM4_DMA2_CH1CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A693ACUL)))
-#define bM4_DMA2_CH1CTL_IE                        (*((volatile unsigned int*)(0x42A693B0UL)))
+#define bM4_DMA2_CHCTL1_SINC0                     (*((volatile unsigned int*)(0x42A69380UL)))
+#define bM4_DMA2_CHCTL1_SINC1                     (*((volatile unsigned int*)(0x42A69384UL)))
+#define bM4_DMA2_CHCTL1_DINC0                     (*((volatile unsigned int*)(0x42A69388UL)))
+#define bM4_DMA2_CHCTL1_DINC1                     (*((volatile unsigned int*)(0x42A6938CUL)))
+#define bM4_DMA2_CHCTL1_SRPTEN                    (*((volatile unsigned int*)(0x42A69390UL)))
+#define bM4_DMA2_CHCTL1_DRPTEN                    (*((volatile unsigned int*)(0x42A69394UL)))
+#define bM4_DMA2_CHCTL1_SNSEQEN                   (*((volatile unsigned int*)(0x42A69398UL)))
+#define bM4_DMA2_CHCTL1_DNSEQEN                   (*((volatile unsigned int*)(0x42A6939CUL)))
+#define bM4_DMA2_CHCTL1_HSIZE0                    (*((volatile unsigned int*)(0x42A693A0UL)))
+#define bM4_DMA2_CHCTL1_HSIZE1                    (*((volatile unsigned int*)(0x42A693A4UL)))
+#define bM4_DMA2_CHCTL1_LLPEN                     (*((volatile unsigned int*)(0x42A693A8UL)))
+#define bM4_DMA2_CHCTL1_LLPRUN                    (*((volatile unsigned int*)(0x42A693ACUL)))
+#define bM4_DMA2_CHCTL1_IE                        (*((volatile unsigned int*)(0x42A693B0UL)))
 #define bM4_DMA2_MONDTCTL1_BLKSIZE0               (*((volatile unsigned int*)(0x42A69500UL)))
 #define bM4_DMA2_MONDTCTL1_BLKSIZE1               (*((volatile unsigned int*)(0x42A69504UL)))
 #define bM4_DMA2_MONDTCTL1_BLKSIZE2               (*((volatile unsigned int*)(0x42A69508UL)))
@@ -15580,19 +15538,19 @@ typedef struct
 #define bM4_DMA2_LLP2_LLP27                       (*((volatile unsigned int*)(0x42A69B74UL)))
 #define bM4_DMA2_LLP2_LLP28                       (*((volatile unsigned int*)(0x42A69B78UL)))
 #define bM4_DMA2_LLP2_LLP29                       (*((volatile unsigned int*)(0x42A69B7CUL)))
-#define bM4_DMA2_CH2CTL_SINC0                     (*((volatile unsigned int*)(0x42A69B80UL)))
-#define bM4_DMA2_CH2CTL_SINC1                     (*((volatile unsigned int*)(0x42A69B84UL)))
-#define bM4_DMA2_CH2CTL_DINC0                     (*((volatile unsigned int*)(0x42A69B88UL)))
-#define bM4_DMA2_CH2CTL_DINC1                     (*((volatile unsigned int*)(0x42A69B8CUL)))
-#define bM4_DMA2_CH2CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A69B90UL)))
-#define bM4_DMA2_CH2CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A69B94UL)))
-#define bM4_DMA2_CH2CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A69B98UL)))
-#define bM4_DMA2_CH2CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A69B9CUL)))
-#define bM4_DMA2_CH2CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A69BA0UL)))
-#define bM4_DMA2_CH2CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A69BA4UL)))
-#define bM4_DMA2_CH2CTL_LLPEN                     (*((volatile unsigned int*)(0x42A69BA8UL)))
-#define bM4_DMA2_CH2CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A69BACUL)))
-#define bM4_DMA2_CH2CTL_IE                        (*((volatile unsigned int*)(0x42A69BB0UL)))
+#define bM4_DMA2_CHCTL2_SINC0                     (*((volatile unsigned int*)(0x42A69B80UL)))
+#define bM4_DMA2_CHCTL2_SINC1                     (*((volatile unsigned int*)(0x42A69B84UL)))
+#define bM4_DMA2_CHCTL2_DINC0                     (*((volatile unsigned int*)(0x42A69B88UL)))
+#define bM4_DMA2_CHCTL2_DINC1                     (*((volatile unsigned int*)(0x42A69B8CUL)))
+#define bM4_DMA2_CHCTL2_SRPTEN                    (*((volatile unsigned int*)(0x42A69B90UL)))
+#define bM4_DMA2_CHCTL2_DRPTEN                    (*((volatile unsigned int*)(0x42A69B94UL)))
+#define bM4_DMA2_CHCTL2_SNSEQEN                   (*((volatile unsigned int*)(0x42A69B98UL)))
+#define bM4_DMA2_CHCTL2_DNSEQEN                   (*((volatile unsigned int*)(0x42A69B9CUL)))
+#define bM4_DMA2_CHCTL2_HSIZE0                    (*((volatile unsigned int*)(0x42A69BA0UL)))
+#define bM4_DMA2_CHCTL2_HSIZE1                    (*((volatile unsigned int*)(0x42A69BA4UL)))
+#define bM4_DMA2_CHCTL2_LLPEN                     (*((volatile unsigned int*)(0x42A69BA8UL)))
+#define bM4_DMA2_CHCTL2_LLPRUN                    (*((volatile unsigned int*)(0x42A69BACUL)))
+#define bM4_DMA2_CHCTL2_IE                        (*((volatile unsigned int*)(0x42A69BB0UL)))
 #define bM4_DMA2_MONDTCTL2_BLKSIZE0               (*((volatile unsigned int*)(0x42A69D00UL)))
 #define bM4_DMA2_MONDTCTL2_BLKSIZE1               (*((volatile unsigned int*)(0x42A69D04UL)))
 #define bM4_DMA2_MONDTCTL2_BLKSIZE2               (*((volatile unsigned int*)(0x42A69D08UL)))
@@ -15927,19 +15885,19 @@ typedef struct
 #define bM4_DMA2_LLP3_LLP27                       (*((volatile unsigned int*)(0x42A6A374UL)))
 #define bM4_DMA2_LLP3_LLP28                       (*((volatile unsigned int*)(0x42A6A378UL)))
 #define bM4_DMA2_LLP3_LLP29                       (*((volatile unsigned int*)(0x42A6A37CUL)))
-#define bM4_DMA2_CH3CTL_SINC0                     (*((volatile unsigned int*)(0x42A6A380UL)))
-#define bM4_DMA2_CH3CTL_SINC1                     (*((volatile unsigned int*)(0x42A6A384UL)))
-#define bM4_DMA2_CH3CTL_DINC0                     (*((volatile unsigned int*)(0x42A6A388UL)))
-#define bM4_DMA2_CH3CTL_DINC1                     (*((volatile unsigned int*)(0x42A6A38CUL)))
-#define bM4_DMA2_CH3CTL_SRPTEN                    (*((volatile unsigned int*)(0x42A6A390UL)))
-#define bM4_DMA2_CH3CTL_DRPTEN                    (*((volatile unsigned int*)(0x42A6A394UL)))
-#define bM4_DMA2_CH3CTL_SNSEQEN                   (*((volatile unsigned int*)(0x42A6A398UL)))
-#define bM4_DMA2_CH3CTL_DNSEQEN                   (*((volatile unsigned int*)(0x42A6A39CUL)))
-#define bM4_DMA2_CH3CTL_HSIZE0                    (*((volatile unsigned int*)(0x42A6A3A0UL)))
-#define bM4_DMA2_CH3CTL_HSIZE1                    (*((volatile unsigned int*)(0x42A6A3A4UL)))
-#define bM4_DMA2_CH3CTL_LLPEN                     (*((volatile unsigned int*)(0x42A6A3A8UL)))
-#define bM4_DMA2_CH3CTL_LLPRUN                    (*((volatile unsigned int*)(0x42A6A3ACUL)))
-#define bM4_DMA2_CH3CTL_IE                        (*((volatile unsigned int*)(0x42A6A3B0UL)))
+#define bM4_DMA2_CHCTL3_SINC0                     (*((volatile unsigned int*)(0x42A6A380UL)))
+#define bM4_DMA2_CHCTL3_SINC1                     (*((volatile unsigned int*)(0x42A6A384UL)))
+#define bM4_DMA2_CHCTL3_DINC0                     (*((volatile unsigned int*)(0x42A6A388UL)))
+#define bM4_DMA2_CHCTL3_DINC1                     (*((volatile unsigned int*)(0x42A6A38CUL)))
+#define bM4_DMA2_CHCTL3_SRPTEN                    (*((volatile unsigned int*)(0x42A6A390UL)))
+#define bM4_DMA2_CHCTL3_DRPTEN                    (*((volatile unsigned int*)(0x42A6A394UL)))
+#define bM4_DMA2_CHCTL3_SNSEQEN                   (*((volatile unsigned int*)(0x42A6A398UL)))
+#define bM4_DMA2_CHCTL3_DNSEQEN                   (*((volatile unsigned int*)(0x42A6A39CUL)))
+#define bM4_DMA2_CHCTL3_HSIZE0                    (*((volatile unsigned int*)(0x42A6A3A0UL)))
+#define bM4_DMA2_CHCTL3_HSIZE1                    (*((volatile unsigned int*)(0x42A6A3A4UL)))
+#define bM4_DMA2_CHCTL3_LLPEN                     (*((volatile unsigned int*)(0x42A6A3A8UL)))
+#define bM4_DMA2_CHCTL3_LLPRUN                    (*((volatile unsigned int*)(0x42A6A3ACUL)))
+#define bM4_DMA2_CHCTL3_IE                        (*((volatile unsigned int*)(0x42A6A3B0UL)))
 #define bM4_DMA2_MONDTCTL3_BLKSIZE0               (*((volatile unsigned int*)(0x42A6A500UL)))
 #define bM4_DMA2_MONDTCTL3_BLKSIZE1               (*((volatile unsigned int*)(0x42A6A504UL)))
 #define bM4_DMA2_MONDTCTL3_BLKSIZE2               (*((volatile unsigned int*)(0x42A6A508UL)))
@@ -16441,6 +16399,7 @@ typedef struct
 #define bM4_I2C1_CR3_LTMOUT                       (*((volatile unsigned int*)(0x429C0104UL)))
 #define bM4_I2C1_CR3_HTMOUT                       (*((volatile unsigned int*)(0x429C0108UL)))
 #define bM4_I2C1_CR3_FACKEN                       (*((volatile unsigned int*)(0x429C011CUL)))
+#define bM4_I2C1_CR4_BUSWAIT                      (*((volatile unsigned int*)(0x429C01A8UL)))
 #define bM4_I2C1_SLR0_SLADDR00                    (*((volatile unsigned int*)(0x429C0200UL)))
 #define bM4_I2C1_SLR0_SLADDR01                    (*((volatile unsigned int*)(0x429C0204UL)))
 #define bM4_I2C1_SLR0_SLADDR02                    (*((volatile unsigned int*)(0x429C0208UL)))
@@ -16591,6 +16550,7 @@ typedef struct
 #define bM4_I2C2_CR3_LTMOUT                       (*((volatile unsigned int*)(0x429C8104UL)))
 #define bM4_I2C2_CR3_HTMOUT                       (*((volatile unsigned int*)(0x429C8108UL)))
 #define bM4_I2C2_CR3_FACKEN                       (*((volatile unsigned int*)(0x429C811CUL)))
+#define bM4_I2C2_CR4_BUSWAIT                      (*((volatile unsigned int*)(0x429C81A8UL)))
 #define bM4_I2C2_SLR0_SLADDR00                    (*((volatile unsigned int*)(0x429C8200UL)))
 #define bM4_I2C2_SLR0_SLADDR01                    (*((volatile unsigned int*)(0x429C8204UL)))
 #define bM4_I2C2_SLR0_SLADDR02                    (*((volatile unsigned int*)(0x429C8208UL)))
@@ -16741,6 +16701,7 @@ typedef struct
 #define bM4_I2C3_CR3_LTMOUT                       (*((volatile unsigned int*)(0x429D0104UL)))
 #define bM4_I2C3_CR3_HTMOUT                       (*((volatile unsigned int*)(0x429D0108UL)))
 #define bM4_I2C3_CR3_FACKEN                       (*((volatile unsigned int*)(0x429D011CUL)))
+#define bM4_I2C3_CR4_BUSWAIT                      (*((volatile unsigned int*)(0x429D01A8UL)))
 #define bM4_I2C3_SLR0_SLADDR00                    (*((volatile unsigned int*)(0x429D0200UL)))
 #define bM4_I2C3_SLR0_SLADDR01                    (*((volatile unsigned int*)(0x429D0204UL)))
 #define bM4_I2C3_SLR0_SLADDR02                    (*((volatile unsigned int*)(0x429D0208UL)))
@@ -18999,518 +18960,518 @@ typedef struct
 #define bM4_KEYSCAN_SSR_INDEX0                    (*((volatile unsigned int*)(0x42A18100UL)))
 #define bM4_KEYSCAN_SSR_INDEX1                    (*((volatile unsigned int*)(0x42A18104UL)))
 #define bM4_KEYSCAN_SSR_INDEX2                    (*((volatile unsigned int*)(0x42A18108UL)))
-#define bM4_MPU_RGD0_MPURG0SIZE0                  (*((volatile unsigned int*)(0x42A00000UL)))
-#define bM4_MPU_RGD0_MPURG0SIZE1                  (*((volatile unsigned int*)(0x42A00004UL)))
-#define bM4_MPU_RGD0_MPURG0SIZE2                  (*((volatile unsigned int*)(0x42A00008UL)))
-#define bM4_MPU_RGD0_MPURG0SIZE3                  (*((volatile unsigned int*)(0x42A0000CUL)))
-#define bM4_MPU_RGD0_MPURG0SIZE4                  (*((volatile unsigned int*)(0x42A00010UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR0                  (*((volatile unsigned int*)(0x42A00014UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR1                  (*((volatile unsigned int*)(0x42A00018UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR2                  (*((volatile unsigned int*)(0x42A0001CUL)))
-#define bM4_MPU_RGD0_MPURG0ADDR3                  (*((volatile unsigned int*)(0x42A00020UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR4                  (*((volatile unsigned int*)(0x42A00024UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR5                  (*((volatile unsigned int*)(0x42A00028UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR6                  (*((volatile unsigned int*)(0x42A0002CUL)))
-#define bM4_MPU_RGD0_MPURG0ADDR7                  (*((volatile unsigned int*)(0x42A00030UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR8                  (*((volatile unsigned int*)(0x42A00034UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR9                  (*((volatile unsigned int*)(0x42A00038UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR10                 (*((volatile unsigned int*)(0x42A0003CUL)))
-#define bM4_MPU_RGD0_MPURG0ADDR11                 (*((volatile unsigned int*)(0x42A00040UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR12                 (*((volatile unsigned int*)(0x42A00044UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR13                 (*((volatile unsigned int*)(0x42A00048UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR14                 (*((volatile unsigned int*)(0x42A0004CUL)))
-#define bM4_MPU_RGD0_MPURG0ADDR15                 (*((volatile unsigned int*)(0x42A00050UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR16                 (*((volatile unsigned int*)(0x42A00054UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR17                 (*((volatile unsigned int*)(0x42A00058UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR18                 (*((volatile unsigned int*)(0x42A0005CUL)))
-#define bM4_MPU_RGD0_MPURG0ADDR19                 (*((volatile unsigned int*)(0x42A00060UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR20                 (*((volatile unsigned int*)(0x42A00064UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR21                 (*((volatile unsigned int*)(0x42A00068UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR22                 (*((volatile unsigned int*)(0x42A0006CUL)))
-#define bM4_MPU_RGD0_MPURG0ADDR23                 (*((volatile unsigned int*)(0x42A00070UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR24                 (*((volatile unsigned int*)(0x42A00074UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR25                 (*((volatile unsigned int*)(0x42A00078UL)))
-#define bM4_MPU_RGD0_MPURG0ADDR26                 (*((volatile unsigned int*)(0x42A0007CUL)))
-#define bM4_MPU_RGD1_MPURG1SIZE0                  (*((volatile unsigned int*)(0x42A00080UL)))
-#define bM4_MPU_RGD1_MPURG1SIZE1                  (*((volatile unsigned int*)(0x42A00084UL)))
-#define bM4_MPU_RGD1_MPURG1SIZE2                  (*((volatile unsigned int*)(0x42A00088UL)))
-#define bM4_MPU_RGD1_MPURG1SIZE3                  (*((volatile unsigned int*)(0x42A0008CUL)))
-#define bM4_MPU_RGD1_MPURG1SIZE4                  (*((volatile unsigned int*)(0x42A00090UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR0                  (*((volatile unsigned int*)(0x42A00094UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR1                  (*((volatile unsigned int*)(0x42A00098UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR2                  (*((volatile unsigned int*)(0x42A0009CUL)))
-#define bM4_MPU_RGD1_MPURG1ADDR3                  (*((volatile unsigned int*)(0x42A000A0UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR4                  (*((volatile unsigned int*)(0x42A000A4UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR5                  (*((volatile unsigned int*)(0x42A000A8UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR6                  (*((volatile unsigned int*)(0x42A000ACUL)))
-#define bM4_MPU_RGD1_MPURG1ADDR7                  (*((volatile unsigned int*)(0x42A000B0UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR8                  (*((volatile unsigned int*)(0x42A000B4UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR9                  (*((volatile unsigned int*)(0x42A000B8UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR10                 (*((volatile unsigned int*)(0x42A000BCUL)))
-#define bM4_MPU_RGD1_MPURG1ADDR11                 (*((volatile unsigned int*)(0x42A000C0UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR12                 (*((volatile unsigned int*)(0x42A000C4UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR13                 (*((volatile unsigned int*)(0x42A000C8UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR14                 (*((volatile unsigned int*)(0x42A000CCUL)))
-#define bM4_MPU_RGD1_MPURG1ADDR15                 (*((volatile unsigned int*)(0x42A000D0UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR16                 (*((volatile unsigned int*)(0x42A000D4UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR17                 (*((volatile unsigned int*)(0x42A000D8UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR18                 (*((volatile unsigned int*)(0x42A000DCUL)))
-#define bM4_MPU_RGD1_MPURG1ADDR19                 (*((volatile unsigned int*)(0x42A000E0UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR20                 (*((volatile unsigned int*)(0x42A000E4UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR21                 (*((volatile unsigned int*)(0x42A000E8UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR22                 (*((volatile unsigned int*)(0x42A000ECUL)))
-#define bM4_MPU_RGD1_MPURG1ADDR23                 (*((volatile unsigned int*)(0x42A000F0UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR24                 (*((volatile unsigned int*)(0x42A000F4UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR25                 (*((volatile unsigned int*)(0x42A000F8UL)))
-#define bM4_MPU_RGD1_MPURG1ADDR26                 (*((volatile unsigned int*)(0x42A000FCUL)))
-#define bM4_MPU_RGD2_MPURG2SIZE0                  (*((volatile unsigned int*)(0x42A00100UL)))
-#define bM4_MPU_RGD2_MPURG2SIZE1                  (*((volatile unsigned int*)(0x42A00104UL)))
-#define bM4_MPU_RGD2_MPURG2SIZE2                  (*((volatile unsigned int*)(0x42A00108UL)))
-#define bM4_MPU_RGD2_MPURG2SIZE3                  (*((volatile unsigned int*)(0x42A0010CUL)))
-#define bM4_MPU_RGD2_MPURG2SIZE4                  (*((volatile unsigned int*)(0x42A00110UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR0                  (*((volatile unsigned int*)(0x42A00114UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR1                  (*((volatile unsigned int*)(0x42A00118UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR2                  (*((volatile unsigned int*)(0x42A0011CUL)))
-#define bM4_MPU_RGD2_MPURG2ADDR3                  (*((volatile unsigned int*)(0x42A00120UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR4                  (*((volatile unsigned int*)(0x42A00124UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR5                  (*((volatile unsigned int*)(0x42A00128UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR6                  (*((volatile unsigned int*)(0x42A0012CUL)))
-#define bM4_MPU_RGD2_MPURG2ADDR7                  (*((volatile unsigned int*)(0x42A00130UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR8                  (*((volatile unsigned int*)(0x42A00134UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR9                  (*((volatile unsigned int*)(0x42A00138UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR10                 (*((volatile unsigned int*)(0x42A0013CUL)))
-#define bM4_MPU_RGD2_MPURG2ADDR11                 (*((volatile unsigned int*)(0x42A00140UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR12                 (*((volatile unsigned int*)(0x42A00144UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR13                 (*((volatile unsigned int*)(0x42A00148UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR14                 (*((volatile unsigned int*)(0x42A0014CUL)))
-#define bM4_MPU_RGD2_MPURG2ADDR15                 (*((volatile unsigned int*)(0x42A00150UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR16                 (*((volatile unsigned int*)(0x42A00154UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR17                 (*((volatile unsigned int*)(0x42A00158UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR18                 (*((volatile unsigned int*)(0x42A0015CUL)))
-#define bM4_MPU_RGD2_MPURG2ADDR19                 (*((volatile unsigned int*)(0x42A00160UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR20                 (*((volatile unsigned int*)(0x42A00164UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR21                 (*((volatile unsigned int*)(0x42A00168UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR22                 (*((volatile unsigned int*)(0x42A0016CUL)))
-#define bM4_MPU_RGD2_MPURG2ADDR23                 (*((volatile unsigned int*)(0x42A00170UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR24                 (*((volatile unsigned int*)(0x42A00174UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR25                 (*((volatile unsigned int*)(0x42A00178UL)))
-#define bM4_MPU_RGD2_MPURG2ADDR26                 (*((volatile unsigned int*)(0x42A0017CUL)))
-#define bM4_MPU_RGD3_MPURG3SIZE0                  (*((volatile unsigned int*)(0x42A00180UL)))
-#define bM4_MPU_RGD3_MPURG3SIZE1                  (*((volatile unsigned int*)(0x42A00184UL)))
-#define bM4_MPU_RGD3_MPURG3SIZE2                  (*((volatile unsigned int*)(0x42A00188UL)))
-#define bM4_MPU_RGD3_MPURG3SIZE3                  (*((volatile unsigned int*)(0x42A0018CUL)))
-#define bM4_MPU_RGD3_MPURG3SIZE4                  (*((volatile unsigned int*)(0x42A00190UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR0                  (*((volatile unsigned int*)(0x42A00194UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR1                  (*((volatile unsigned int*)(0x42A00198UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR2                  (*((volatile unsigned int*)(0x42A0019CUL)))
-#define bM4_MPU_RGD3_MPURG3ADDR3                  (*((volatile unsigned int*)(0x42A001A0UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR4                  (*((volatile unsigned int*)(0x42A001A4UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR5                  (*((volatile unsigned int*)(0x42A001A8UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR6                  (*((volatile unsigned int*)(0x42A001ACUL)))
-#define bM4_MPU_RGD3_MPURG3ADDR7                  (*((volatile unsigned int*)(0x42A001B0UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR8                  (*((volatile unsigned int*)(0x42A001B4UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR9                  (*((volatile unsigned int*)(0x42A001B8UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR10                 (*((volatile unsigned int*)(0x42A001BCUL)))
-#define bM4_MPU_RGD3_MPURG3ADDR11                 (*((volatile unsigned int*)(0x42A001C0UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR12                 (*((volatile unsigned int*)(0x42A001C4UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR13                 (*((volatile unsigned int*)(0x42A001C8UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR14                 (*((volatile unsigned int*)(0x42A001CCUL)))
-#define bM4_MPU_RGD3_MPURG3ADDR15                 (*((volatile unsigned int*)(0x42A001D0UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR16                 (*((volatile unsigned int*)(0x42A001D4UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR17                 (*((volatile unsigned int*)(0x42A001D8UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR18                 (*((volatile unsigned int*)(0x42A001DCUL)))
-#define bM4_MPU_RGD3_MPURG3ADDR19                 (*((volatile unsigned int*)(0x42A001E0UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR20                 (*((volatile unsigned int*)(0x42A001E4UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR21                 (*((volatile unsigned int*)(0x42A001E8UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR22                 (*((volatile unsigned int*)(0x42A001ECUL)))
-#define bM4_MPU_RGD3_MPURG3ADDR23                 (*((volatile unsigned int*)(0x42A001F0UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR24                 (*((volatile unsigned int*)(0x42A001F4UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR25                 (*((volatile unsigned int*)(0x42A001F8UL)))
-#define bM4_MPU_RGD3_MPURG3ADDR26                 (*((volatile unsigned int*)(0x42A001FCUL)))
-#define bM4_MPU_RGD4_MPURG4SIZE0                  (*((volatile unsigned int*)(0x42A00200UL)))
-#define bM4_MPU_RGD4_MPURG4SIZE1                  (*((volatile unsigned int*)(0x42A00204UL)))
-#define bM4_MPU_RGD4_MPURG4SIZE2                  (*((volatile unsigned int*)(0x42A00208UL)))
-#define bM4_MPU_RGD4_MPURG4SIZE3                  (*((volatile unsigned int*)(0x42A0020CUL)))
-#define bM4_MPU_RGD4_MPURG4SIZE4                  (*((volatile unsigned int*)(0x42A00210UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR0                  (*((volatile unsigned int*)(0x42A00214UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR1                  (*((volatile unsigned int*)(0x42A00218UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR2                  (*((volatile unsigned int*)(0x42A0021CUL)))
-#define bM4_MPU_RGD4_MPURG4ADDR3                  (*((volatile unsigned int*)(0x42A00220UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR4                  (*((volatile unsigned int*)(0x42A00224UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR5                  (*((volatile unsigned int*)(0x42A00228UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR6                  (*((volatile unsigned int*)(0x42A0022CUL)))
-#define bM4_MPU_RGD4_MPURG4ADDR7                  (*((volatile unsigned int*)(0x42A00230UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR8                  (*((volatile unsigned int*)(0x42A00234UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR9                  (*((volatile unsigned int*)(0x42A00238UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR10                 (*((volatile unsigned int*)(0x42A0023CUL)))
-#define bM4_MPU_RGD4_MPURG4ADDR11                 (*((volatile unsigned int*)(0x42A00240UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR12                 (*((volatile unsigned int*)(0x42A00244UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR13                 (*((volatile unsigned int*)(0x42A00248UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR14                 (*((volatile unsigned int*)(0x42A0024CUL)))
-#define bM4_MPU_RGD4_MPURG4ADDR15                 (*((volatile unsigned int*)(0x42A00250UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR16                 (*((volatile unsigned int*)(0x42A00254UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR17                 (*((volatile unsigned int*)(0x42A00258UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR18                 (*((volatile unsigned int*)(0x42A0025CUL)))
-#define bM4_MPU_RGD4_MPURG4ADDR19                 (*((volatile unsigned int*)(0x42A00260UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR20                 (*((volatile unsigned int*)(0x42A00264UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR21                 (*((volatile unsigned int*)(0x42A00268UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR22                 (*((volatile unsigned int*)(0x42A0026CUL)))
-#define bM4_MPU_RGD4_MPURG4ADDR23                 (*((volatile unsigned int*)(0x42A00270UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR24                 (*((volatile unsigned int*)(0x42A00274UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR25                 (*((volatile unsigned int*)(0x42A00278UL)))
-#define bM4_MPU_RGD4_MPURG4ADDR26                 (*((volatile unsigned int*)(0x42A0027CUL)))
-#define bM4_MPU_RGD5_MPURG5SIZE0                  (*((volatile unsigned int*)(0x42A00280UL)))
-#define bM4_MPU_RGD5_MPURG5SIZE1                  (*((volatile unsigned int*)(0x42A00284UL)))
-#define bM4_MPU_RGD5_MPURG5SIZE2                  (*((volatile unsigned int*)(0x42A00288UL)))
-#define bM4_MPU_RGD5_MPURG5SIZE3                  (*((volatile unsigned int*)(0x42A0028CUL)))
-#define bM4_MPU_RGD5_MPURG5SIZE4                  (*((volatile unsigned int*)(0x42A00290UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR0                  (*((volatile unsigned int*)(0x42A00294UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR1                  (*((volatile unsigned int*)(0x42A00298UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR2                  (*((volatile unsigned int*)(0x42A0029CUL)))
-#define bM4_MPU_RGD5_MPURG5ADDR3                  (*((volatile unsigned int*)(0x42A002A0UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR4                  (*((volatile unsigned int*)(0x42A002A4UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR5                  (*((volatile unsigned int*)(0x42A002A8UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR6                  (*((volatile unsigned int*)(0x42A002ACUL)))
-#define bM4_MPU_RGD5_MPURG5ADDR7                  (*((volatile unsigned int*)(0x42A002B0UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR8                  (*((volatile unsigned int*)(0x42A002B4UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR9                  (*((volatile unsigned int*)(0x42A002B8UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR10                 (*((volatile unsigned int*)(0x42A002BCUL)))
-#define bM4_MPU_RGD5_MPURG5ADDR11                 (*((volatile unsigned int*)(0x42A002C0UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR12                 (*((volatile unsigned int*)(0x42A002C4UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR13                 (*((volatile unsigned int*)(0x42A002C8UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR14                 (*((volatile unsigned int*)(0x42A002CCUL)))
-#define bM4_MPU_RGD5_MPURG5ADDR15                 (*((volatile unsigned int*)(0x42A002D0UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR16                 (*((volatile unsigned int*)(0x42A002D4UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR17                 (*((volatile unsigned int*)(0x42A002D8UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR18                 (*((volatile unsigned int*)(0x42A002DCUL)))
-#define bM4_MPU_RGD5_MPURG5ADDR19                 (*((volatile unsigned int*)(0x42A002E0UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR20                 (*((volatile unsigned int*)(0x42A002E4UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR21                 (*((volatile unsigned int*)(0x42A002E8UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR22                 (*((volatile unsigned int*)(0x42A002ECUL)))
-#define bM4_MPU_RGD5_MPURG5ADDR23                 (*((volatile unsigned int*)(0x42A002F0UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR24                 (*((volatile unsigned int*)(0x42A002F4UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR25                 (*((volatile unsigned int*)(0x42A002F8UL)))
-#define bM4_MPU_RGD5_MPURG5ADDR26                 (*((volatile unsigned int*)(0x42A002FCUL)))
-#define bM4_MPU_RGD6_MPURG6SIZE0                  (*((volatile unsigned int*)(0x42A00300UL)))
-#define bM4_MPU_RGD6_MPURG6SIZE1                  (*((volatile unsigned int*)(0x42A00304UL)))
-#define bM4_MPU_RGD6_MPURG6SIZE2                  (*((volatile unsigned int*)(0x42A00308UL)))
-#define bM4_MPU_RGD6_MPURG6SIZE3                  (*((volatile unsigned int*)(0x42A0030CUL)))
-#define bM4_MPU_RGD6_MPURG6SIZE4                  (*((volatile unsigned int*)(0x42A00310UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR0                  (*((volatile unsigned int*)(0x42A00314UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR1                  (*((volatile unsigned int*)(0x42A00318UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR2                  (*((volatile unsigned int*)(0x42A0031CUL)))
-#define bM4_MPU_RGD6_MPURG6ADDR3                  (*((volatile unsigned int*)(0x42A00320UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR4                  (*((volatile unsigned int*)(0x42A00324UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR5                  (*((volatile unsigned int*)(0x42A00328UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR6                  (*((volatile unsigned int*)(0x42A0032CUL)))
-#define bM4_MPU_RGD6_MPURG6ADDR7                  (*((volatile unsigned int*)(0x42A00330UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR8                  (*((volatile unsigned int*)(0x42A00334UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR9                  (*((volatile unsigned int*)(0x42A00338UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR10                 (*((volatile unsigned int*)(0x42A0033CUL)))
-#define bM4_MPU_RGD6_MPURG6ADDR11                 (*((volatile unsigned int*)(0x42A00340UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR12                 (*((volatile unsigned int*)(0x42A00344UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR13                 (*((volatile unsigned int*)(0x42A00348UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR14                 (*((volatile unsigned int*)(0x42A0034CUL)))
-#define bM4_MPU_RGD6_MPURG6ADDR15                 (*((volatile unsigned int*)(0x42A00350UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR16                 (*((volatile unsigned int*)(0x42A00354UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR17                 (*((volatile unsigned int*)(0x42A00358UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR18                 (*((volatile unsigned int*)(0x42A0035CUL)))
-#define bM4_MPU_RGD6_MPURG6ADDR19                 (*((volatile unsigned int*)(0x42A00360UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR20                 (*((volatile unsigned int*)(0x42A00364UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR21                 (*((volatile unsigned int*)(0x42A00368UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR22                 (*((volatile unsigned int*)(0x42A0036CUL)))
-#define bM4_MPU_RGD6_MPURG6ADDR23                 (*((volatile unsigned int*)(0x42A00370UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR24                 (*((volatile unsigned int*)(0x42A00374UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR25                 (*((volatile unsigned int*)(0x42A00378UL)))
-#define bM4_MPU_RGD6_MPURG6ADDR26                 (*((volatile unsigned int*)(0x42A0037CUL)))
-#define bM4_MPU_RGD7_MPURG7SIZE0                  (*((volatile unsigned int*)(0x42A00380UL)))
-#define bM4_MPU_RGD7_MPURG7SIZE1                  (*((volatile unsigned int*)(0x42A00384UL)))
-#define bM4_MPU_RGD7_MPURG7SIZE2                  (*((volatile unsigned int*)(0x42A00388UL)))
-#define bM4_MPU_RGD7_MPURG7SIZE3                  (*((volatile unsigned int*)(0x42A0038CUL)))
-#define bM4_MPU_RGD7_MPURG7SIZE4                  (*((volatile unsigned int*)(0x42A00390UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR0                  (*((volatile unsigned int*)(0x42A00394UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR1                  (*((volatile unsigned int*)(0x42A00398UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR2                  (*((volatile unsigned int*)(0x42A0039CUL)))
-#define bM4_MPU_RGD7_MPURG7ADDR3                  (*((volatile unsigned int*)(0x42A003A0UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR4                  (*((volatile unsigned int*)(0x42A003A4UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR5                  (*((volatile unsigned int*)(0x42A003A8UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR6                  (*((volatile unsigned int*)(0x42A003ACUL)))
-#define bM4_MPU_RGD7_MPURG7ADDR7                  (*((volatile unsigned int*)(0x42A003B0UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR8                  (*((volatile unsigned int*)(0x42A003B4UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR9                  (*((volatile unsigned int*)(0x42A003B8UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR10                 (*((volatile unsigned int*)(0x42A003BCUL)))
-#define bM4_MPU_RGD7_MPURG7ADDR11                 (*((volatile unsigned int*)(0x42A003C0UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR12                 (*((volatile unsigned int*)(0x42A003C4UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR13                 (*((volatile unsigned int*)(0x42A003C8UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR14                 (*((volatile unsigned int*)(0x42A003CCUL)))
-#define bM4_MPU_RGD7_MPURG7ADDR15                 (*((volatile unsigned int*)(0x42A003D0UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR16                 (*((volatile unsigned int*)(0x42A003D4UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR17                 (*((volatile unsigned int*)(0x42A003D8UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR18                 (*((volatile unsigned int*)(0x42A003DCUL)))
-#define bM4_MPU_RGD7_MPURG7ADDR19                 (*((volatile unsigned int*)(0x42A003E0UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR20                 (*((volatile unsigned int*)(0x42A003E4UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR21                 (*((volatile unsigned int*)(0x42A003E8UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR22                 (*((volatile unsigned int*)(0x42A003ECUL)))
-#define bM4_MPU_RGD7_MPURG7ADDR23                 (*((volatile unsigned int*)(0x42A003F0UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR24                 (*((volatile unsigned int*)(0x42A003F4UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR25                 (*((volatile unsigned int*)(0x42A003F8UL)))
-#define bM4_MPU_RGD7_MPURG7ADDR26                 (*((volatile unsigned int*)(0x42A003FCUL)))
-#define bM4_MPU_RGD8_MPURG8SIZE0                  (*((volatile unsigned int*)(0x42A00400UL)))
-#define bM4_MPU_RGD8_MPURG8SIZE1                  (*((volatile unsigned int*)(0x42A00404UL)))
-#define bM4_MPU_RGD8_MPURG8SIZE2                  (*((volatile unsigned int*)(0x42A00408UL)))
-#define bM4_MPU_RGD8_MPURG8SIZE3                  (*((volatile unsigned int*)(0x42A0040CUL)))
-#define bM4_MPU_RGD8_MPURG8SIZE4                  (*((volatile unsigned int*)(0x42A00410UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR0                  (*((volatile unsigned int*)(0x42A00414UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR1                  (*((volatile unsigned int*)(0x42A00418UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR2                  (*((volatile unsigned int*)(0x42A0041CUL)))
-#define bM4_MPU_RGD8_MPURG8ADDR3                  (*((volatile unsigned int*)(0x42A00420UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR4                  (*((volatile unsigned int*)(0x42A00424UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR5                  (*((volatile unsigned int*)(0x42A00428UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR6                  (*((volatile unsigned int*)(0x42A0042CUL)))
-#define bM4_MPU_RGD8_MPURG8ADDR7                  (*((volatile unsigned int*)(0x42A00430UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR8                  (*((volatile unsigned int*)(0x42A00434UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR9                  (*((volatile unsigned int*)(0x42A00438UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR10                 (*((volatile unsigned int*)(0x42A0043CUL)))
-#define bM4_MPU_RGD8_MPURG8ADDR11                 (*((volatile unsigned int*)(0x42A00440UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR12                 (*((volatile unsigned int*)(0x42A00444UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR13                 (*((volatile unsigned int*)(0x42A00448UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR14                 (*((volatile unsigned int*)(0x42A0044CUL)))
-#define bM4_MPU_RGD8_MPURG8ADDR15                 (*((volatile unsigned int*)(0x42A00450UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR16                 (*((volatile unsigned int*)(0x42A00454UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR17                 (*((volatile unsigned int*)(0x42A00458UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR18                 (*((volatile unsigned int*)(0x42A0045CUL)))
-#define bM4_MPU_RGD8_MPURG8ADDR19                 (*((volatile unsigned int*)(0x42A00460UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR20                 (*((volatile unsigned int*)(0x42A00464UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR21                 (*((volatile unsigned int*)(0x42A00468UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR22                 (*((volatile unsigned int*)(0x42A0046CUL)))
-#define bM4_MPU_RGD8_MPURG8ADDR23                 (*((volatile unsigned int*)(0x42A00470UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR24                 (*((volatile unsigned int*)(0x42A00474UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR25                 (*((volatile unsigned int*)(0x42A00478UL)))
-#define bM4_MPU_RGD8_MPURG8ADDR26                 (*((volatile unsigned int*)(0x42A0047CUL)))
-#define bM4_MPU_RGD9_MPURG9SIZE0                  (*((volatile unsigned int*)(0x42A00480UL)))
-#define bM4_MPU_RGD9_MPURG9SIZE1                  (*((volatile unsigned int*)(0x42A00484UL)))
-#define bM4_MPU_RGD9_MPURG9SIZE2                  (*((volatile unsigned int*)(0x42A00488UL)))
-#define bM4_MPU_RGD9_MPURG9SIZE3                  (*((volatile unsigned int*)(0x42A0048CUL)))
-#define bM4_MPU_RGD9_MPURG9SIZE4                  (*((volatile unsigned int*)(0x42A00490UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR0                  (*((volatile unsigned int*)(0x42A00494UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR1                  (*((volatile unsigned int*)(0x42A00498UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR2                  (*((volatile unsigned int*)(0x42A0049CUL)))
-#define bM4_MPU_RGD9_MPURG9ADDR3                  (*((volatile unsigned int*)(0x42A004A0UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR4                  (*((volatile unsigned int*)(0x42A004A4UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR5                  (*((volatile unsigned int*)(0x42A004A8UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR6                  (*((volatile unsigned int*)(0x42A004ACUL)))
-#define bM4_MPU_RGD9_MPURG9ADDR7                  (*((volatile unsigned int*)(0x42A004B0UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR8                  (*((volatile unsigned int*)(0x42A004B4UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR9                  (*((volatile unsigned int*)(0x42A004B8UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR10                 (*((volatile unsigned int*)(0x42A004BCUL)))
-#define bM4_MPU_RGD9_MPURG9ADDR11                 (*((volatile unsigned int*)(0x42A004C0UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR12                 (*((volatile unsigned int*)(0x42A004C4UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR13                 (*((volatile unsigned int*)(0x42A004C8UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR14                 (*((volatile unsigned int*)(0x42A004CCUL)))
-#define bM4_MPU_RGD9_MPURG9ADDR15                 (*((volatile unsigned int*)(0x42A004D0UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR16                 (*((volatile unsigned int*)(0x42A004D4UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR17                 (*((volatile unsigned int*)(0x42A004D8UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR18                 (*((volatile unsigned int*)(0x42A004DCUL)))
-#define bM4_MPU_RGD9_MPURG9ADDR19                 (*((volatile unsigned int*)(0x42A004E0UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR20                 (*((volatile unsigned int*)(0x42A004E4UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR21                 (*((volatile unsigned int*)(0x42A004E8UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR22                 (*((volatile unsigned int*)(0x42A004ECUL)))
-#define bM4_MPU_RGD9_MPURG9ADDR23                 (*((volatile unsigned int*)(0x42A004F0UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR24                 (*((volatile unsigned int*)(0x42A004F4UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR25                 (*((volatile unsigned int*)(0x42A004F8UL)))
-#define bM4_MPU_RGD9_MPURG9ADDR26                 (*((volatile unsigned int*)(0x42A004FCUL)))
-#define bM4_MPU_RGD10_MPURG10SIZE0                (*((volatile unsigned int*)(0x42A00500UL)))
-#define bM4_MPU_RGD10_MPURG10SIZE1                (*((volatile unsigned int*)(0x42A00504UL)))
-#define bM4_MPU_RGD10_MPURG10SIZE2                (*((volatile unsigned int*)(0x42A00508UL)))
-#define bM4_MPU_RGD10_MPURG10SIZE3                (*((volatile unsigned int*)(0x42A0050CUL)))
-#define bM4_MPU_RGD10_MPURG10SIZE4                (*((volatile unsigned int*)(0x42A00510UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR0                (*((volatile unsigned int*)(0x42A00514UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR1                (*((volatile unsigned int*)(0x42A00518UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR2                (*((volatile unsigned int*)(0x42A0051CUL)))
-#define bM4_MPU_RGD10_MPURG10ADDR3                (*((volatile unsigned int*)(0x42A00520UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR4                (*((volatile unsigned int*)(0x42A00524UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR5                (*((volatile unsigned int*)(0x42A00528UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR6                (*((volatile unsigned int*)(0x42A0052CUL)))
-#define bM4_MPU_RGD10_MPURG10ADDR7                (*((volatile unsigned int*)(0x42A00530UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR8                (*((volatile unsigned int*)(0x42A00534UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR9                (*((volatile unsigned int*)(0x42A00538UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR10               (*((volatile unsigned int*)(0x42A0053CUL)))
-#define bM4_MPU_RGD10_MPURG10ADDR11               (*((volatile unsigned int*)(0x42A00540UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR12               (*((volatile unsigned int*)(0x42A00544UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR13               (*((volatile unsigned int*)(0x42A00548UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR14               (*((volatile unsigned int*)(0x42A0054CUL)))
-#define bM4_MPU_RGD10_MPURG10ADDR15               (*((volatile unsigned int*)(0x42A00550UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR16               (*((volatile unsigned int*)(0x42A00554UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR17               (*((volatile unsigned int*)(0x42A00558UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR18               (*((volatile unsigned int*)(0x42A0055CUL)))
-#define bM4_MPU_RGD10_MPURG10ADDR19               (*((volatile unsigned int*)(0x42A00560UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR20               (*((volatile unsigned int*)(0x42A00564UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR21               (*((volatile unsigned int*)(0x42A00568UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR22               (*((volatile unsigned int*)(0x42A0056CUL)))
-#define bM4_MPU_RGD10_MPURG10ADDR23               (*((volatile unsigned int*)(0x42A00570UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR24               (*((volatile unsigned int*)(0x42A00574UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR25               (*((volatile unsigned int*)(0x42A00578UL)))
-#define bM4_MPU_RGD10_MPURG10ADDR26               (*((volatile unsigned int*)(0x42A0057CUL)))
-#define bM4_MPU_RGD11_MPURG11SIZE0                (*((volatile unsigned int*)(0x42A00580UL)))
-#define bM4_MPU_RGD11_MPURG11SIZE1                (*((volatile unsigned int*)(0x42A00584UL)))
-#define bM4_MPU_RGD11_MPURG11SIZE2                (*((volatile unsigned int*)(0x42A00588UL)))
-#define bM4_MPU_RGD11_MPURG11SIZE3                (*((volatile unsigned int*)(0x42A0058CUL)))
-#define bM4_MPU_RGD11_MPURG11SIZE4                (*((volatile unsigned int*)(0x42A00590UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR0                (*((volatile unsigned int*)(0x42A00594UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR1                (*((volatile unsigned int*)(0x42A00598UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR2                (*((volatile unsigned int*)(0x42A0059CUL)))
-#define bM4_MPU_RGD11_MPURG11ADDR3                (*((volatile unsigned int*)(0x42A005A0UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR4                (*((volatile unsigned int*)(0x42A005A4UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR5                (*((volatile unsigned int*)(0x42A005A8UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR6                (*((volatile unsigned int*)(0x42A005ACUL)))
-#define bM4_MPU_RGD11_MPURG11ADDR7                (*((volatile unsigned int*)(0x42A005B0UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR8                (*((volatile unsigned int*)(0x42A005B4UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR9                (*((volatile unsigned int*)(0x42A005B8UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR10               (*((volatile unsigned int*)(0x42A005BCUL)))
-#define bM4_MPU_RGD11_MPURG11ADDR11               (*((volatile unsigned int*)(0x42A005C0UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR12               (*((volatile unsigned int*)(0x42A005C4UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR13               (*((volatile unsigned int*)(0x42A005C8UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR14               (*((volatile unsigned int*)(0x42A005CCUL)))
-#define bM4_MPU_RGD11_MPURG11ADDR15               (*((volatile unsigned int*)(0x42A005D0UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR16               (*((volatile unsigned int*)(0x42A005D4UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR17               (*((volatile unsigned int*)(0x42A005D8UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR18               (*((volatile unsigned int*)(0x42A005DCUL)))
-#define bM4_MPU_RGD11_MPURG11ADDR19               (*((volatile unsigned int*)(0x42A005E0UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR20               (*((volatile unsigned int*)(0x42A005E4UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR21               (*((volatile unsigned int*)(0x42A005E8UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR22               (*((volatile unsigned int*)(0x42A005ECUL)))
-#define bM4_MPU_RGD11_MPURG11ADDR23               (*((volatile unsigned int*)(0x42A005F0UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR24               (*((volatile unsigned int*)(0x42A005F4UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR25               (*((volatile unsigned int*)(0x42A005F8UL)))
-#define bM4_MPU_RGD11_MPURG11ADDR26               (*((volatile unsigned int*)(0x42A005FCUL)))
-#define bM4_MPU_RGD12_MPURG12SIZE0                (*((volatile unsigned int*)(0x42A00600UL)))
-#define bM4_MPU_RGD12_MPURG12SIZE1                (*((volatile unsigned int*)(0x42A00604UL)))
-#define bM4_MPU_RGD12_MPURG12SIZE2                (*((volatile unsigned int*)(0x42A00608UL)))
-#define bM4_MPU_RGD12_MPURG12SIZE3                (*((volatile unsigned int*)(0x42A0060CUL)))
-#define bM4_MPU_RGD12_MPURG12SIZE4                (*((volatile unsigned int*)(0x42A00610UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR0                (*((volatile unsigned int*)(0x42A00614UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR1                (*((volatile unsigned int*)(0x42A00618UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR2                (*((volatile unsigned int*)(0x42A0061CUL)))
-#define bM4_MPU_RGD12_MPURG12ADDR3                (*((volatile unsigned int*)(0x42A00620UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR4                (*((volatile unsigned int*)(0x42A00624UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR5                (*((volatile unsigned int*)(0x42A00628UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR6                (*((volatile unsigned int*)(0x42A0062CUL)))
-#define bM4_MPU_RGD12_MPURG12ADDR7                (*((volatile unsigned int*)(0x42A00630UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR8                (*((volatile unsigned int*)(0x42A00634UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR9                (*((volatile unsigned int*)(0x42A00638UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR10               (*((volatile unsigned int*)(0x42A0063CUL)))
-#define bM4_MPU_RGD12_MPURG12ADDR11               (*((volatile unsigned int*)(0x42A00640UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR12               (*((volatile unsigned int*)(0x42A00644UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR13               (*((volatile unsigned int*)(0x42A00648UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR14               (*((volatile unsigned int*)(0x42A0064CUL)))
-#define bM4_MPU_RGD12_MPURG12ADDR15               (*((volatile unsigned int*)(0x42A00650UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR16               (*((volatile unsigned int*)(0x42A00654UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR17               (*((volatile unsigned int*)(0x42A00658UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR18               (*((volatile unsigned int*)(0x42A0065CUL)))
-#define bM4_MPU_RGD12_MPURG12ADDR19               (*((volatile unsigned int*)(0x42A00660UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR20               (*((volatile unsigned int*)(0x42A00664UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR21               (*((volatile unsigned int*)(0x42A00668UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR22               (*((volatile unsigned int*)(0x42A0066CUL)))
-#define bM4_MPU_RGD12_MPURG12ADDR23               (*((volatile unsigned int*)(0x42A00670UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR24               (*((volatile unsigned int*)(0x42A00674UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR25               (*((volatile unsigned int*)(0x42A00678UL)))
-#define bM4_MPU_RGD12_MPURG12ADDR26               (*((volatile unsigned int*)(0x42A0067CUL)))
-#define bM4_MPU_RGD13_MPURG13SIZE0                (*((volatile unsigned int*)(0x42A00680UL)))
-#define bM4_MPU_RGD13_MPURG13SIZE1                (*((volatile unsigned int*)(0x42A00684UL)))
-#define bM4_MPU_RGD13_MPURG13SIZE2                (*((volatile unsigned int*)(0x42A00688UL)))
-#define bM4_MPU_RGD13_MPURG13SIZE3                (*((volatile unsigned int*)(0x42A0068CUL)))
-#define bM4_MPU_RGD13_MPURG13SIZE4                (*((volatile unsigned int*)(0x42A00690UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR0                (*((volatile unsigned int*)(0x42A00694UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR1                (*((volatile unsigned int*)(0x42A00698UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR2                (*((volatile unsigned int*)(0x42A0069CUL)))
-#define bM4_MPU_RGD13_MPURG13ADDR3                (*((volatile unsigned int*)(0x42A006A0UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR4                (*((volatile unsigned int*)(0x42A006A4UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR5                (*((volatile unsigned int*)(0x42A006A8UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR6                (*((volatile unsigned int*)(0x42A006ACUL)))
-#define bM4_MPU_RGD13_MPURG13ADDR7                (*((volatile unsigned int*)(0x42A006B0UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR8                (*((volatile unsigned int*)(0x42A006B4UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR9                (*((volatile unsigned int*)(0x42A006B8UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR10               (*((volatile unsigned int*)(0x42A006BCUL)))
-#define bM4_MPU_RGD13_MPURG13ADDR11               (*((volatile unsigned int*)(0x42A006C0UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR12               (*((volatile unsigned int*)(0x42A006C4UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR13               (*((volatile unsigned int*)(0x42A006C8UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR14               (*((volatile unsigned int*)(0x42A006CCUL)))
-#define bM4_MPU_RGD13_MPURG13ADDR15               (*((volatile unsigned int*)(0x42A006D0UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR16               (*((volatile unsigned int*)(0x42A006D4UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR17               (*((volatile unsigned int*)(0x42A006D8UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR18               (*((volatile unsigned int*)(0x42A006DCUL)))
-#define bM4_MPU_RGD13_MPURG13ADDR19               (*((volatile unsigned int*)(0x42A006E0UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR20               (*((volatile unsigned int*)(0x42A006E4UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR21               (*((volatile unsigned int*)(0x42A006E8UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR22               (*((volatile unsigned int*)(0x42A006ECUL)))
-#define bM4_MPU_RGD13_MPURG13ADDR23               (*((volatile unsigned int*)(0x42A006F0UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR24               (*((volatile unsigned int*)(0x42A006F4UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR25               (*((volatile unsigned int*)(0x42A006F8UL)))
-#define bM4_MPU_RGD13_MPURG13ADDR26               (*((volatile unsigned int*)(0x42A006FCUL)))
-#define bM4_MPU_RGD14_MPURG14SIZE0                (*((volatile unsigned int*)(0x42A00700UL)))
-#define bM4_MPU_RGD14_MPURG14SIZE1                (*((volatile unsigned int*)(0x42A00704UL)))
-#define bM4_MPU_RGD14_MPURG14SIZE2                (*((volatile unsigned int*)(0x42A00708UL)))
-#define bM4_MPU_RGD14_MPURG14SIZE3                (*((volatile unsigned int*)(0x42A0070CUL)))
-#define bM4_MPU_RGD14_MPURG14SIZE4                (*((volatile unsigned int*)(0x42A00710UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR0                (*((volatile unsigned int*)(0x42A00714UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR1                (*((volatile unsigned int*)(0x42A00718UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR2                (*((volatile unsigned int*)(0x42A0071CUL)))
-#define bM4_MPU_RGD14_MPURG14ADDR3                (*((volatile unsigned int*)(0x42A00720UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR4                (*((volatile unsigned int*)(0x42A00724UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR5                (*((volatile unsigned int*)(0x42A00728UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR6                (*((volatile unsigned int*)(0x42A0072CUL)))
-#define bM4_MPU_RGD14_MPURG14ADDR7                (*((volatile unsigned int*)(0x42A00730UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR8                (*((volatile unsigned int*)(0x42A00734UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR9                (*((volatile unsigned int*)(0x42A00738UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR10               (*((volatile unsigned int*)(0x42A0073CUL)))
-#define bM4_MPU_RGD14_MPURG14ADDR11               (*((volatile unsigned int*)(0x42A00740UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR12               (*((volatile unsigned int*)(0x42A00744UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR13               (*((volatile unsigned int*)(0x42A00748UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR14               (*((volatile unsigned int*)(0x42A0074CUL)))
-#define bM4_MPU_RGD14_MPURG14ADDR15               (*((volatile unsigned int*)(0x42A00750UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR16               (*((volatile unsigned int*)(0x42A00754UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR17               (*((volatile unsigned int*)(0x42A00758UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR18               (*((volatile unsigned int*)(0x42A0075CUL)))
-#define bM4_MPU_RGD14_MPURG14ADDR19               (*((volatile unsigned int*)(0x42A00760UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR20               (*((volatile unsigned int*)(0x42A00764UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR21               (*((volatile unsigned int*)(0x42A00768UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR22               (*((volatile unsigned int*)(0x42A0076CUL)))
-#define bM4_MPU_RGD14_MPURG14ADDR23               (*((volatile unsigned int*)(0x42A00770UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR24               (*((volatile unsigned int*)(0x42A00774UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR25               (*((volatile unsigned int*)(0x42A00778UL)))
-#define bM4_MPU_RGD14_MPURG14ADDR26               (*((volatile unsigned int*)(0x42A0077CUL)))
-#define bM4_MPU_RGD15_MPURG15SIZE0                (*((volatile unsigned int*)(0x42A00780UL)))
-#define bM4_MPU_RGD15_MPURG15SIZE1                (*((volatile unsigned int*)(0x42A00784UL)))
-#define bM4_MPU_RGD15_MPURG15SIZE2                (*((volatile unsigned int*)(0x42A00788UL)))
-#define bM4_MPU_RGD15_MPURG15SIZE3                (*((volatile unsigned int*)(0x42A0078CUL)))
-#define bM4_MPU_RGD15_MPURG15SIZE4                (*((volatile unsigned int*)(0x42A00790UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR0                (*((volatile unsigned int*)(0x42A00794UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR1                (*((volatile unsigned int*)(0x42A00798UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR2                (*((volatile unsigned int*)(0x42A0079CUL)))
-#define bM4_MPU_RGD15_MPURG15ADDR3                (*((volatile unsigned int*)(0x42A007A0UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR4                (*((volatile unsigned int*)(0x42A007A4UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR5                (*((volatile unsigned int*)(0x42A007A8UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR6                (*((volatile unsigned int*)(0x42A007ACUL)))
-#define bM4_MPU_RGD15_MPURG15ADDR7                (*((volatile unsigned int*)(0x42A007B0UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR8                (*((volatile unsigned int*)(0x42A007B4UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR9                (*((volatile unsigned int*)(0x42A007B8UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR10               (*((volatile unsigned int*)(0x42A007BCUL)))
-#define bM4_MPU_RGD15_MPURG15ADDR11               (*((volatile unsigned int*)(0x42A007C0UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR12               (*((volatile unsigned int*)(0x42A007C4UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR13               (*((volatile unsigned int*)(0x42A007C8UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR14               (*((volatile unsigned int*)(0x42A007CCUL)))
-#define bM4_MPU_RGD15_MPURG15ADDR15               (*((volatile unsigned int*)(0x42A007D0UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR16               (*((volatile unsigned int*)(0x42A007D4UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR17               (*((volatile unsigned int*)(0x42A007D8UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR18               (*((volatile unsigned int*)(0x42A007DCUL)))
-#define bM4_MPU_RGD15_MPURG15ADDR19               (*((volatile unsigned int*)(0x42A007E0UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR20               (*((volatile unsigned int*)(0x42A007E4UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR21               (*((volatile unsigned int*)(0x42A007E8UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR22               (*((volatile unsigned int*)(0x42A007ECUL)))
-#define bM4_MPU_RGD15_MPURG15ADDR23               (*((volatile unsigned int*)(0x42A007F0UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR24               (*((volatile unsigned int*)(0x42A007F4UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR25               (*((volatile unsigned int*)(0x42A007F8UL)))
-#define bM4_MPU_RGD15_MPURG15ADDR26               (*((volatile unsigned int*)(0x42A007FCUL)))
+#define bM4_MPU_RGD0_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00000UL)))
+#define bM4_MPU_RGD0_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00004UL)))
+#define bM4_MPU_RGD0_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00008UL)))
+#define bM4_MPU_RGD0_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0000CUL)))
+#define bM4_MPU_RGD0_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00010UL)))
+#define bM4_MPU_RGD0_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00014UL)))
+#define bM4_MPU_RGD0_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00018UL)))
+#define bM4_MPU_RGD0_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0001CUL)))
+#define bM4_MPU_RGD0_MPURGADDR3                   (*((volatile unsigned int*)(0x42A00020UL)))
+#define bM4_MPU_RGD0_MPURGADDR4                   (*((volatile unsigned int*)(0x42A00024UL)))
+#define bM4_MPU_RGD0_MPURGADDR5                   (*((volatile unsigned int*)(0x42A00028UL)))
+#define bM4_MPU_RGD0_MPURGADDR6                   (*((volatile unsigned int*)(0x42A0002CUL)))
+#define bM4_MPU_RGD0_MPURGADDR7                   (*((volatile unsigned int*)(0x42A00030UL)))
+#define bM4_MPU_RGD0_MPURGADDR8                   (*((volatile unsigned int*)(0x42A00034UL)))
+#define bM4_MPU_RGD0_MPURGADDR9                   (*((volatile unsigned int*)(0x42A00038UL)))
+#define bM4_MPU_RGD0_MPURGADDR10                  (*((volatile unsigned int*)(0x42A0003CUL)))
+#define bM4_MPU_RGD0_MPURGADDR11                  (*((volatile unsigned int*)(0x42A00040UL)))
+#define bM4_MPU_RGD0_MPURGADDR12                  (*((volatile unsigned int*)(0x42A00044UL)))
+#define bM4_MPU_RGD0_MPURGADDR13                  (*((volatile unsigned int*)(0x42A00048UL)))
+#define bM4_MPU_RGD0_MPURGADDR14                  (*((volatile unsigned int*)(0x42A0004CUL)))
+#define bM4_MPU_RGD0_MPURGADDR15                  (*((volatile unsigned int*)(0x42A00050UL)))
+#define bM4_MPU_RGD0_MPURGADDR16                  (*((volatile unsigned int*)(0x42A00054UL)))
+#define bM4_MPU_RGD0_MPURGADDR17                  (*((volatile unsigned int*)(0x42A00058UL)))
+#define bM4_MPU_RGD0_MPURGADDR18                  (*((volatile unsigned int*)(0x42A0005CUL)))
+#define bM4_MPU_RGD0_MPURGADDR19                  (*((volatile unsigned int*)(0x42A00060UL)))
+#define bM4_MPU_RGD0_MPURGADDR20                  (*((volatile unsigned int*)(0x42A00064UL)))
+#define bM4_MPU_RGD0_MPURGADDR21                  (*((volatile unsigned int*)(0x42A00068UL)))
+#define bM4_MPU_RGD0_MPURGADDR22                  (*((volatile unsigned int*)(0x42A0006CUL)))
+#define bM4_MPU_RGD0_MPURGADDR23                  (*((volatile unsigned int*)(0x42A00070UL)))
+#define bM4_MPU_RGD0_MPURGADDR24                  (*((volatile unsigned int*)(0x42A00074UL)))
+#define bM4_MPU_RGD0_MPURGADDR25                  (*((volatile unsigned int*)(0x42A00078UL)))
+#define bM4_MPU_RGD0_MPURGADDR26                  (*((volatile unsigned int*)(0x42A0007CUL)))
+#define bM4_MPU_RGD1_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00080UL)))
+#define bM4_MPU_RGD1_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00084UL)))
+#define bM4_MPU_RGD1_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00088UL)))
+#define bM4_MPU_RGD1_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0008CUL)))
+#define bM4_MPU_RGD1_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00090UL)))
+#define bM4_MPU_RGD1_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00094UL)))
+#define bM4_MPU_RGD1_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00098UL)))
+#define bM4_MPU_RGD1_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0009CUL)))
+#define bM4_MPU_RGD1_MPURGADDR3                   (*((volatile unsigned int*)(0x42A000A0UL)))
+#define bM4_MPU_RGD1_MPURGADDR4                   (*((volatile unsigned int*)(0x42A000A4UL)))
+#define bM4_MPU_RGD1_MPURGADDR5                   (*((volatile unsigned int*)(0x42A000A8UL)))
+#define bM4_MPU_RGD1_MPURGADDR6                   (*((volatile unsigned int*)(0x42A000ACUL)))
+#define bM4_MPU_RGD1_MPURGADDR7                   (*((volatile unsigned int*)(0x42A000B0UL)))
+#define bM4_MPU_RGD1_MPURGADDR8                   (*((volatile unsigned int*)(0x42A000B4UL)))
+#define bM4_MPU_RGD1_MPURGADDR9                   (*((volatile unsigned int*)(0x42A000B8UL)))
+#define bM4_MPU_RGD1_MPURGADDR10                  (*((volatile unsigned int*)(0x42A000BCUL)))
+#define bM4_MPU_RGD1_MPURGADDR11                  (*((volatile unsigned int*)(0x42A000C0UL)))
+#define bM4_MPU_RGD1_MPURGADDR12                  (*((volatile unsigned int*)(0x42A000C4UL)))
+#define bM4_MPU_RGD1_MPURGADDR13                  (*((volatile unsigned int*)(0x42A000C8UL)))
+#define bM4_MPU_RGD1_MPURGADDR14                  (*((volatile unsigned int*)(0x42A000CCUL)))
+#define bM4_MPU_RGD1_MPURGADDR15                  (*((volatile unsigned int*)(0x42A000D0UL)))
+#define bM4_MPU_RGD1_MPURGADDR16                  (*((volatile unsigned int*)(0x42A000D4UL)))
+#define bM4_MPU_RGD1_MPURGADDR17                  (*((volatile unsigned int*)(0x42A000D8UL)))
+#define bM4_MPU_RGD1_MPURGADDR18                  (*((volatile unsigned int*)(0x42A000DCUL)))
+#define bM4_MPU_RGD1_MPURGADDR19                  (*((volatile unsigned int*)(0x42A000E0UL)))
+#define bM4_MPU_RGD1_MPURGADDR20                  (*((volatile unsigned int*)(0x42A000E4UL)))
+#define bM4_MPU_RGD1_MPURGADDR21                  (*((volatile unsigned int*)(0x42A000E8UL)))
+#define bM4_MPU_RGD1_MPURGADDR22                  (*((volatile unsigned int*)(0x42A000ECUL)))
+#define bM4_MPU_RGD1_MPURGADDR23                  (*((volatile unsigned int*)(0x42A000F0UL)))
+#define bM4_MPU_RGD1_MPURGADDR24                  (*((volatile unsigned int*)(0x42A000F4UL)))
+#define bM4_MPU_RGD1_MPURGADDR25                  (*((volatile unsigned int*)(0x42A000F8UL)))
+#define bM4_MPU_RGD1_MPURGADDR26                  (*((volatile unsigned int*)(0x42A000FCUL)))
+#define bM4_MPU_RGD2_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00100UL)))
+#define bM4_MPU_RGD2_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00104UL)))
+#define bM4_MPU_RGD2_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00108UL)))
+#define bM4_MPU_RGD2_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0010CUL)))
+#define bM4_MPU_RGD2_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00110UL)))
+#define bM4_MPU_RGD2_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00114UL)))
+#define bM4_MPU_RGD2_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00118UL)))
+#define bM4_MPU_RGD2_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0011CUL)))
+#define bM4_MPU_RGD2_MPURGADDR3                   (*((volatile unsigned int*)(0x42A00120UL)))
+#define bM4_MPU_RGD2_MPURGADDR4                   (*((volatile unsigned int*)(0x42A00124UL)))
+#define bM4_MPU_RGD2_MPURGADDR5                   (*((volatile unsigned int*)(0x42A00128UL)))
+#define bM4_MPU_RGD2_MPURGADDR6                   (*((volatile unsigned int*)(0x42A0012CUL)))
+#define bM4_MPU_RGD2_MPURGADDR7                   (*((volatile unsigned int*)(0x42A00130UL)))
+#define bM4_MPU_RGD2_MPURGADDR8                   (*((volatile unsigned int*)(0x42A00134UL)))
+#define bM4_MPU_RGD2_MPURGADDR9                   (*((volatile unsigned int*)(0x42A00138UL)))
+#define bM4_MPU_RGD2_MPURGADDR10                  (*((volatile unsigned int*)(0x42A0013CUL)))
+#define bM4_MPU_RGD2_MPURGADDR11                  (*((volatile unsigned int*)(0x42A00140UL)))
+#define bM4_MPU_RGD2_MPURGADDR12                  (*((volatile unsigned int*)(0x42A00144UL)))
+#define bM4_MPU_RGD2_MPURGADDR13                  (*((volatile unsigned int*)(0x42A00148UL)))
+#define bM4_MPU_RGD2_MPURGADDR14                  (*((volatile unsigned int*)(0x42A0014CUL)))
+#define bM4_MPU_RGD2_MPURGADDR15                  (*((volatile unsigned int*)(0x42A00150UL)))
+#define bM4_MPU_RGD2_MPURGADDR16                  (*((volatile unsigned int*)(0x42A00154UL)))
+#define bM4_MPU_RGD2_MPURGADDR17                  (*((volatile unsigned int*)(0x42A00158UL)))
+#define bM4_MPU_RGD2_MPURGADDR18                  (*((volatile unsigned int*)(0x42A0015CUL)))
+#define bM4_MPU_RGD2_MPURGADDR19                  (*((volatile unsigned int*)(0x42A00160UL)))
+#define bM4_MPU_RGD2_MPURGADDR20                  (*((volatile unsigned int*)(0x42A00164UL)))
+#define bM4_MPU_RGD2_MPURGADDR21                  (*((volatile unsigned int*)(0x42A00168UL)))
+#define bM4_MPU_RGD2_MPURGADDR22                  (*((volatile unsigned int*)(0x42A0016CUL)))
+#define bM4_MPU_RGD2_MPURGADDR23                  (*((volatile unsigned int*)(0x42A00170UL)))
+#define bM4_MPU_RGD2_MPURGADDR24                  (*((volatile unsigned int*)(0x42A00174UL)))
+#define bM4_MPU_RGD2_MPURGADDR25                  (*((volatile unsigned int*)(0x42A00178UL)))
+#define bM4_MPU_RGD2_MPURGADDR26                  (*((volatile unsigned int*)(0x42A0017CUL)))
+#define bM4_MPU_RGD3_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00180UL)))
+#define bM4_MPU_RGD3_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00184UL)))
+#define bM4_MPU_RGD3_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00188UL)))
+#define bM4_MPU_RGD3_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0018CUL)))
+#define bM4_MPU_RGD3_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00190UL)))
+#define bM4_MPU_RGD3_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00194UL)))
+#define bM4_MPU_RGD3_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00198UL)))
+#define bM4_MPU_RGD3_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0019CUL)))
+#define bM4_MPU_RGD3_MPURGADDR3                   (*((volatile unsigned int*)(0x42A001A0UL)))
+#define bM4_MPU_RGD3_MPURGADDR4                   (*((volatile unsigned int*)(0x42A001A4UL)))
+#define bM4_MPU_RGD3_MPURGADDR5                   (*((volatile unsigned int*)(0x42A001A8UL)))
+#define bM4_MPU_RGD3_MPURGADDR6                   (*((volatile unsigned int*)(0x42A001ACUL)))
+#define bM4_MPU_RGD3_MPURGADDR7                   (*((volatile unsigned int*)(0x42A001B0UL)))
+#define bM4_MPU_RGD3_MPURGADDR8                   (*((volatile unsigned int*)(0x42A001B4UL)))
+#define bM4_MPU_RGD3_MPURGADDR9                   (*((volatile unsigned int*)(0x42A001B8UL)))
+#define bM4_MPU_RGD3_MPURGADDR10                  (*((volatile unsigned int*)(0x42A001BCUL)))
+#define bM4_MPU_RGD3_MPURGADDR11                  (*((volatile unsigned int*)(0x42A001C0UL)))
+#define bM4_MPU_RGD3_MPURGADDR12                  (*((volatile unsigned int*)(0x42A001C4UL)))
+#define bM4_MPU_RGD3_MPURGADDR13                  (*((volatile unsigned int*)(0x42A001C8UL)))
+#define bM4_MPU_RGD3_MPURGADDR14                  (*((volatile unsigned int*)(0x42A001CCUL)))
+#define bM4_MPU_RGD3_MPURGADDR15                  (*((volatile unsigned int*)(0x42A001D0UL)))
+#define bM4_MPU_RGD3_MPURGADDR16                  (*((volatile unsigned int*)(0x42A001D4UL)))
+#define bM4_MPU_RGD3_MPURGADDR17                  (*((volatile unsigned int*)(0x42A001D8UL)))
+#define bM4_MPU_RGD3_MPURGADDR18                  (*((volatile unsigned int*)(0x42A001DCUL)))
+#define bM4_MPU_RGD3_MPURGADDR19                  (*((volatile unsigned int*)(0x42A001E0UL)))
+#define bM4_MPU_RGD3_MPURGADDR20                  (*((volatile unsigned int*)(0x42A001E4UL)))
+#define bM4_MPU_RGD3_MPURGADDR21                  (*((volatile unsigned int*)(0x42A001E8UL)))
+#define bM4_MPU_RGD3_MPURGADDR22                  (*((volatile unsigned int*)(0x42A001ECUL)))
+#define bM4_MPU_RGD3_MPURGADDR23                  (*((volatile unsigned int*)(0x42A001F0UL)))
+#define bM4_MPU_RGD3_MPURGADDR24                  (*((volatile unsigned int*)(0x42A001F4UL)))
+#define bM4_MPU_RGD3_MPURGADDR25                  (*((volatile unsigned int*)(0x42A001F8UL)))
+#define bM4_MPU_RGD3_MPURGADDR26                  (*((volatile unsigned int*)(0x42A001FCUL)))
+#define bM4_MPU_RGD4_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00200UL)))
+#define bM4_MPU_RGD4_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00204UL)))
+#define bM4_MPU_RGD4_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00208UL)))
+#define bM4_MPU_RGD4_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0020CUL)))
+#define bM4_MPU_RGD4_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00210UL)))
+#define bM4_MPU_RGD4_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00214UL)))
+#define bM4_MPU_RGD4_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00218UL)))
+#define bM4_MPU_RGD4_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0021CUL)))
+#define bM4_MPU_RGD4_MPURGADDR3                   (*((volatile unsigned int*)(0x42A00220UL)))
+#define bM4_MPU_RGD4_MPURGADDR4                   (*((volatile unsigned int*)(0x42A00224UL)))
+#define bM4_MPU_RGD4_MPURGADDR5                   (*((volatile unsigned int*)(0x42A00228UL)))
+#define bM4_MPU_RGD4_MPURGADDR6                   (*((volatile unsigned int*)(0x42A0022CUL)))
+#define bM4_MPU_RGD4_MPURGADDR7                   (*((volatile unsigned int*)(0x42A00230UL)))
+#define bM4_MPU_RGD4_MPURGADDR8                   (*((volatile unsigned int*)(0x42A00234UL)))
+#define bM4_MPU_RGD4_MPURGADDR9                   (*((volatile unsigned int*)(0x42A00238UL)))
+#define bM4_MPU_RGD4_MPURGADDR10                  (*((volatile unsigned int*)(0x42A0023CUL)))
+#define bM4_MPU_RGD4_MPURGADDR11                  (*((volatile unsigned int*)(0x42A00240UL)))
+#define bM4_MPU_RGD4_MPURGADDR12                  (*((volatile unsigned int*)(0x42A00244UL)))
+#define bM4_MPU_RGD4_MPURGADDR13                  (*((volatile unsigned int*)(0x42A00248UL)))
+#define bM4_MPU_RGD4_MPURGADDR14                  (*((volatile unsigned int*)(0x42A0024CUL)))
+#define bM4_MPU_RGD4_MPURGADDR15                  (*((volatile unsigned int*)(0x42A00250UL)))
+#define bM4_MPU_RGD4_MPURGADDR16                  (*((volatile unsigned int*)(0x42A00254UL)))
+#define bM4_MPU_RGD4_MPURGADDR17                  (*((volatile unsigned int*)(0x42A00258UL)))
+#define bM4_MPU_RGD4_MPURGADDR18                  (*((volatile unsigned int*)(0x42A0025CUL)))
+#define bM4_MPU_RGD4_MPURGADDR19                  (*((volatile unsigned int*)(0x42A00260UL)))
+#define bM4_MPU_RGD4_MPURGADDR20                  (*((volatile unsigned int*)(0x42A00264UL)))
+#define bM4_MPU_RGD4_MPURGADDR21                  (*((volatile unsigned int*)(0x42A00268UL)))
+#define bM4_MPU_RGD4_MPURGADDR22                  (*((volatile unsigned int*)(0x42A0026CUL)))
+#define bM4_MPU_RGD4_MPURGADDR23                  (*((volatile unsigned int*)(0x42A00270UL)))
+#define bM4_MPU_RGD4_MPURGADDR24                  (*((volatile unsigned int*)(0x42A00274UL)))
+#define bM4_MPU_RGD4_MPURGADDR25                  (*((volatile unsigned int*)(0x42A00278UL)))
+#define bM4_MPU_RGD4_MPURGADDR26                  (*((volatile unsigned int*)(0x42A0027CUL)))
+#define bM4_MPU_RGD5_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00280UL)))
+#define bM4_MPU_RGD5_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00284UL)))
+#define bM4_MPU_RGD5_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00288UL)))
+#define bM4_MPU_RGD5_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0028CUL)))
+#define bM4_MPU_RGD5_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00290UL)))
+#define bM4_MPU_RGD5_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00294UL)))
+#define bM4_MPU_RGD5_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00298UL)))
+#define bM4_MPU_RGD5_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0029CUL)))
+#define bM4_MPU_RGD5_MPURGADDR3                   (*((volatile unsigned int*)(0x42A002A0UL)))
+#define bM4_MPU_RGD5_MPURGADDR4                   (*((volatile unsigned int*)(0x42A002A4UL)))
+#define bM4_MPU_RGD5_MPURGADDR5                   (*((volatile unsigned int*)(0x42A002A8UL)))
+#define bM4_MPU_RGD5_MPURGADDR6                   (*((volatile unsigned int*)(0x42A002ACUL)))
+#define bM4_MPU_RGD5_MPURGADDR7                   (*((volatile unsigned int*)(0x42A002B0UL)))
+#define bM4_MPU_RGD5_MPURGADDR8                   (*((volatile unsigned int*)(0x42A002B4UL)))
+#define bM4_MPU_RGD5_MPURGADDR9                   (*((volatile unsigned int*)(0x42A002B8UL)))
+#define bM4_MPU_RGD5_MPURGADDR10                  (*((volatile unsigned int*)(0x42A002BCUL)))
+#define bM4_MPU_RGD5_MPURGADDR11                  (*((volatile unsigned int*)(0x42A002C0UL)))
+#define bM4_MPU_RGD5_MPURGADDR12                  (*((volatile unsigned int*)(0x42A002C4UL)))
+#define bM4_MPU_RGD5_MPURGADDR13                  (*((volatile unsigned int*)(0x42A002C8UL)))
+#define bM4_MPU_RGD5_MPURGADDR14                  (*((volatile unsigned int*)(0x42A002CCUL)))
+#define bM4_MPU_RGD5_MPURGADDR15                  (*((volatile unsigned int*)(0x42A002D0UL)))
+#define bM4_MPU_RGD5_MPURGADDR16                  (*((volatile unsigned int*)(0x42A002D4UL)))
+#define bM4_MPU_RGD5_MPURGADDR17                  (*((volatile unsigned int*)(0x42A002D8UL)))
+#define bM4_MPU_RGD5_MPURGADDR18                  (*((volatile unsigned int*)(0x42A002DCUL)))
+#define bM4_MPU_RGD5_MPURGADDR19                  (*((volatile unsigned int*)(0x42A002E0UL)))
+#define bM4_MPU_RGD5_MPURGADDR20                  (*((volatile unsigned int*)(0x42A002E4UL)))
+#define bM4_MPU_RGD5_MPURGADDR21                  (*((volatile unsigned int*)(0x42A002E8UL)))
+#define bM4_MPU_RGD5_MPURGADDR22                  (*((volatile unsigned int*)(0x42A002ECUL)))
+#define bM4_MPU_RGD5_MPURGADDR23                  (*((volatile unsigned int*)(0x42A002F0UL)))
+#define bM4_MPU_RGD5_MPURGADDR24                  (*((volatile unsigned int*)(0x42A002F4UL)))
+#define bM4_MPU_RGD5_MPURGADDR25                  (*((volatile unsigned int*)(0x42A002F8UL)))
+#define bM4_MPU_RGD5_MPURGADDR26                  (*((volatile unsigned int*)(0x42A002FCUL)))
+#define bM4_MPU_RGD6_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00300UL)))
+#define bM4_MPU_RGD6_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00304UL)))
+#define bM4_MPU_RGD6_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00308UL)))
+#define bM4_MPU_RGD6_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0030CUL)))
+#define bM4_MPU_RGD6_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00310UL)))
+#define bM4_MPU_RGD6_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00314UL)))
+#define bM4_MPU_RGD6_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00318UL)))
+#define bM4_MPU_RGD6_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0031CUL)))
+#define bM4_MPU_RGD6_MPURGADDR3                   (*((volatile unsigned int*)(0x42A00320UL)))
+#define bM4_MPU_RGD6_MPURGADDR4                   (*((volatile unsigned int*)(0x42A00324UL)))
+#define bM4_MPU_RGD6_MPURGADDR5                   (*((volatile unsigned int*)(0x42A00328UL)))
+#define bM4_MPU_RGD6_MPURGADDR6                   (*((volatile unsigned int*)(0x42A0032CUL)))
+#define bM4_MPU_RGD6_MPURGADDR7                   (*((volatile unsigned int*)(0x42A00330UL)))
+#define bM4_MPU_RGD6_MPURGADDR8                   (*((volatile unsigned int*)(0x42A00334UL)))
+#define bM4_MPU_RGD6_MPURGADDR9                   (*((volatile unsigned int*)(0x42A00338UL)))
+#define bM4_MPU_RGD6_MPURGADDR10                  (*((volatile unsigned int*)(0x42A0033CUL)))
+#define bM4_MPU_RGD6_MPURGADDR11                  (*((volatile unsigned int*)(0x42A00340UL)))
+#define bM4_MPU_RGD6_MPURGADDR12                  (*((volatile unsigned int*)(0x42A00344UL)))
+#define bM4_MPU_RGD6_MPURGADDR13                  (*((volatile unsigned int*)(0x42A00348UL)))
+#define bM4_MPU_RGD6_MPURGADDR14                  (*((volatile unsigned int*)(0x42A0034CUL)))
+#define bM4_MPU_RGD6_MPURGADDR15                  (*((volatile unsigned int*)(0x42A00350UL)))
+#define bM4_MPU_RGD6_MPURGADDR16                  (*((volatile unsigned int*)(0x42A00354UL)))
+#define bM4_MPU_RGD6_MPURGADDR17                  (*((volatile unsigned int*)(0x42A00358UL)))
+#define bM4_MPU_RGD6_MPURGADDR18                  (*((volatile unsigned int*)(0x42A0035CUL)))
+#define bM4_MPU_RGD6_MPURGADDR19                  (*((volatile unsigned int*)(0x42A00360UL)))
+#define bM4_MPU_RGD6_MPURGADDR20                  (*((volatile unsigned int*)(0x42A00364UL)))
+#define bM4_MPU_RGD6_MPURGADDR21                  (*((volatile unsigned int*)(0x42A00368UL)))
+#define bM4_MPU_RGD6_MPURGADDR22                  (*((volatile unsigned int*)(0x42A0036CUL)))
+#define bM4_MPU_RGD6_MPURGADDR23                  (*((volatile unsigned int*)(0x42A00370UL)))
+#define bM4_MPU_RGD6_MPURGADDR24                  (*((volatile unsigned int*)(0x42A00374UL)))
+#define bM4_MPU_RGD6_MPURGADDR25                  (*((volatile unsigned int*)(0x42A00378UL)))
+#define bM4_MPU_RGD6_MPURGADDR26                  (*((volatile unsigned int*)(0x42A0037CUL)))
+#define bM4_MPU_RGD7_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00380UL)))
+#define bM4_MPU_RGD7_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00384UL)))
+#define bM4_MPU_RGD7_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00388UL)))
+#define bM4_MPU_RGD7_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0038CUL)))
+#define bM4_MPU_RGD7_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00390UL)))
+#define bM4_MPU_RGD7_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00394UL)))
+#define bM4_MPU_RGD7_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00398UL)))
+#define bM4_MPU_RGD7_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0039CUL)))
+#define bM4_MPU_RGD7_MPURGADDR3                   (*((volatile unsigned int*)(0x42A003A0UL)))
+#define bM4_MPU_RGD7_MPURGADDR4                   (*((volatile unsigned int*)(0x42A003A4UL)))
+#define bM4_MPU_RGD7_MPURGADDR5                   (*((volatile unsigned int*)(0x42A003A8UL)))
+#define bM4_MPU_RGD7_MPURGADDR6                   (*((volatile unsigned int*)(0x42A003ACUL)))
+#define bM4_MPU_RGD7_MPURGADDR7                   (*((volatile unsigned int*)(0x42A003B0UL)))
+#define bM4_MPU_RGD7_MPURGADDR8                   (*((volatile unsigned int*)(0x42A003B4UL)))
+#define bM4_MPU_RGD7_MPURGADDR9                   (*((volatile unsigned int*)(0x42A003B8UL)))
+#define bM4_MPU_RGD7_MPURGADDR10                  (*((volatile unsigned int*)(0x42A003BCUL)))
+#define bM4_MPU_RGD7_MPURGADDR11                  (*((volatile unsigned int*)(0x42A003C0UL)))
+#define bM4_MPU_RGD7_MPURGADDR12                  (*((volatile unsigned int*)(0x42A003C4UL)))
+#define bM4_MPU_RGD7_MPURGADDR13                  (*((volatile unsigned int*)(0x42A003C8UL)))
+#define bM4_MPU_RGD7_MPURGADDR14                  (*((volatile unsigned int*)(0x42A003CCUL)))
+#define bM4_MPU_RGD7_MPURGADDR15                  (*((volatile unsigned int*)(0x42A003D0UL)))
+#define bM4_MPU_RGD7_MPURGADDR16                  (*((volatile unsigned int*)(0x42A003D4UL)))
+#define bM4_MPU_RGD7_MPURGADDR17                  (*((volatile unsigned int*)(0x42A003D8UL)))
+#define bM4_MPU_RGD7_MPURGADDR18                  (*((volatile unsigned int*)(0x42A003DCUL)))
+#define bM4_MPU_RGD7_MPURGADDR19                  (*((volatile unsigned int*)(0x42A003E0UL)))
+#define bM4_MPU_RGD7_MPURGADDR20                  (*((volatile unsigned int*)(0x42A003E4UL)))
+#define bM4_MPU_RGD7_MPURGADDR21                  (*((volatile unsigned int*)(0x42A003E8UL)))
+#define bM4_MPU_RGD7_MPURGADDR22                  (*((volatile unsigned int*)(0x42A003ECUL)))
+#define bM4_MPU_RGD7_MPURGADDR23                  (*((volatile unsigned int*)(0x42A003F0UL)))
+#define bM4_MPU_RGD7_MPURGADDR24                  (*((volatile unsigned int*)(0x42A003F4UL)))
+#define bM4_MPU_RGD7_MPURGADDR25                  (*((volatile unsigned int*)(0x42A003F8UL)))
+#define bM4_MPU_RGD7_MPURGADDR26                  (*((volatile unsigned int*)(0x42A003FCUL)))
+#define bM4_MPU_RGD8_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00400UL)))
+#define bM4_MPU_RGD8_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00404UL)))
+#define bM4_MPU_RGD8_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00408UL)))
+#define bM4_MPU_RGD8_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0040CUL)))
+#define bM4_MPU_RGD8_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00410UL)))
+#define bM4_MPU_RGD8_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00414UL)))
+#define bM4_MPU_RGD8_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00418UL)))
+#define bM4_MPU_RGD8_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0041CUL)))
+#define bM4_MPU_RGD8_MPURGADDR3                   (*((volatile unsigned int*)(0x42A00420UL)))
+#define bM4_MPU_RGD8_MPURGADDR4                   (*((volatile unsigned int*)(0x42A00424UL)))
+#define bM4_MPU_RGD8_MPURGADDR5                   (*((volatile unsigned int*)(0x42A00428UL)))
+#define bM4_MPU_RGD8_MPURGADDR6                   (*((volatile unsigned int*)(0x42A0042CUL)))
+#define bM4_MPU_RGD8_MPURGADDR7                   (*((volatile unsigned int*)(0x42A00430UL)))
+#define bM4_MPU_RGD8_MPURGADDR8                   (*((volatile unsigned int*)(0x42A00434UL)))
+#define bM4_MPU_RGD8_MPURGADDR9                   (*((volatile unsigned int*)(0x42A00438UL)))
+#define bM4_MPU_RGD8_MPURGADDR10                  (*((volatile unsigned int*)(0x42A0043CUL)))
+#define bM4_MPU_RGD8_MPURGADDR11                  (*((volatile unsigned int*)(0x42A00440UL)))
+#define bM4_MPU_RGD8_MPURGADDR12                  (*((volatile unsigned int*)(0x42A00444UL)))
+#define bM4_MPU_RGD8_MPURGADDR13                  (*((volatile unsigned int*)(0x42A00448UL)))
+#define bM4_MPU_RGD8_MPURGADDR14                  (*((volatile unsigned int*)(0x42A0044CUL)))
+#define bM4_MPU_RGD8_MPURGADDR15                  (*((volatile unsigned int*)(0x42A00450UL)))
+#define bM4_MPU_RGD8_MPURGADDR16                  (*((volatile unsigned int*)(0x42A00454UL)))
+#define bM4_MPU_RGD8_MPURGADDR17                  (*((volatile unsigned int*)(0x42A00458UL)))
+#define bM4_MPU_RGD8_MPURGADDR18                  (*((volatile unsigned int*)(0x42A0045CUL)))
+#define bM4_MPU_RGD8_MPURGADDR19                  (*((volatile unsigned int*)(0x42A00460UL)))
+#define bM4_MPU_RGD8_MPURGADDR20                  (*((volatile unsigned int*)(0x42A00464UL)))
+#define bM4_MPU_RGD8_MPURGADDR21                  (*((volatile unsigned int*)(0x42A00468UL)))
+#define bM4_MPU_RGD8_MPURGADDR22                  (*((volatile unsigned int*)(0x42A0046CUL)))
+#define bM4_MPU_RGD8_MPURGADDR23                  (*((volatile unsigned int*)(0x42A00470UL)))
+#define bM4_MPU_RGD8_MPURGADDR24                  (*((volatile unsigned int*)(0x42A00474UL)))
+#define bM4_MPU_RGD8_MPURGADDR25                  (*((volatile unsigned int*)(0x42A00478UL)))
+#define bM4_MPU_RGD8_MPURGADDR26                  (*((volatile unsigned int*)(0x42A0047CUL)))
+#define bM4_MPU_RGD9_MPURGSIZE0                   (*((volatile unsigned int*)(0x42A00480UL)))
+#define bM4_MPU_RGD9_MPURGSIZE1                   (*((volatile unsigned int*)(0x42A00484UL)))
+#define bM4_MPU_RGD9_MPURGSIZE2                   (*((volatile unsigned int*)(0x42A00488UL)))
+#define bM4_MPU_RGD9_MPURGSIZE3                   (*((volatile unsigned int*)(0x42A0048CUL)))
+#define bM4_MPU_RGD9_MPURGSIZE4                   (*((volatile unsigned int*)(0x42A00490UL)))
+#define bM4_MPU_RGD9_MPURGADDR0                   (*((volatile unsigned int*)(0x42A00494UL)))
+#define bM4_MPU_RGD9_MPURGADDR1                   (*((volatile unsigned int*)(0x42A00498UL)))
+#define bM4_MPU_RGD9_MPURGADDR2                   (*((volatile unsigned int*)(0x42A0049CUL)))
+#define bM4_MPU_RGD9_MPURGADDR3                   (*((volatile unsigned int*)(0x42A004A0UL)))
+#define bM4_MPU_RGD9_MPURGADDR4                   (*((volatile unsigned int*)(0x42A004A4UL)))
+#define bM4_MPU_RGD9_MPURGADDR5                   (*((volatile unsigned int*)(0x42A004A8UL)))
+#define bM4_MPU_RGD9_MPURGADDR6                   (*((volatile unsigned int*)(0x42A004ACUL)))
+#define bM4_MPU_RGD9_MPURGADDR7                   (*((volatile unsigned int*)(0x42A004B0UL)))
+#define bM4_MPU_RGD9_MPURGADDR8                   (*((volatile unsigned int*)(0x42A004B4UL)))
+#define bM4_MPU_RGD9_MPURGADDR9                   (*((volatile unsigned int*)(0x42A004B8UL)))
+#define bM4_MPU_RGD9_MPURGADDR10                  (*((volatile unsigned int*)(0x42A004BCUL)))
+#define bM4_MPU_RGD9_MPURGADDR11                  (*((volatile unsigned int*)(0x42A004C0UL)))
+#define bM4_MPU_RGD9_MPURGADDR12                  (*((volatile unsigned int*)(0x42A004C4UL)))
+#define bM4_MPU_RGD9_MPURGADDR13                  (*((volatile unsigned int*)(0x42A004C8UL)))
+#define bM4_MPU_RGD9_MPURGADDR14                  (*((volatile unsigned int*)(0x42A004CCUL)))
+#define bM4_MPU_RGD9_MPURGADDR15                  (*((volatile unsigned int*)(0x42A004D0UL)))
+#define bM4_MPU_RGD9_MPURGADDR16                  (*((volatile unsigned int*)(0x42A004D4UL)))
+#define bM4_MPU_RGD9_MPURGADDR17                  (*((volatile unsigned int*)(0x42A004D8UL)))
+#define bM4_MPU_RGD9_MPURGADDR18                  (*((volatile unsigned int*)(0x42A004DCUL)))
+#define bM4_MPU_RGD9_MPURGADDR19                  (*((volatile unsigned int*)(0x42A004E0UL)))
+#define bM4_MPU_RGD9_MPURGADDR20                  (*((volatile unsigned int*)(0x42A004E4UL)))
+#define bM4_MPU_RGD9_MPURGADDR21                  (*((volatile unsigned int*)(0x42A004E8UL)))
+#define bM4_MPU_RGD9_MPURGADDR22                  (*((volatile unsigned int*)(0x42A004ECUL)))
+#define bM4_MPU_RGD9_MPURGADDR23                  (*((volatile unsigned int*)(0x42A004F0UL)))
+#define bM4_MPU_RGD9_MPURGADDR24                  (*((volatile unsigned int*)(0x42A004F4UL)))
+#define bM4_MPU_RGD9_MPURGADDR25                  (*((volatile unsigned int*)(0x42A004F8UL)))
+#define bM4_MPU_RGD9_MPURGADDR26                  (*((volatile unsigned int*)(0x42A004FCUL)))
+#define bM4_MPU_RGD10_MPURGSIZE0                  (*((volatile unsigned int*)(0x42A00500UL)))
+#define bM4_MPU_RGD10_MPURGSIZE1                  (*((volatile unsigned int*)(0x42A00504UL)))
+#define bM4_MPU_RGD10_MPURGSIZE2                  (*((volatile unsigned int*)(0x42A00508UL)))
+#define bM4_MPU_RGD10_MPURGSIZE3                  (*((volatile unsigned int*)(0x42A0050CUL)))
+#define bM4_MPU_RGD10_MPURGSIZE4                  (*((volatile unsigned int*)(0x42A00510UL)))
+#define bM4_MPU_RGD10_MPURGADDR0                  (*((volatile unsigned int*)(0x42A00514UL)))
+#define bM4_MPU_RGD10_MPURGADDR1                  (*((volatile unsigned int*)(0x42A00518UL)))
+#define bM4_MPU_RGD10_MPURGADDR2                  (*((volatile unsigned int*)(0x42A0051CUL)))
+#define bM4_MPU_RGD10_MPURGADDR3                  (*((volatile unsigned int*)(0x42A00520UL)))
+#define bM4_MPU_RGD10_MPURGADDR4                  (*((volatile unsigned int*)(0x42A00524UL)))
+#define bM4_MPU_RGD10_MPURGADDR5                  (*((volatile unsigned int*)(0x42A00528UL)))
+#define bM4_MPU_RGD10_MPURGADDR6                  (*((volatile unsigned int*)(0x42A0052CUL)))
+#define bM4_MPU_RGD10_MPURGADDR7                  (*((volatile unsigned int*)(0x42A00530UL)))
+#define bM4_MPU_RGD10_MPURGADDR8                  (*((volatile unsigned int*)(0x42A00534UL)))
+#define bM4_MPU_RGD10_MPURGADDR9                  (*((volatile unsigned int*)(0x42A00538UL)))
+#define bM4_MPU_RGD10_MPURGADDR10                 (*((volatile unsigned int*)(0x42A0053CUL)))
+#define bM4_MPU_RGD10_MPURGADDR11                 (*((volatile unsigned int*)(0x42A00540UL)))
+#define bM4_MPU_RGD10_MPURGADDR12                 (*((volatile unsigned int*)(0x42A00544UL)))
+#define bM4_MPU_RGD10_MPURGADDR13                 (*((volatile unsigned int*)(0x42A00548UL)))
+#define bM4_MPU_RGD10_MPURGADDR14                 (*((volatile unsigned int*)(0x42A0054CUL)))
+#define bM4_MPU_RGD10_MPURGADDR15                 (*((volatile unsigned int*)(0x42A00550UL)))
+#define bM4_MPU_RGD10_MPURGADDR16                 (*((volatile unsigned int*)(0x42A00554UL)))
+#define bM4_MPU_RGD10_MPURGADDR17                 (*((volatile unsigned int*)(0x42A00558UL)))
+#define bM4_MPU_RGD10_MPURGADDR18                 (*((volatile unsigned int*)(0x42A0055CUL)))
+#define bM4_MPU_RGD10_MPURGADDR19                 (*((volatile unsigned int*)(0x42A00560UL)))
+#define bM4_MPU_RGD10_MPURGADDR20                 (*((volatile unsigned int*)(0x42A00564UL)))
+#define bM4_MPU_RGD10_MPURGADDR21                 (*((volatile unsigned int*)(0x42A00568UL)))
+#define bM4_MPU_RGD10_MPURGADDR22                 (*((volatile unsigned int*)(0x42A0056CUL)))
+#define bM4_MPU_RGD10_MPURGADDR23                 (*((volatile unsigned int*)(0x42A00570UL)))
+#define bM4_MPU_RGD10_MPURGADDR24                 (*((volatile unsigned int*)(0x42A00574UL)))
+#define bM4_MPU_RGD10_MPURGADDR25                 (*((volatile unsigned int*)(0x42A00578UL)))
+#define bM4_MPU_RGD10_MPURGADDR26                 (*((volatile unsigned int*)(0x42A0057CUL)))
+#define bM4_MPU_RGD11_MPURGSIZE0                  (*((volatile unsigned int*)(0x42A00580UL)))
+#define bM4_MPU_RGD11_MPURGSIZE1                  (*((volatile unsigned int*)(0x42A00584UL)))
+#define bM4_MPU_RGD11_MPURGSIZE2                  (*((volatile unsigned int*)(0x42A00588UL)))
+#define bM4_MPU_RGD11_MPURGSIZE3                  (*((volatile unsigned int*)(0x42A0058CUL)))
+#define bM4_MPU_RGD11_MPURGSIZE4                  (*((volatile unsigned int*)(0x42A00590UL)))
+#define bM4_MPU_RGD11_MPURGADDR0                  (*((volatile unsigned int*)(0x42A00594UL)))
+#define bM4_MPU_RGD11_MPURGADDR1                  (*((volatile unsigned int*)(0x42A00598UL)))
+#define bM4_MPU_RGD11_MPURGADDR2                  (*((volatile unsigned int*)(0x42A0059CUL)))
+#define bM4_MPU_RGD11_MPURGADDR3                  (*((volatile unsigned int*)(0x42A005A0UL)))
+#define bM4_MPU_RGD11_MPURGADDR4                  (*((volatile unsigned int*)(0x42A005A4UL)))
+#define bM4_MPU_RGD11_MPURGADDR5                  (*((volatile unsigned int*)(0x42A005A8UL)))
+#define bM4_MPU_RGD11_MPURGADDR6                  (*((volatile unsigned int*)(0x42A005ACUL)))
+#define bM4_MPU_RGD11_MPURGADDR7                  (*((volatile unsigned int*)(0x42A005B0UL)))
+#define bM4_MPU_RGD11_MPURGADDR8                  (*((volatile unsigned int*)(0x42A005B4UL)))
+#define bM4_MPU_RGD11_MPURGADDR9                  (*((volatile unsigned int*)(0x42A005B8UL)))
+#define bM4_MPU_RGD11_MPURGADDR10                 (*((volatile unsigned int*)(0x42A005BCUL)))
+#define bM4_MPU_RGD11_MPURGADDR11                 (*((volatile unsigned int*)(0x42A005C0UL)))
+#define bM4_MPU_RGD11_MPURGADDR12                 (*((volatile unsigned int*)(0x42A005C4UL)))
+#define bM4_MPU_RGD11_MPURGADDR13                 (*((volatile unsigned int*)(0x42A005C8UL)))
+#define bM4_MPU_RGD11_MPURGADDR14                 (*((volatile unsigned int*)(0x42A005CCUL)))
+#define bM4_MPU_RGD11_MPURGADDR15                 (*((volatile unsigned int*)(0x42A005D0UL)))
+#define bM4_MPU_RGD11_MPURGADDR16                 (*((volatile unsigned int*)(0x42A005D4UL)))
+#define bM4_MPU_RGD11_MPURGADDR17                 (*((volatile unsigned int*)(0x42A005D8UL)))
+#define bM4_MPU_RGD11_MPURGADDR18                 (*((volatile unsigned int*)(0x42A005DCUL)))
+#define bM4_MPU_RGD11_MPURGADDR19                 (*((volatile unsigned int*)(0x42A005E0UL)))
+#define bM4_MPU_RGD11_MPURGADDR20                 (*((volatile unsigned int*)(0x42A005E4UL)))
+#define bM4_MPU_RGD11_MPURGADDR21                 (*((volatile unsigned int*)(0x42A005E8UL)))
+#define bM4_MPU_RGD11_MPURGADDR22                 (*((volatile unsigned int*)(0x42A005ECUL)))
+#define bM4_MPU_RGD11_MPURGADDR23                 (*((volatile unsigned int*)(0x42A005F0UL)))
+#define bM4_MPU_RGD11_MPURGADDR24                 (*((volatile unsigned int*)(0x42A005F4UL)))
+#define bM4_MPU_RGD11_MPURGADDR25                 (*((volatile unsigned int*)(0x42A005F8UL)))
+#define bM4_MPU_RGD11_MPURGADDR26                 (*((volatile unsigned int*)(0x42A005FCUL)))
+#define bM4_MPU_RGD12_MPURGSIZE0                  (*((volatile unsigned int*)(0x42A00600UL)))
+#define bM4_MPU_RGD12_MPURGSIZE1                  (*((volatile unsigned int*)(0x42A00604UL)))
+#define bM4_MPU_RGD12_MPURGSIZE2                  (*((volatile unsigned int*)(0x42A00608UL)))
+#define bM4_MPU_RGD12_MPURGSIZE3                  (*((volatile unsigned int*)(0x42A0060CUL)))
+#define bM4_MPU_RGD12_MPURGSIZE4                  (*((volatile unsigned int*)(0x42A00610UL)))
+#define bM4_MPU_RGD12_MPURGADDR0                  (*((volatile unsigned int*)(0x42A00614UL)))
+#define bM4_MPU_RGD12_MPURGADDR1                  (*((volatile unsigned int*)(0x42A00618UL)))
+#define bM4_MPU_RGD12_MPURGADDR2                  (*((volatile unsigned int*)(0x42A0061CUL)))
+#define bM4_MPU_RGD12_MPURGADDR3                  (*((volatile unsigned int*)(0x42A00620UL)))
+#define bM4_MPU_RGD12_MPURGADDR4                  (*((volatile unsigned int*)(0x42A00624UL)))
+#define bM4_MPU_RGD12_MPURGADDR5                  (*((volatile unsigned int*)(0x42A00628UL)))
+#define bM4_MPU_RGD12_MPURGADDR6                  (*((volatile unsigned int*)(0x42A0062CUL)))
+#define bM4_MPU_RGD12_MPURGADDR7                  (*((volatile unsigned int*)(0x42A00630UL)))
+#define bM4_MPU_RGD12_MPURGADDR8                  (*((volatile unsigned int*)(0x42A00634UL)))
+#define bM4_MPU_RGD12_MPURGADDR9                  (*((volatile unsigned int*)(0x42A00638UL)))
+#define bM4_MPU_RGD12_MPURGADDR10                 (*((volatile unsigned int*)(0x42A0063CUL)))
+#define bM4_MPU_RGD12_MPURGADDR11                 (*((volatile unsigned int*)(0x42A00640UL)))
+#define bM4_MPU_RGD12_MPURGADDR12                 (*((volatile unsigned int*)(0x42A00644UL)))
+#define bM4_MPU_RGD12_MPURGADDR13                 (*((volatile unsigned int*)(0x42A00648UL)))
+#define bM4_MPU_RGD12_MPURGADDR14                 (*((volatile unsigned int*)(0x42A0064CUL)))
+#define bM4_MPU_RGD12_MPURGADDR15                 (*((volatile unsigned int*)(0x42A00650UL)))
+#define bM4_MPU_RGD12_MPURGADDR16                 (*((volatile unsigned int*)(0x42A00654UL)))
+#define bM4_MPU_RGD12_MPURGADDR17                 (*((volatile unsigned int*)(0x42A00658UL)))
+#define bM4_MPU_RGD12_MPURGADDR18                 (*((volatile unsigned int*)(0x42A0065CUL)))
+#define bM4_MPU_RGD12_MPURGADDR19                 (*((volatile unsigned int*)(0x42A00660UL)))
+#define bM4_MPU_RGD12_MPURGADDR20                 (*((volatile unsigned int*)(0x42A00664UL)))
+#define bM4_MPU_RGD12_MPURGADDR21                 (*((volatile unsigned int*)(0x42A00668UL)))
+#define bM4_MPU_RGD12_MPURGADDR22                 (*((volatile unsigned int*)(0x42A0066CUL)))
+#define bM4_MPU_RGD12_MPURGADDR23                 (*((volatile unsigned int*)(0x42A00670UL)))
+#define bM4_MPU_RGD12_MPURGADDR24                 (*((volatile unsigned int*)(0x42A00674UL)))
+#define bM4_MPU_RGD12_MPURGADDR25                 (*((volatile unsigned int*)(0x42A00678UL)))
+#define bM4_MPU_RGD12_MPURGADDR26                 (*((volatile unsigned int*)(0x42A0067CUL)))
+#define bM4_MPU_RGD13_MPURGSIZE0                  (*((volatile unsigned int*)(0x42A00680UL)))
+#define bM4_MPU_RGD13_MPURGSIZE1                  (*((volatile unsigned int*)(0x42A00684UL)))
+#define bM4_MPU_RGD13_MPURGSIZE2                  (*((volatile unsigned int*)(0x42A00688UL)))
+#define bM4_MPU_RGD13_MPURGSIZE3                  (*((volatile unsigned int*)(0x42A0068CUL)))
+#define bM4_MPU_RGD13_MPURGSIZE4                  (*((volatile unsigned int*)(0x42A00690UL)))
+#define bM4_MPU_RGD13_MPURGADDR0                  (*((volatile unsigned int*)(0x42A00694UL)))
+#define bM4_MPU_RGD13_MPURGADDR1                  (*((volatile unsigned int*)(0x42A00698UL)))
+#define bM4_MPU_RGD13_MPURGADDR2                  (*((volatile unsigned int*)(0x42A0069CUL)))
+#define bM4_MPU_RGD13_MPURGADDR3                  (*((volatile unsigned int*)(0x42A006A0UL)))
+#define bM4_MPU_RGD13_MPURGADDR4                  (*((volatile unsigned int*)(0x42A006A4UL)))
+#define bM4_MPU_RGD13_MPURGADDR5                  (*((volatile unsigned int*)(0x42A006A8UL)))
+#define bM4_MPU_RGD13_MPURGADDR6                  (*((volatile unsigned int*)(0x42A006ACUL)))
+#define bM4_MPU_RGD13_MPURGADDR7                  (*((volatile unsigned int*)(0x42A006B0UL)))
+#define bM4_MPU_RGD13_MPURGADDR8                  (*((volatile unsigned int*)(0x42A006B4UL)))
+#define bM4_MPU_RGD13_MPURGADDR9                  (*((volatile unsigned int*)(0x42A006B8UL)))
+#define bM4_MPU_RGD13_MPURGADDR10                 (*((volatile unsigned int*)(0x42A006BCUL)))
+#define bM4_MPU_RGD13_MPURGADDR11                 (*((volatile unsigned int*)(0x42A006C0UL)))
+#define bM4_MPU_RGD13_MPURGADDR12                 (*((volatile unsigned int*)(0x42A006C4UL)))
+#define bM4_MPU_RGD13_MPURGADDR13                 (*((volatile unsigned int*)(0x42A006C8UL)))
+#define bM4_MPU_RGD13_MPURGADDR14                 (*((volatile unsigned int*)(0x42A006CCUL)))
+#define bM4_MPU_RGD13_MPURGADDR15                 (*((volatile unsigned int*)(0x42A006D0UL)))
+#define bM4_MPU_RGD13_MPURGADDR16                 (*((volatile unsigned int*)(0x42A006D4UL)))
+#define bM4_MPU_RGD13_MPURGADDR17                 (*((volatile unsigned int*)(0x42A006D8UL)))
+#define bM4_MPU_RGD13_MPURGADDR18                 (*((volatile unsigned int*)(0x42A006DCUL)))
+#define bM4_MPU_RGD13_MPURGADDR19                 (*((volatile unsigned int*)(0x42A006E0UL)))
+#define bM4_MPU_RGD13_MPURGADDR20                 (*((volatile unsigned int*)(0x42A006E4UL)))
+#define bM4_MPU_RGD13_MPURGADDR21                 (*((volatile unsigned int*)(0x42A006E8UL)))
+#define bM4_MPU_RGD13_MPURGADDR22                 (*((volatile unsigned int*)(0x42A006ECUL)))
+#define bM4_MPU_RGD13_MPURGADDR23                 (*((volatile unsigned int*)(0x42A006F0UL)))
+#define bM4_MPU_RGD13_MPURGADDR24                 (*((volatile unsigned int*)(0x42A006F4UL)))
+#define bM4_MPU_RGD13_MPURGADDR25                 (*((volatile unsigned int*)(0x42A006F8UL)))
+#define bM4_MPU_RGD13_MPURGADDR26                 (*((volatile unsigned int*)(0x42A006FCUL)))
+#define bM4_MPU_RGD14_MPURGSIZE0                  (*((volatile unsigned int*)(0x42A00700UL)))
+#define bM4_MPU_RGD14_MPURGSIZE1                  (*((volatile unsigned int*)(0x42A00704UL)))
+#define bM4_MPU_RGD14_MPURGSIZE2                  (*((volatile unsigned int*)(0x42A00708UL)))
+#define bM4_MPU_RGD14_MPURGSIZE3                  (*((volatile unsigned int*)(0x42A0070CUL)))
+#define bM4_MPU_RGD14_MPURGSIZE4                  (*((volatile unsigned int*)(0x42A00710UL)))
+#define bM4_MPU_RGD14_MPURGADDR0                  (*((volatile unsigned int*)(0x42A00714UL)))
+#define bM4_MPU_RGD14_MPURGADDR1                  (*((volatile unsigned int*)(0x42A00718UL)))
+#define bM4_MPU_RGD14_MPURGADDR2                  (*((volatile unsigned int*)(0x42A0071CUL)))
+#define bM4_MPU_RGD14_MPURGADDR3                  (*((volatile unsigned int*)(0x42A00720UL)))
+#define bM4_MPU_RGD14_MPURGADDR4                  (*((volatile unsigned int*)(0x42A00724UL)))
+#define bM4_MPU_RGD14_MPURGADDR5                  (*((volatile unsigned int*)(0x42A00728UL)))
+#define bM4_MPU_RGD14_MPURGADDR6                  (*((volatile unsigned int*)(0x42A0072CUL)))
+#define bM4_MPU_RGD14_MPURGADDR7                  (*((volatile unsigned int*)(0x42A00730UL)))
+#define bM4_MPU_RGD14_MPURGADDR8                  (*((volatile unsigned int*)(0x42A00734UL)))
+#define bM4_MPU_RGD14_MPURGADDR9                  (*((volatile unsigned int*)(0x42A00738UL)))
+#define bM4_MPU_RGD14_MPURGADDR10                 (*((volatile unsigned int*)(0x42A0073CUL)))
+#define bM4_MPU_RGD14_MPURGADDR11                 (*((volatile unsigned int*)(0x42A00740UL)))
+#define bM4_MPU_RGD14_MPURGADDR12                 (*((volatile unsigned int*)(0x42A00744UL)))
+#define bM4_MPU_RGD14_MPURGADDR13                 (*((volatile unsigned int*)(0x42A00748UL)))
+#define bM4_MPU_RGD14_MPURGADDR14                 (*((volatile unsigned int*)(0x42A0074CUL)))
+#define bM4_MPU_RGD14_MPURGADDR15                 (*((volatile unsigned int*)(0x42A00750UL)))
+#define bM4_MPU_RGD14_MPURGADDR16                 (*((volatile unsigned int*)(0x42A00754UL)))
+#define bM4_MPU_RGD14_MPURGADDR17                 (*((volatile unsigned int*)(0x42A00758UL)))
+#define bM4_MPU_RGD14_MPURGADDR18                 (*((volatile unsigned int*)(0x42A0075CUL)))
+#define bM4_MPU_RGD14_MPURGADDR19                 (*((volatile unsigned int*)(0x42A00760UL)))
+#define bM4_MPU_RGD14_MPURGADDR20                 (*((volatile unsigned int*)(0x42A00764UL)))
+#define bM4_MPU_RGD14_MPURGADDR21                 (*((volatile unsigned int*)(0x42A00768UL)))
+#define bM4_MPU_RGD14_MPURGADDR22                 (*((volatile unsigned int*)(0x42A0076CUL)))
+#define bM4_MPU_RGD14_MPURGADDR23                 (*((volatile unsigned int*)(0x42A00770UL)))
+#define bM4_MPU_RGD14_MPURGADDR24                 (*((volatile unsigned int*)(0x42A00774UL)))
+#define bM4_MPU_RGD14_MPURGADDR25                 (*((volatile unsigned int*)(0x42A00778UL)))
+#define bM4_MPU_RGD14_MPURGADDR26                 (*((volatile unsigned int*)(0x42A0077CUL)))
+#define bM4_MPU_RGD15_MPURGSIZE0                  (*((volatile unsigned int*)(0x42A00780UL)))
+#define bM4_MPU_RGD15_MPURGSIZE1                  (*((volatile unsigned int*)(0x42A00784UL)))
+#define bM4_MPU_RGD15_MPURGSIZE2                  (*((volatile unsigned int*)(0x42A00788UL)))
+#define bM4_MPU_RGD15_MPURGSIZE3                  (*((volatile unsigned int*)(0x42A0078CUL)))
+#define bM4_MPU_RGD15_MPURGSIZE4                  (*((volatile unsigned int*)(0x42A00790UL)))
+#define bM4_MPU_RGD15_MPURGADDR0                  (*((volatile unsigned int*)(0x42A00794UL)))
+#define bM4_MPU_RGD15_MPURGADDR1                  (*((volatile unsigned int*)(0x42A00798UL)))
+#define bM4_MPU_RGD15_MPURGADDR2                  (*((volatile unsigned int*)(0x42A0079CUL)))
+#define bM4_MPU_RGD15_MPURGADDR3                  (*((volatile unsigned int*)(0x42A007A0UL)))
+#define bM4_MPU_RGD15_MPURGADDR4                  (*((volatile unsigned int*)(0x42A007A4UL)))
+#define bM4_MPU_RGD15_MPURGADDR5                  (*((volatile unsigned int*)(0x42A007A8UL)))
+#define bM4_MPU_RGD15_MPURGADDR6                  (*((volatile unsigned int*)(0x42A007ACUL)))
+#define bM4_MPU_RGD15_MPURGADDR7                  (*((volatile unsigned int*)(0x42A007B0UL)))
+#define bM4_MPU_RGD15_MPURGADDR8                  (*((volatile unsigned int*)(0x42A007B4UL)))
+#define bM4_MPU_RGD15_MPURGADDR9                  (*((volatile unsigned int*)(0x42A007B8UL)))
+#define bM4_MPU_RGD15_MPURGADDR10                 (*((volatile unsigned int*)(0x42A007BCUL)))
+#define bM4_MPU_RGD15_MPURGADDR11                 (*((volatile unsigned int*)(0x42A007C0UL)))
+#define bM4_MPU_RGD15_MPURGADDR12                 (*((volatile unsigned int*)(0x42A007C4UL)))
+#define bM4_MPU_RGD15_MPURGADDR13                 (*((volatile unsigned int*)(0x42A007C8UL)))
+#define bM4_MPU_RGD15_MPURGADDR14                 (*((volatile unsigned int*)(0x42A007CCUL)))
+#define bM4_MPU_RGD15_MPURGADDR15                 (*((volatile unsigned int*)(0x42A007D0UL)))
+#define bM4_MPU_RGD15_MPURGADDR16                 (*((volatile unsigned int*)(0x42A007D4UL)))
+#define bM4_MPU_RGD15_MPURGADDR17                 (*((volatile unsigned int*)(0x42A007D8UL)))
+#define bM4_MPU_RGD15_MPURGADDR18                 (*((volatile unsigned int*)(0x42A007DCUL)))
+#define bM4_MPU_RGD15_MPURGADDR19                 (*((volatile unsigned int*)(0x42A007E0UL)))
+#define bM4_MPU_RGD15_MPURGADDR20                 (*((volatile unsigned int*)(0x42A007E4UL)))
+#define bM4_MPU_RGD15_MPURGADDR21                 (*((volatile unsigned int*)(0x42A007E8UL)))
+#define bM4_MPU_RGD15_MPURGADDR22                 (*((volatile unsigned int*)(0x42A007ECUL)))
+#define bM4_MPU_RGD15_MPURGADDR23                 (*((volatile unsigned int*)(0x42A007F0UL)))
+#define bM4_MPU_RGD15_MPURGADDR24                 (*((volatile unsigned int*)(0x42A007F4UL)))
+#define bM4_MPU_RGD15_MPURGADDR25                 (*((volatile unsigned int*)(0x42A007F8UL)))
+#define bM4_MPU_RGD15_MPURGADDR26                 (*((volatile unsigned int*)(0x42A007FCUL)))
 #define bM4_MPU_RGCR0_S2RG0RP                     (*((volatile unsigned int*)(0x42A00800UL)))
 #define bM4_MPU_RGCR0_S2RG0WP                     (*((volatile unsigned int*)(0x42A00804UL)))
 #define bM4_MPU_RGCR0_S2RG0E                      (*((volatile unsigned int*)(0x42A0081CUL)))

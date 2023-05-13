@@ -370,7 +370,7 @@ en_can_rx_buf_status_t CAN_Receive(stc_can_rxframe_t *pstcRxFrame)
 
         M4_CAN->RCTRL_f.RREL = 1u;
     }
-    return (en_can_rx_buf_status_t)M4_CAN->RCTRL_f.RSSTAT;
+    return (en_can_rx_buf_status_t)M4_CAN->RCTRL_f.RSTAT;
 }
 
 

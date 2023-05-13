@@ -333,7 +333,7 @@ en_result_t OTS_ScalingExperiment(uint16_t *pu16Dr1, uint16_t *pu16Dr2, \
                 f32Ecr   = 1.0f;
             }
 
-            if ((*pu16Dr1 != 0U) && (*pu16Dr2 != 0U) && (*pu16Ecr != 0U))
+            if ((f32Dr1 != 0.f) && (f32Dr2 != 0.f) && (f32Ecr != 0.f))
             {
                 *pf32A = ((1.0f / f32Dr1) - (1.0f / f32Dr2)) * f32Ecr;
             }
@@ -365,7 +365,7 @@ float OTS_CalculateTemp(void)
         f32Ecr = 1.0f;
     }
 
-    if ((u16Dr1 != 0U) && (u16Dr2 != 0U) && (u16Ecr != 0U))
+    if ((f32Dr1 != 0.f) && (f32Dr2 != 0.f) && (f32Ecr != 0.f))
     {
         f32Ret = m_f32SlopeK * ((1.0f / f32Dr1) - (1.0f / f32Dr2)) * f32Ecr + m_f32OffsetM;
     }

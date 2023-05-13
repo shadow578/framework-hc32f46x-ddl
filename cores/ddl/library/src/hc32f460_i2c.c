@@ -265,8 +265,8 @@ void I2C_GenerateStop(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewState
  **                                 according to i2c bus hardware parameter.
  **                     dnfsum   -- 0 if digital filter off;
  **                                 Filter capacity if digital filter on(1 ~ 4)
- **              step2: chose a division item which is similar and bigger than div
- **                     from @ref I2C_Clock_Division.
+ **              step2: chose a division item which is similar and bigger than div,
+ **                     from I2C_Clock_Division in i2c driver head file.
  **           2. pstcI2cInit->u32Baudrate : Baudrate configuration
  **           3. pstcI2cInit->u32SclTime : Indicate SCL pin rising and falling
  **              time, should be number of T(i2c clock period time)
@@ -397,8 +397,8 @@ en_result_t I2C_DeInit(M4_I2C_TypeDef* pstcI2Cx)
  **                                 according to i2c bus hardware parameter.
  **                     dnfsum   -- 0 if digital filter off;
  **                                 Filter capacity if digital filter on(1 ~ 4)
- **              step2: chose a division item which is similar and bigger than div
- **                     from @ref I2C_Clock_Division.
+ **              step2: chose a division item which is similar and bigger than div,
+ **                     from I2C_Clock_Division in i2c driver head file.
  **           2. pstcI2cInit->u32Baudrate : Baudrate configuration
  **           3. pstcI2cInit->u32SclTime : Indicate SCL pin rising and falling
  **              time, should be number of T(i2c clock period time)
@@ -549,17 +549,16 @@ void I2C_FastAckCmd(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewState)
  ******************************************************************************/
 void I2C_BusWaitCmd(M4_I2C_TypeDef* pstcI2Cx, en_functional_state_t enNewState)
 {
-    uint32_t u32CR4_Reg = ((uint32_t)&pstcI2Cx->CR3) + 4ul;
     DDL_ASSERT(IS_VALID_UNIT(pstcI2Cx));
     DDL_ASSERT(IS_FUNCTIONAL_STATE(enNewState));
 
     if(Enable == enNewState)
     {
-        *(__IO uint32_t *)u32CR4_Reg |= (1ul << 10ul);
+        pstcI2Cx->CR4_f.BUSWAIT = 1ul;
     }
     else
     {
-        *(__IO uint32_t *)u32CR4_Reg &= ~(1ul << 10ul);
+        pstcI2Cx->CR4_f.BUSWAIT = 0ul;
     }
 }
 

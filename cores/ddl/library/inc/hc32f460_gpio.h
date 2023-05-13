@@ -275,6 +275,7 @@ extern en_result_t PORT_OE(en_port_t enPort, uint16_t u16Pin, en_functional_stat
 extern en_result_t PORT_SetBits(en_port_t enPort, uint16_t u16Pin);
 extern en_result_t PORT_ResetBits(en_port_t enPort, uint16_t u16Pin);
 extern en_result_t PORT_Toggle(en_port_t enPort, uint16_t u16Pin);
+extern en_result_t PORT_AlwaysOn(en_port_t enPort, en_functional_state_t enNewState);
 extern en_result_t PORT_SetFunc(en_port_t enPort, uint16_t u16Pin,              \
                         en_port_func_t enFuncSel, en_functional_state_t enSubFunc);
 extern en_result_t PORT_SetSubFunc(en_port_func_t enFuncSel);

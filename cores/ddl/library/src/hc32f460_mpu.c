@@ -154,7 +154,7 @@ en_result_t MPU_ProtRegionInit(en_mpu_region_num_t enRegionNum,
 {
     en_result_t enRet = ErrorInvalidParameter;
     uint32_t u32WriteProt = M4_MPU->WP;
-    stc_mpu_rgd0_field_t *RGD_f = NULL;
+    stc_mpu_rgd_field_t *RGD_f = NULL;
     stc_mpu_rgcr0_field_t *RGCR_f = NULL;
 
     /* Check pointer parameters */
@@ -182,7 +182,7 @@ en_result_t MPU_ProtRegionInit(en_mpu_region_num_t enRegionNum,
             M4_MPU->WP = (MPU_WRITE_PROT_KEY | 1ul);
 
             /*  Get RGD && RGCR register address */
-            RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
+            RGD_f = (stc_mpu_rgd_field_t *)MPU_RGDx(enRegionNum);
             RGCR_f = (stc_mpu_rgcr0_field_t *)MPU_RGCRx(enRegionNum);
 
             /* Disable region protection function */
@@ -191,10 +191,10 @@ en_result_t MPU_ProtRegionInit(en_mpu_region_num_t enRegionNum,
             RGCR_f->S2RG0E = (uint32_t)0ul;
 
             /* Set region size */
-            RGD_f->MPURG0SIZE = (uint32_t)(pstcInitCfg->enRegionSize);
+            RGD_f->MPURGSIZE = (uint32_t)(pstcInitCfg->enRegionSize);
 
             /* Set region base address */
-            RGD_f->MPURG0ADDR = (pstcInitCfg->u32RegionBaseAddress >> MPU_RGD_RGADDR_Pos);
+            RGD_f->MPURGADDR = (pstcInitCfg->u32RegionBaseAddress >> MPU_RGD_RGADDR_Pos);
 
             /* Set region FMPU */
             RGCR_f->FRG0RP = (pstcInitCfg->stcFMPUPermission.enReadEnable) ? 0ul : 1ul;
@@ -290,13 +290,13 @@ en_result_t MPU_BkgdRegionInit(const stc_mpu_bkgd_region_init_t *pstcInitCfg)
 en_result_t MPU_SetRegionSize(en_mpu_region_num_t enRegionNum,
                                 en_mpu_region_size_t enRegionSize)
 {
-    stc_mpu_rgd0_field_t *RGD_f = NULL;
+    stc_mpu_rgd_field_t *RGD_f = NULL;
 
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
     DDL_ASSERT(IS_VALID_MPU_REGION_SIZE(enRegionSize));
 
-    RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
-    RGD_f->MPURG0SIZE = (uint32_t)enRegionSize;
+    RGD_f = (stc_mpu_rgd_field_t *)MPU_RGDx(enRegionNum);
+    RGD_f->MPURGSIZE = (uint32_t)enRegionSize;
 
     return Ok;
 }
@@ -313,13 +313,13 @@ en_result_t MPU_SetRegionSize(en_mpu_region_num_t enRegionNum,
  ******************************************************************************/
 en_mpu_region_size_t MPU_GetRegionSize(en_mpu_region_num_t enRegionNum)
 {
-    stc_mpu_rgd0_field_t *RGD_f = NULL;
+    stc_mpu_rgd_field_t *RGD_f = NULL;
 
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
 
-    RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
+    RGD_f = (stc_mpu_rgd_field_t *)MPU_RGDx(enRegionNum);
 
-    return (en_mpu_region_size_t)(RGD_f->MPURG0SIZE);
+    return (en_mpu_region_size_t)(RGD_f->MPURGSIZE);
 }
 
 /**
@@ -336,12 +336,12 @@ en_mpu_region_size_t MPU_GetRegionSize(en_mpu_region_num_t enRegionNum)
 en_result_t MPU_SetRegionBaseAddress(en_mpu_region_num_t enRegionNum,
                                 uint32_t u32RegionBaseAddr)
 {
-    stc_mpu_rgd0_field_t *RGD_f = NULL;
+    stc_mpu_rgd_field_t *RGD_f = NULL;
 
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
 
-    RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
-    RGD_f->MPURG0ADDR = (u32RegionBaseAddr >> MPU_RGD_RGADDR_Pos);
+    RGD_f = (stc_mpu_rgd_field_t *)MPU_RGDx(enRegionNum);
+    RGD_f->MPURGADDR = (u32RegionBaseAddr >> MPU_RGD_RGADDR_Pos);
 
     return Ok;
 }
@@ -358,13 +358,13 @@ s **
  ******************************************************************************/
 uint32_t MPU_GetRegionBaseAddress(en_mpu_region_num_t enRegionNum)
 {
-    stc_mpu_rgd0_field_t *RGD_f = NULL;
+    stc_mpu_rgd_field_t *RGD_f = NULL;
 
     DDL_ASSERT(IS_VALID_MPU_REGION_NUM(enRegionNum));
 
-    RGD_f = (stc_mpu_rgd0_field_t *)MPU_RGDx(enRegionNum);
+    RGD_f = (stc_mpu_rgd_field_t *)MPU_RGDx(enRegionNum);
 
-    return (RGD_f->MPURG0ADDR << MPU_RGD_RGADDR_Pos);
+    return (RGD_f->MPURGADDR << MPU_RGD_RGADDR_Pos);
 }
 
 /**

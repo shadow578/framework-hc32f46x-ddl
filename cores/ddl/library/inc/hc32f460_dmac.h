@@ -174,6 +174,20 @@ typedef enum en_dma_ch_flag
 
 /**
  *******************************************************************************
+ ** \brief DMA request status
+ **
+ ******************************************************************************/
+typedef enum en_dma_req_status
+{
+    ReCfgReqSta                     = 0u,   ///< DMA re_configuration request.
+    DmaCh0ReqSta                    = 1u,   ///< DMA channel 0 transfer request status.
+    DmaCh1ReqSta                    = 2u,   ///< DMA channel 1 transfer request status.
+    DmaCh2ReqSta                    = 3u,   ///< DMA channel 2 transfer request status.
+    DmaCh3ReqSta                    = 4u,   ///< DMA channel 3 transfer request status.
+}en_dma_req_status_t;
+
+/**
+ *******************************************************************************
  ** \brief  DMA common trigger source select
  **
  ******************************************************************************/
@@ -221,7 +235,7 @@ typedef struct stc_dma_llp_descriptor
     union
     {
         uint32_t CHxCTL;
-        stc_dma_ch0ctl_field_t CHxCTL_f;       ///< DMA channel control register
+        stc_dma_chctl_field_t CHxCTL_f;        ///< DMA channel control register
     };
 }stc_dma_llp_descriptor_t;
 
@@ -322,6 +336,7 @@ en_result_t DMA_ChannelCmd(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_function
 void DMA_InitReConfig(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, const stc_dma_recfg_ctl_t* pstcDmaReCfg);
 void DMA_ReCfgCmd(M4_DMA_TypeDef* pstcDmaReg,en_functional_state_t enNewState);
 en_flag_status_t DMA_GetChFlag(M4_DMA_TypeDef* pstcDmaReg, en_dma_ch_flag_t enDmaChFlag);
+en_flag_status_t DMA_GetReqStatus(M4_DMA_TypeDef* pstcDmaReg, en_dma_req_status_t enDmaReqStatus);
 
 en_result_t DMA_SetSrcAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Address);
 en_result_t DMA_SetDesAddress(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Address);
@@ -336,6 +351,17 @@ en_result_t DMA_SetSrcNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, const s
 en_result_t DMA_SetDesNseqCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, const stc_dma_nseq_cfg_t* pstDesNseqCfg);
 en_result_t DMA_SetDesNseqBCfg(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, const stc_dma_nseqb_cfg_t* pstDesNseqBCfg);
 en_result_t DMA_SetLLP(M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, uint32_t u32Pointer);
+
+uint32_t DMA_GetSrcAddr(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetDesAddr(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetTransferCnt(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetBlockSize(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetSrcRptSize(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetDesRptSize(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetSrcNSeqCount(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetDesNSeqCount(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetSrcNSeqOffset(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
+uint32_t DMA_GetDesNSeqOffset(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch);
 
 void DMA_SetTriggerSrc(const M4_DMA_TypeDef* pstcDmaReg, uint8_t u8Ch, en_event_src_t enSrc);
 void DMA_SetReConfigTriggerSrc(en_event_src_t enSrc);

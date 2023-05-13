@@ -270,7 +270,7 @@ void PWC_PowerModeCfg(const stc_pwc_pwr_mode_cfg_t* pstcPwrMdCfg)
                            (uint8_t)(((Enable == pstcPwrMdCfg->enRetSram) ? 0u : 1u) << 3u) |
                            (pstcPwrMdCfg->enIoRetain << 4u));
 
-    M4_SYSREG->PWR_PWRC3 = (pstcPwrMdCfg->enPwrDWkupTm | (0x03));
+    M4_SYSREG->PWR_PWRC3 = (pstcPwrMdCfg->enPwrDWkupTm | (0x03)) << 2u;
 
     DISABLE_PWR_REG_WRITE();
 }

@@ -838,7 +838,7 @@ en_cmp_output_state_t CMP_GetOutputState(M4_CMP_TypeDef *CMPx)
     /* Check parameter */
     DDL_ASSERT(IS_VALID_CMP(CMPx));
 
-    return (en_cmp_output_state_t)(CMPx->MON_f.OMON);
+    return (en_cmp_output_state_t)(CMPx->OUTMON_f.OMON);
 }
 
 /**
@@ -859,7 +859,7 @@ en_cmp_inp_state_t CMP_GetInpState(M4_CMP_TypeDef *CMPx)
     /* Check parameter */
     DDL_ASSERT(IS_VALID_CMP(CMPx));
 
-    return (en_cmp_inp_state_t)(CMPx->MON_f.CVST);
+    return (en_cmp_inp_state_t)(CMPx->OUTMON_f.CVST);
 }
 
 /**

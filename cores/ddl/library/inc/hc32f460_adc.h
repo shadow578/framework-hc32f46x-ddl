@@ -422,16 +422,16 @@ typedef struct stc_adc_init
 * PGA channel definition.
 * NOTE: The PGA channel directly maps external pins and does not correspond to the ADC channel.
 */
-#define PGA_CH0                 (0x1ul << ADC1_IN0)     ///< Mapping pin ADC1_IN0
-#define PGA_CH1                 (0x1ul << ADC1_IN1)     ///< Mapping pin ADC1_IN1
-#define PGA_CH2                 (0x1ul << ADC1_IN2)     ///< Mapping pin ADC1_IN2
-#define PGA_CH3                 (0x1ul << ADC1_IN3)     ///< Mapping pin ADC1_IN3
-#define PGA_CH4                 (0x1ul << ADC12_IN4)    ///< Mapping pin ADC12_IN4
-#define PGA_CH5                 (0x1ul << ADC12_IN5)    ///< Mapping pin ADC12_IN5
-#define PGA_CH6                 (0x1ul << ADC12_IN6)    ///< Mapping pin ADC12_IN6
-#define PGA_CH7                 (0x1ul << ADC12_IN7)    ///< Mapping pin ADC12_IN7
-#define PGA_CH8                 (0x1ul << ADC12_IN8)    ///< Mapping internal 8bit DAC1 output
-#define PGA_CH_ALL              (0x000001FFul)
+#define PGA_CH_NONE             (0x0000u)           ///< PGA channel none selection.
+#define PGA_CH0                 (0x0001u)           ///< Mapping pin ADC1_IN0
+#define PGA_CH1                 (0x0002u)           ///< Mapping pin ADC1_IN1
+#define PGA_CH2                 (0x0004u)           ///< Mapping pin ADC1_IN2
+#define PGA_CH3                 (0x0008u)           ///< Mapping pin ADC1_IN3
+#define PGA_CH4                 (0x0010u)           ///< Mapping pin ADC12_IN4
+#define PGA_CH5                 (0x0020u)           ///< Mapping pin ADC12_IN5
+#define PGA_CH6                 (0x0040u)           ///< Mapping pin ADC12_IN6
+#define PGA_CH7                 (0x0080u)           ///< Mapping pin ADC12_IN7
+#define PGA_CH8                 (0x0100u)           ///< Mapping internal 8bit DAC1 output
 
 /* ADC1 has up to 17 channels */
 #define ADC1_CH_COUNT           (17u)
@@ -471,8 +471,7 @@ en_result_t ADC_DelAwdChannel(M4_ADC_TypeDef *ADCx, uint32_t u32Channel);
 
 void ADC_ConfigPga(en_adc_pga_factor_t enFactor, en_adc_pga_negative_t enNegativeIn);
 void ADC_PgaCmd(en_functional_state_t enState);
-void ADC_AddPgaChannel(uint32_t u32Channel);
-void ADC_DelPgaChannel(uint32_t u32Channel);
+void ADC_PgaSelChannel(uint16_t u16Channel);
 
 void ADC_ConfigSync(en_adc_sync_mode_t enMode, uint8_t u8TrgDelay);
 void ADC_SyncCmd(en_functional_state_t enState);

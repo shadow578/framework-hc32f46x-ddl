@@ -183,7 +183,7 @@ bool CRC_Check16B(uint16_t u16InitVal, uint16_t u16Checksum, const uint16_t *pu1
 
         M4_CRC16_DAT = u16CrcChecksum;
 
-        if (bM4_CRC_FLG_FLAG)
+        if (bM4_CRC_RESLT_CRCFLAG_16)
         {
             bRet = true;
         }

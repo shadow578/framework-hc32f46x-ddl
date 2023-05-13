@@ -205,6 +205,15 @@
     (SpiFlagSpiIdle == (x))                     ||                             \
     (SpiFlagOverloadError == (x)))
 
+/*!< Parameter valid check for clear flag type */
+#define IS_VALID_CLR_FLAG_TYPE(x)                                              \
+(   (SpiFlagReceiveBufferFull == (x))           ||                             \
+    (SpiFlagSendBufferEmpty == (x))             ||                             \
+    (SpiFlagUnderloadError == (x))              ||                             \
+    (SpiFlagParityError == (x))                 ||                             \
+    (SpiFlagModeFaultError == (x))              ||                             \
+    (SpiFlagOverloadError == (x)))
+
 /*!< SPI registers reset value */
 #define SPI_REG_DR_RESET_VALUE                  0x00000000ul
 #define SPI_REG_CR1_RESET_VALUE                 0x00000000ul
@@ -1074,7 +1083,6 @@ en_flag_status_t SPI_GetFlag(M4_SPI_TypeDef *SPIx, en_spi_flag_type_t enFlag)
  ** \arg SpiFlagUnderloadError          Underload error flag
  ** \arg SpiFlagParityError             Parity error flag
  ** \arg SpiFlagModeFaultError          Mode fault error flag
- ** \arg SpiFlagSpiIdle                 SPI empty flag
  ** \arg SpiFlagOverloadErro            Overload error flag
  **
  ** \retval Ok                          Process successfully done
@@ -1089,7 +1097,7 @@ en_result_t SPI_ClearFlag(M4_SPI_TypeDef *SPIx, en_spi_flag_type_t enFlag)
     /* Check parameters */
     if(IS_VALID_SPI_UNIT(SPIx))
     {
-        DDL_ASSERT(IS_VALID_FLAG_TYPE(enFlag));
+        DDL_ASSERT(IS_VALID_CLR_FLAG_TYPE(enFlag));
 
         switch (enFlag)
         {
@@ -1107,9 +1115,6 @@ en_result_t SPI_ClearFlag(M4_SPI_TypeDef *SPIx, en_spi_flag_type_t enFlag)
                 break;
             case SpiFlagModeFaultError:
                 SPIx->SR_f.MODFERF = 0u;
-                break;
-            case SpiFlagSpiIdle:
-                SPIx->SR_f.IDLNF = 0u;
                 break;
             case SpiFlagOverloadError:
                 SPIx->SR_f.OVRERF = 0u;

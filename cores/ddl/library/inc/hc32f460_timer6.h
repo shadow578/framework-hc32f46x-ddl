@@ -495,7 +495,6 @@ typedef struct stc_timer6_port_trig_cfg
  ******************************************************************************/
 typedef struct stc_timer6_port_output_cfg
 {
-    en_timer6_func_mode_t      enPortMode; ///< Port mode
     bool                       bOutEn;     ///< Output enable / disable
     en_timer6_pconr_cmpc_t     enPerc;     ///< Port state when counter match the period
     en_timer6_pconr_cmpc_t     enCmpc;     ///< Port state when counter match GCMAR(GCMBR)
@@ -513,8 +512,6 @@ typedef struct stc_timer6_port_output_cfg
  ******************************************************************************/
 typedef struct stc_timer6_port_input_cfg
 {
-    en_timer6_input_port_t     enPortSel;      ///< Port select
-    en_timer6_func_mode_t      enPortMode;     ///< Port mode
     bool                       bFltEn;         ///< trig source capture input filter enable
     en_timer6_fconr_fltclk_t   enFltClk;       ///< Filter clock
 }stc_timer6_port_input_cfg_t;
@@ -640,8 +637,10 @@ en_result_t Timer6_SetSpecialBuf(M4_TMR6_TypeDef *TMR6x,en_timer6_special_compar
 /* Timer6 unit Set valid period Value*/
 en_result_t Timer6_SetValidPeriod(M4_TMR6_TypeDef *TMR6x, const stc_timer6_validper_cfg_t* pstcTimer6ValidPerCfg);
 
+/* Config channel mode, capture or output */
+void Timer6_SetFunc(M4_TMR6_TypeDef *TMR6x, en_timer6_chx_port_t enTimer6PWMPort, en_timer6_func_mode_t enMode);
 /* Config Input prot and filter function */
-en_result_t Timer6_PortInputConfig(M4_TMR6_TypeDef *TMR6x, const stc_timer6_port_input_cfg_t* pstcTimer6PortInputCfg);
+en_result_t Timer6_PortInputConfig(M4_TMR6_TypeDef *TMR6x, en_timer6_input_port_t enTimer6InputPort, const stc_timer6_port_input_cfg_t* pstcTimer6PortInputCfg);
 /* Config output prot function */
 en_result_t Timer6_PortOutputConfig(M4_TMR6_TypeDef *TMR6x, en_timer6_chx_port_t enTimer6PWMPort, const stc_timer6_port_output_cfg_t* pstcTimer6PortOutCfg);
 

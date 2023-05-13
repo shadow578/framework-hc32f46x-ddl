@@ -160,6 +160,19 @@
 (   ((N) == AdcPgaNegative_VSSA)                ||                              \
     ((N) == AdcPgaNegative_PGAVSS))
 
+/*! Parameter validity check for ADC PGA channel. */
+#define IS_ADC_PGA_CH(ch)                                                       \
+(   ((ch) == PGA_CH_NONE)                       ||                              \
+    ((ch) == PGA_CH0)                           ||                              \
+    ((ch) == PGA_CH1)                           ||                              \
+    ((ch) == PGA_CH2)                           ||                              \
+    ((ch) == PGA_CH3)                           ||                              \
+    ((ch) == PGA_CH4)                           ||                              \
+    ((ch) == PGA_CH5)                           ||                              \
+    ((ch) == PGA_CH6)                           ||                              \
+    ((ch) == PGA_CH7)                           ||                              \
+    ((ch) == PGA_CH8))
+
 /*! Parameter validity check for ADC trigger source event . */
 #define IS_ADC_TRIG_SRC_EVENT(x)                                                \
 (   ((x) == EVT_PORT_EIRQ0)                                         ||          \
@@ -1082,9 +1095,9 @@ void ADC_PgaCmd(en_functional_state_t enState)
 
 /**
  *******************************************************************************
- ** \brief Add PGA channel(s).
+ ** \brief Select PGA channel.
  **
- ** \param[in] u32Channel               The channel(s), which you want to gain.
+ ** \param[in] u16Channel               The channel, which you want to gain.
  **
  ** \retval None.
  **
@@ -1093,23 +1106,10 @@ void ADC_PgaCmd(en_functional_state_t enState)
  **                                     by function ADC_AddAdcChannel
  **
  ******************************************************************************/
-void ADC_AddPgaChannel(uint32_t u32Channel)
+void ADC_PgaSelChannel(uint16_t u16Channel)
 {
-    M4_ADC1->PGAINSR0 |= ((uint16_t)(u32Channel & PGA_CH_ALL));
-}
-
-/**
- *******************************************************************************
- ** \brief Delete PGA channel(s).
- **
- ** \param[in] u32Channel               The PGA channel(s) which will be deleted.
- **
- ** \retval None.
- **
- ******************************************************************************/
-void ADC_DelPgaChannel(uint32_t u32Channel)
-{
-    M4_ADC1->PGAINSR0 &= (uint16_t)(~u32Channel);
+    DDL_ASSERT(IS_ADC_PGA_CH(u16Channel));
+    M4_ADC1->PGAINSR0 = u16Channel;
 }
 
 /**
@@ -1339,7 +1339,7 @@ en_result_t ADC_PollingSa(M4_ADC_TypeDef *ADCx,
             }
             else
             {
-                u32Channel = (uint32_t)M4_ADC1->CHSELRA0;
+                u32Channel = (uint32_t)M4_ADC2->CHSELRA0;
             }
         }
 

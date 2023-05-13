@@ -1,5 +1,28 @@
 version     date           comment
-2.1.0       Jul 05, 2021   1. Add USB examples.
+2.2.0
+            Oct 11, 2021   1. Update headfile according to user manual Rev1.2.1 and remove redundancy code.
+                           2. Delete parameter 'SpiFlagSpiIdle' in SPI_ClearFlag function.
+                           3. Modify I2C_BusWaitCmd() function according to headfile.
+                           4. Modify CAN_Receive() function according to headfile.
+                           5. Modify CMP_GetxxxState() function according to headfile.
+                           6. Modify PORT_PEVNTTRGSRxx as PEVNTTRGSRxx in event_port.c according to headfile.
+                           7. Modify CH0CTL as CHCTL0 in dma.c and add DMA_GetReqStatus() function to DMA according to headfile.
+                           8. Modify TMR6_HTSSR1/2 as TMR6_HTSSR 0/1 in timer6.c according to headfile.
+                           9. Modify IRQ129_Handler() functions according to headfile.
+
+            Sep 10, 2021   1. Fix bug of ADC_PollingSa(), OTS_CalculateTemp(), OTS_ScalingExperiment().
+                           2. Delete APIs ADC_AddPgaChannel() and ADC_DelPgaChannel(), add API API ADC_PgaSelChannel().
+                           3. Delete error compensation in SysTick_Delay function.
+                           4. Add DMA_Get_xx func.
+                           5. Fix bug on PWC_EnterSleepMd().
+                           6. Add USB host CDC example.
+                           7. Fix bug on Timer6 Timer6_Port/OutputInputConfig
+                           8. Modify for usb host connect and disconnect detect.
+                           9. Add I2C DMA example.
+                           10. Revise some typo.
+
+2.1.0       
+            Jul 05, 2021   1. Add USB examples.
 
             May 24, 2021   1. Modify TMR4/SDIOC driver for old version of hc32f460.h
 
@@ -147,7 +170,7 @@ version     date           comment
 
             Oct  9, 2019   1. Modified Set function(transfer count, block size, src/dest address etc.) in dma.c
 
-            Sept 27,2019   1. Fixed bug for function CLK_SysClkConfig # CMU_SCFGR register reserved bits 31~28 should be equal with bits 27~24 
+            Sept 27,2019   1. Fixed bug for function CLK_SysClkConfig # CMU_SCFGR register reserved bits 31~28 should be equal with bits 27~24
 
             Sept 25,2019   1. Add examples of Timer6 module.
                            2. Add Trigger source config API of Timer6
@@ -156,7 +179,7 @@ version     date           comment
             Sept 16,2019   1. Modify startup file for KEIL project.
                            2. Fix bug when using KEIL compiler.(USBFS Register GRXSTSP is read for multiple times.)
 
-            Aug 29, 2019   1. modify DDL code for C-STAT and MISRA-2004 warning. 
+            Aug 29, 2019   1. modify DDL code for C-STAT and MISRA-2004 warning.
                            2. add RAM3 wait-time in startup_hc32f46x.s
 
 1.0.4
@@ -178,7 +201,7 @@ version     date           comment
                            3. modify macro UART_DEBUG_PRINTF to hc32f46x_utility.h file
 
             July 2, 2019   1. modified SRAM_Init
-                           2. add SRAM_Init to clk_switch_sysclk sample, mainly setting sram 
+                           2. add SRAM_Init to clk_switch_sysclk sample, mainly setting sram
                               read/write cycle
 
             July 1, 2019   1. Fix bug for I2S_FuncCmd() function.
@@ -189,9 +212,9 @@ version     date           comment
                               add wait running channel disable before DMA_ChannelCmd.
                               modified the functions DMA_SetXx & DMA_ChannelCmd void as en_result_t
 
-            Jun 6, 2019    1. add USB CDC VCP 
+            Jun 6, 2019    1. add USB CDC VCP
                            2. comment assert() in usart baudrate failure case
- 
+
             Jun 3, 2019    1. modify MPU protection regions write/read permission functions
 
             May 29, 2019   1. Add comment to func CLK_GetI2sClkSource in hc32f46x_clk.c
@@ -248,14 +271,14 @@ version     date           comment
 
             Apr 4, 2019    1. recover IS_PLLQ_DIV_VALID, recover CLK_PLLM_MIN as 1u
                            2. add IS_UPLLM_VALID because of upllm 2~24 and pllm 1~24
-                           3. modified func CLK_UpllConfig , IS_PLLM_VALID as 
+                           3. modified func CLK_UpllConfig , IS_PLLM_VALID as
                               IS_UPLLM_VALID and comment pllm between 1M and 24M
                            4. modified CLK_PLLM_MIN as 2u, CLK_PLLN_MAX as 480u
                            5. use IS_PLL_DIV_VALID instead of IS_PLLQ_DIV_VALID
-                           6. modified func CLK_MpllConfig comment, pllsource/pllm 
+                           6. modified func CLK_MpllConfig comment, pllsource/pllm
                               is between 1MHz and 24MHz.
 
-            Apr 1, 2019    1. add EP2 OUT function for HID device 
+            Apr 1, 2019    1. add EP2 OUT function for HID device
 
             Mar 18, 2019   1. update chm file according to src updating
 

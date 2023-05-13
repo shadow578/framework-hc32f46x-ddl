@@ -232,8 +232,8 @@ en_result_t EVENTPORT_DeInit(void)
     EPFALx = (uint32_t)(EP1_BASE + EP1_FAL_BASE);
 
     /* Restore all registers to default value */
-    M4_AOS->PORT_PEVNTTRGSR12 = 0x1FFul;
-    M4_AOS->PORT_PEVNTTRGSR34 = 0x1FFul;
+    M4_AOS->PEVNTTRGSR12 = 0x1FFul;
+    M4_AOS->PEVNTTRGSR34 = 0x1FFul;
     M4_AOS->PEVNTNFCR = 0ul;
     for (u8EPCnt = 0u; u8EPCnt < 4u; u8EPCnt++)
     {
@@ -267,11 +267,11 @@ en_result_t EVENTPORT_SetTriggerSrc(en_event_port_t enEventPort,               \
 
     if ((EventPort1 == enEventPort) || (EventPort2 == enEventPort))
     {
-        M4_AOS->PORT_PEVNTTRGSR12 = enTriggerSrc;
+        M4_AOS->PEVNTTRGSR12 = enTriggerSrc;
     }
     else if ((EventPort3 == enEventPort) || (EventPort4 == enEventPort))
     {
-        M4_AOS->PORT_PEVNTTRGSR34 = enTriggerSrc;
+        M4_AOS->PEVNTTRGSR34 = enTriggerSrc;
     }
     else
     {
@@ -300,7 +300,7 @@ void EVENTPORT_ComTriggerCmd(en_event_port_t enEventPort,                       
     uint32_t u32ComTrig = (uint32_t)enComTrigger;
     __IO uint32_t *TRGSELx;
 
-    TRGSELx = (__IO uint32_t *)((uint32_t)&M4_AOS->PORT_PEVNTTRGSR12 + (4UL * ((uint32_t)enEventPort/2UL)));
+    TRGSELx = (__IO uint32_t *)((uint32_t)&M4_AOS->PEVNTTRGSR12 + (4UL * ((uint32_t)enEventPort/2UL)));
 
     if (NULL != TRGSELx)
     {

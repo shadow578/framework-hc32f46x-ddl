@@ -63,6 +63,13 @@
 #define DDL_CMP_ENABLE DDL_OFF
 #endif
 
+#if defined(DDL_CRC_ENABLE)
+#undef DDL_CRC_ENABLE
+#define DDL_CRC_ENABLE DDL_ON
+#else
+#define DDL_CRC_ENABLE DDL_OFF
+#endif
+
 #if defined(DDL_DCU_ENABLE)
 #undef DDL_DCU_ENABLE
 #define DDL_DCU_ENABLE DDL_ON

@@ -416,7 +416,7 @@ __WEAKDEF en_result_t SysTick_Init(uint32_t u32Freq)
 __WEAKDEF void SysTick_Delay(uint32_t u32Delay)
 {
     const uint32_t tickStart = SysTick_GetTick();
-    uint32_t tickEnd;
+    uint32_t tickEnd = u32Delay;
     uint32_t tickMax;
 
     if (m_u32TickStep != 0UL)
@@ -427,11 +427,6 @@ __WEAKDEF void SysTick_Delay(uint32_t u32Delay)
         {
             tickEnd = tickMax;
         }
-        else
-        {
-            tickEnd = u32Delay + m_u32TickStep;
-        }
-
         while ((SysTick_GetTick() - tickStart) < tickEnd)
         {
         }
