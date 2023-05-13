@@ -1,5 +1,5 @@
 #include "addon_gpio.h"
-#include "hc32f46x_utility.h"
+#include "hc32f460_utility.h"
 
 #if (DDL_GPIO_ENABLE == DDL_ON)
 

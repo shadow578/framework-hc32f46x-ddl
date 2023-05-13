@@ -1,53 +1,64 @@
 /*
  * parameterized linker flag for the HC32F46x SOC.
- * flash, ram, and ret_ram origin and size have to be set as symbols for the linker script, using
+ * flash size and start offset have to be set as symbols for the linker script, using 
  * the '--defsym' ('-Wl,'--defsym=<SYMBOL_NAME>=<SYMBOL_VALUE>'') flag.
+ *
+ * note: previously, ram options were also configurable. 
+ * this was removed to simplify the linker script (all HC32F460 have the same ram anyway)
  */
 
 /* FLASH_START = 0x00000000; */
 /* FLASH_SIZE = 256K; */
-/* RAM_START = 0x1FFF8000; */
-/* RAM_SIZE = 188K; */
-/* RAM_RET_START = 0x200F0000; */
-/* RAM_RET_SIZE = 4K; */
-
 
 /*
- * common
- */
-/* calculate continious memory regions for FLASH */
-FLASH_ISR_ORIGIN = FLASH_START;
-FLASH_ISR_LENGTH = 1024;
-FLASH_ICG_ORIGIN = FLASH_ISR_ORIGIN + FLASH_ISR_LENGTH;
-FLASH_ICG_LENGTH = 32;
-FLASH_MAIN_ORIGIN = FLASH_ICG_ORIGIN + FLASH_ICG_LENGTH;
-FLASH_MAIN_LENGTH = FLASH_SIZE - FLASH_MAIN_ORIGIN;
+;*******************************************************************************
+; * Copyright (C) 2020, Huada Semiconductor Co., Ltd. All rights reserved.
+; *
+; * This software component is licensed by HDSC under BSD 3-Clause license
+; * (the "License"); You may not use this file except in compliance with the
+; * License. You may obtain a copy of the License at:
+; *                    opensource.org/licenses/BSD-3-Clause
+*/
+/*****************************************************************************/
+/*  File        hc32f460xc_flash.ld                                          */
+/*  Abstract    Linker script for HC32F460 Device with                       */
+/*              256KByte FLASH, 192KByte RAM                                 */
+/*  Version     V1.0                                                         */
+/*  Date        2019-03-13                                                   */
+/*****************************************************************************/
 
+/* Use contiguous memory regions for simple. */
 MEMORY
 {
-    FLASH_ISR   (rx): ORIGIN = FLASH_ISR_ORIGIN, LENGTH = FLASH_ISR_LENGTH
-    FLASH_ICG   (rx): ORIGIN = FLASH_ICG_ORIGIN, LENGTH = FLASH_ICG_LENGTH
-    FLASH       (rx): ORIGIN = FLASH_MAIN_ORIGIN, LENGTH = FLASH_MAIN_LENGTH
-    RAM        (rwx): ORIGIN = RAM_START, LENGTH = RAM_SIZE
-    RAM_RET    (rwx): ORIGIN = RAM_RET_START, LENGTH = RAM_RET_START
+    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = FLASH_SIZE
+    OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
+    RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
+    RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
 }
 
 ENTRY(Reset_Handler)
 
 SECTIONS
 {
+    /* 1024 bytes fixed size */
     .vectors :
     {
         KEEP(*(.vectors))
-    } >FLASH_ISR
+        . = 1024;
+    } >FLASH
 
+
+    /* 32 bytes fixed size */
     .icg_sec :
     {
         KEEP(*(.icg_sec))
-    } >FLASH_ICG
+        . = 1024 + 32;
+    } >FLASH
 
+    /* append all other FLASH sections after */
     .text :
     {
+        . = ALIGN(4);
         *(.text)
         *(.text*)
         *(.glue_7)
@@ -56,6 +67,7 @@ SECTIONS
 
         KEEP(*(.init))
         KEEP(*(.fini))
+        . = ALIGN(4);
     } >FLASH
 
     .rodata :
@@ -80,31 +92,48 @@ SECTIONS
 
     .preinit_array :
     {
+        . = ALIGN(4);
         /* preinit data */
-		PROVIDE_HIDDEN (__preinit_array_start = .);
-		KEEP(*(.preinit_array))
-		PROVIDE_HIDDEN (__preinit_array_end = .);
+        PROVIDE_HIDDEN (__preinit_array_start = .);
+        KEEP(*(.preinit_array))
+        PROVIDE_HIDDEN (__preinit_array_end = .);
+        . = ALIGN(4);
     } >FLASH
 
     .init_array :
     {
+        . = ALIGN(4);
         /* init data */
-		PROVIDE_HIDDEN (__init_array_start = .);
-		KEEP(*(SORT(.init_array.*)))
-		KEEP(*(.init_array))
-		PROVIDE_HIDDEN (__init_array_end = .);
+        PROVIDE_HIDDEN (__init_array_start = .);
+        KEEP(*(SORT(.init_array.*)))
+        KEEP(*(.init_array))
+        PROVIDE_HIDDEN (__init_array_end = .);
+        . = ALIGN(4);
     } >FLASH
 
     .fini_array :
     {
+        . = ALIGN(4);
         /* finit data */
-		PROVIDE_HIDDEN (__fini_array_start = .);
-		KEEP(*(SORT(.fini_array.*)))
-		KEEP(*(.fini_array))
-		PROVIDE_HIDDEN (__fini_array_end = .);
+        PROVIDE_HIDDEN (__fini_array_start = .);
+        KEEP(*(SORT(.fini_array.*)))
+        KEEP(*(.fini_array))
+        PROVIDE_HIDDEN (__fini_array_end = .);
+        . = ALIGN(4);
     } >FLASH
 
-    /*__etext = ALIGN(4);
+    __etext = ALIGN(4);
+
+    .otp_sec :
+    {
+        KEEP(*(.otp_sec))
+    } >OTP
+
+    .otp_lock_sec 0x03000FC0 :
+    {
+        KEEP(*(.otp_lock_sec))
+    } >OTP
+
     .data : AT (__etext)
     {
         . = ALIGN(4);
@@ -113,68 +142,75 @@ SECTIONS
         *(.data)
         *(.data*)
         . = ALIGN(4);
-        __data_end__ = .;
-    } >RAM*/
-
-    __etext = LOADADDR(.data);
-    .data :
-    {
-        . = ALIGN(4);
-        __data_start__ = .;
-        *(vtable)
-        *(.data)
-        *(.data*)
+        *(.ramfunc)
+        *(.ramfunc*)
         . = ALIGN(4);
         __data_end__ = .;
-    } >RAM AT> FLASH
+    } >RAM
 
-    __ram_ret_data_start = LOADADDR(.ram_ret_data);
-    .ram_ret_data :
+    __etext_ret_ram = __etext + ALIGN (SIZEOF(.data), 4);
+    .ret_ram_data : AT (__etext_ret_ram)
     {
         . = ALIGN(4);
-        __data_start_ram_ret__ = .;
-        *(.ram_ret_data)
-        *(.ram_ret_data*)
+        __data_start_ret_ram__ = .;
+        *(.ret_ram_data)
+        *(.ret_ram_data*)
         . = ALIGN(4);
-        __data_end_ram_ret__ = .;
-    } >RAM_RET AT> FLASH
+        __data_end_ret_ram__ = .;
+    } >RET_RAM
 
     .bss :
     {
         . = ALIGN(4);
-        __bss_start__ = .;
+        _sbss = .;
+        __bss_start__ = _sbss;
+        *(.bss)
         *(.bss*)
         *(COMMON)
         . = ALIGN(4);
-        __bss_end__ = .;
+        _ebss = .;
+        __bss_end__ = _ebss;
     } >RAM
 
-    .ram_ret_bss :
+    .ret_ram_bss :
     {
         . = ALIGN(4);
-        __bss_start_ram_ret__ = .;
-        *(.ram_ret_bss)
-        *(.ram_ret_bss*)
+        __bss_start_ret_ram__ = .;
+        *(.ret_ram_bss)
+        *(.ret_ram_bss*)
         . = ALIGN(4);
-        __bss_end_ram_ret__ = .;
-    } >RAM_RET
+        __bss_end_ret_ram__ = .;
+    } >RET_RAM
 
-    .heap (COPY) :
+    .heap_stack (COPY) :
     {
+        . = ALIGN(8);
         __end__ = .;
         PROVIDE(end = .);
+        PROVIDE(_end = .);
         *(.heap*)
+        . = ALIGN(8);
         __HeapLimit = .;
-    } >RAM
 
-    .stack_dummy (COPY) :
-    {
+        __StackLimit = .;
         *(.stack*)
+        . = ALIGN(8);
+        __StackTop = .;
     } >RAM
 
-    __StackTop = ORIGIN(RAM) + LENGTH(RAM);
-    __StackLimit = __StackTop - SIZEOF(.stack_dummy);
-    PROVIDE(_stack = __StackTop);
+    /DISCARD/ :
+    {
+        libc.a (*)
+        libm.a (*)
+        libgcc.a (*)
+    }
 
-    ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
+    .ARM.attributes 0 : { *(.ARM.attributes) }
+
+    PROVIDE(_stack = __StackTop);
+    PROVIDE(_Min_Heap_Size = __HeapLimit - __HeapBase);
+    PROVIDE(_Min_Stack_Size = __StackTop - __StackLimit);
+
+    __RamEnd = ORIGIN(RAM) + LENGTH(RAM);
+    ASSERT(__StackTop <= __RamEnd, "region RAM overflowed with stack")
 }
