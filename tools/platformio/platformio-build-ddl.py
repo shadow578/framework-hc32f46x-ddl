@@ -126,7 +126,12 @@ def get_ld_params():
         if key in board:
             param_value = board.get(key)
             print(f"linker script param {def_name} = {param_value}")
+
+            # make available in linker script
             ld_args.append(f"-Wl,--defsym={def_name}={param_value}")
+
+            # make available in program as a define, with LD_ prefix
+            env.Append(CPPDEFINES=[f"LD_{def_name}={param_value}"])
         
     return ld_args
 env.Append(LINKFLAGS=get_ld_params())
