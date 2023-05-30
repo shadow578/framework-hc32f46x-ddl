@@ -313,7 +313,7 @@ void NMI_Handler(void)
  ** \brief Hard Fault IRQ handler
  **
  ******************************************************************************/
-void HardFault_Handler(void)
+__WEAK void HardFault_Handler(void)
 {
     HardFault_IrqHandler();
 }
