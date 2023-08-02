@@ -37,10 +37,28 @@ ddl_version = get_ddl_version(join(DDL_DIR, "version.txt"))
 print(f"Using DDL version {ddl_version}")
 
 
+# get a list from the board manifest
+def get_manifest_list(key: str) -> list[str]:
+    # get raw list
+    l =  board.get(key, "").split("\n")
+
+    # strip lines & remove empty lines
+    l = [x.strip() for x in l if x.strip() != ""]
+    return l
+
+# get extra build flags from the board manifest
+# pio only allows adding flags to all languages, not just c/c++/asm
+# so we have to do it manually...
+extra_common_gcc_flags = get_manifest_list("build.flags.common")
+extra_c_flags = get_manifest_list("build.flags.c")
+extra_cxx_flags = get_manifest_list("build.flags.cpp")
+extra_asm_flags = get_manifest_list("build.flags.asm")
+extra_link_flags = get_manifest_list("build.flags.link")
+
 # prepare basic compile environment
 # as far as i understood, the flags in 'CCFLAGS' should be added to all the other flags, but it doesn't seem to work that way...
 # as such, i'm adding them to all the other flags manually, which is kinda hacky, but seems to work just fine
-common_gcc_flags = [
+common_gcc_flags = extra_common_gcc_flags + [
     "-mcpu=cortex-m4",
 	"-mthumb",
 	"-mthumb-interwork",
@@ -50,30 +68,31 @@ common_gcc_flags = [
 	"-ffunction-sections",
 	"-fdata-sections",
 	"-Wall",
-	"-g"
+	"-g3"
 ]
+
+# build flags for all languages
 env.Append(
     # common gcc (?)
     CCFLAGS=common_gcc_flags + [],
 
     # c
-    CFLAGS=common_gcc_flags + [
+    CFLAGS=common_gcc_flags + extra_c_flags + [
         "-std=gnu17"
     ],
     
     # c++
-    CXXFLAGS=common_gcc_flags + [
-        "-std=gnu++17",
-        "-fabi-version=0"
+    CXXFLAGS=common_gcc_flags + extra_cxx_flags + [
+        "-std=gnu++17"
     ],
 
     # asm
-    ASFLAGS=common_gcc_flags + [
+    ASFLAGS=common_gcc_flags + extra_asm_flags + [
         "-x", "assembler-with-cpp"
     ],
 
     # linker
-    LINKFLAGS=common_gcc_flags + [
+    LINKFLAGS=common_gcc_flags + extra_link_flags + [
         "-Xlinker",
         "--gc-sections",
         ("-Wl,--default-script", board.get("build.ldscript", join(FRAMEWORK_DIR, "ld", "hc32f46x_param.ld"))),
