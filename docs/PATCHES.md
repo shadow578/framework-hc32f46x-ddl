@@ -28,12 +28,17 @@ The following comment is added to the top of the linker script:
 
 ### 2. Flash Start Address and Size
 
-to set the flash start address, the memory region `FLASH` is updated to use the `FLASH_START` symbol as ORIGIN and the `FLASH_SIZE` symbol as LENGTH:
+to set the flash start address, the memory region `FLASH` is updated to use the `FLASH_START` symbol as ORIGIN and the `_FLASH_SIZE_REAL` symbol as LENGTH.
+`_FLASH_SIZE_REAL` is defined as `FLASH_SIZE - FLASH_START` to correct for the flash start offset.
 
 ```cpp
+/* flash start offset reduces effective flash size available */
+_FLASH_SIZE_REAL = FLASH_SIZE - FLASH_START;
+
+/* Use contiguous memory regions for simple. */
 MEMORY
 {
-    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = FLASH_SIZE
+    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = _FLASH_SIZE_REAL
     OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
     RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
     RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
