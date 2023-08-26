@@ -111,7 +111,8 @@ env.Append(
 	    "_MPU_PRESENT=1",
 	    "ARM_MATH_CM4",
 	    "ARM_MATH_MATRIX_CHECK",
-	    "ARM_MATH_ROUNDING"
+	    "ARM_MATH_ROUNDING",
+        ('__SOURCE_FILE_NAME__', '\\"${SOURCE.file}\\"') # add the source file name to the defines, so it can be used in the code
     ],
 
     # c/c++ include paths

@@ -198,3 +198,28 @@ __WEAK HardFault_Handler(void)
     HardFault_IrqHandler();
 }
 ```
+
+## `/cores/ddl/library/inc/hc32f460_utility.h`
+
+ddl has the option to use short file names in `DDL_ASSERT` messages to save flash space.
+to allow for this, a macro `__SOURCE_FILE_NAME__` is defined by the build script and used in the `DDL_ASSERT` macro when `__DEBUG_SHORT_FILENAMES` is defined.
+
+```c
+#ifdef __DEBUG
+
+#ifdef __DEBUG_SHORT_FILENAMES
+#define __DDL_FILE__ __SOURCE_FILE_NAME__ /* use only filename */
+#else
+#define __DDL_FILE__ __FILE__ /* use file name + path */
+#endif
+
+#define DDL_ASSERT(x)                                                          \
+do{                                                                            \
+    ((x) ? (void)0 : Ddl_AssertHandler((uint8_t *)__DDL_FILE__, __LINE__));    \
+}while(0)
+/* Exported function */
+void Ddl_AssertHandler(uint8_t *file, int16_t line);
+#else
+#define DDL_ASSERT(x)                               (void)(0)
+#endif /* __DEBUG */
+```
