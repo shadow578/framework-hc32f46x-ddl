@@ -28,12 +28,17 @@ The following comment is added to the top of the linker script:
 
 ### 2. Flash Start Address and Size
 
-to set the flash start address, the memory region `FLASH` is updated to use the `FLASH_START` symbol as ORIGIN and the `FLASH_SIZE` symbol as LENGTH:
+to set the flash start address, the memory region `FLASH` is updated to use the `FLASH_START` symbol as ORIGIN and the `_FLASH_SIZE_REAL` symbol as LENGTH.
+`_FLASH_SIZE_REAL` is defined as `FLASH_SIZE - FLASH_START` to correct for the flash start offset.
 
 ```cpp
+/* flash start offset reduces effective flash size available */
+_FLASH_SIZE_REAL = FLASH_SIZE - FLASH_START;
+
+/* Use contiguous memory regions for simple. */
 MEMORY
 {
-    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = FLASH_SIZE
+    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = _FLASH_SIZE_REAL
     OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
     RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
     RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
@@ -180,4 +185,41 @@ typedef struct stc_can_init_config
                                                 ///<  contains the configuration informations of the acceptance filters.
     ...
 }stc_can_init_config_t;
+```
+
+## `/cores/ddl/library/src/hc32f460_interrupts.c`
+
+arduino core handles HardFault directly and needs its own handler to be the one set in the vector table.
+to allow this, the DDL HardFault handler is defined as weak so it can be overridden by the arduino core.
+
+```cpp
+__WEAK HardFault_Handler(void)
+{
+    HardFault_IrqHandler();
+}
+```
+
+## `/cores/ddl/library/inc/hc32f460_utility.h`
+
+ddl has the option to use short file names in `DDL_ASSERT` messages to save flash space.
+to allow for this, a macro `__SOURCE_FILE_NAME__` is defined by the build script and used in the `DDL_ASSERT` macro when `__DEBUG_SHORT_FILENAMES` is defined.
+
+```c
+#ifdef __DEBUG
+
+#ifdef __DEBUG_SHORT_FILENAMES
+#define __DDL_FILE__ __SOURCE_FILE_NAME__ /* use only filename */
+#else
+#define __DDL_FILE__ __FILE__ /* use file name + path */
+#endif
+
+#define DDL_ASSERT(x)                                                          \
+do{                                                                            \
+    ((x) ? (void)0 : Ddl_AssertHandler((uint8_t *)__DDL_FILE__, __LINE__));    \
+}while(0)
+/* Exported function */
+void Ddl_AssertHandler(uint8_t *file, int16_t line);
+#else
+#define DDL_ASSERT(x)                               (void)(0)
+#endif /* __DEBUG */
 ```

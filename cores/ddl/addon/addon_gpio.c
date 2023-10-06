@@ -18,7 +18,7 @@
 en_result_t PORT_GetConfig(en_port_t port, uint16_t pin, stc_port_init_t *portConf)
 {
     DDL_ASSERT(IS_VALID_PORT(port));
-    PORT_Unlock();
+    // PORT_Unlock();
     for (uint8_t pinPos = 0u; pinPos < 16u; pinPos++)
     {
         if (pin & (1ul << pinPos))
@@ -61,7 +61,29 @@ en_result_t PORT_GetConfig(en_port_t port, uint16_t pin, stc_port_init_t *portCo
         }
     }
 
-    PORT_Lock();
+    // PORT_Lock();
+    return Ok;
+}
+
+en_result_t PORT_GetFunc(en_port_t port, uint16_t pin, en_port_func_t *funcSel, en_functional_state_t *subFuncEn)
+{
+    DDL_ASSERT(IS_VALID_PORT(port));
+    // PORT_Unlock();
+    for (uint8_t pinPos = 0u; pinPos < 16u; pinPos++)
+    {
+        if (pin & (uint16_t)(1ul << pinPos))
+        {
+            stc_port_pfsr_field_t *PFSRx = (stc_port_pfsr_field_t *)((uint32_t)(&M4_PORT->PFSRA0) + 0x40ul * port + 0x4ul * pinPos);
+
+            // main function
+            *funcSel = PFSRx->FSEL;
+
+            // subfunction enable
+            *subFuncEn = PFSRx->BFE == Enable ? Enable : Disable;
+        }
+    }
+
+    // PORT_Lock();
     return Ok;
 }
 #endif

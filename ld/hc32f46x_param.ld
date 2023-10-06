@@ -27,10 +27,13 @@
 /*  Date        2019-03-13                                                   */
 /*****************************************************************************/
 
+/* flash start offset reduces effective flash size available */
+_FLASH_SIZE_REAL = FLASH_SIZE - FLASH_START;
+
 /* Use contiguous memory regions for simple. */
 MEMORY
 {
-    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = FLASH_SIZE
+    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = _FLASH_SIZE_REAL
     OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
     RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
     RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
