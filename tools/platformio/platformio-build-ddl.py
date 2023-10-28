@@ -59,7 +59,7 @@ extra_link_flags = get_manifest_list("build.flags.link")
 # as far as i understood, the flags in 'CCFLAGS' should be added to all the other flags, but it doesn't seem to work that way...
 # as such, i'm adding them to all the other flags manually, which is kinda hacky, but seems to work just fine
 common_gcc_flags = extra_common_gcc_flags + [
-    "-mcpu=cortex-m4",
+    f"-mcpu={board.get('build.cpu')}",
 	"-mthumb",
 	"-mthumb-interwork",
 	"-Os",
@@ -93,12 +93,16 @@ env.Append(
 
     # linker
     LINKFLAGS=common_gcc_flags + extra_link_flags + [
-        "-Xlinker",
-        "--gc-sections",
         ("-Wl,--default-script", board.get("build.ldscript", join(FRAMEWORK_DIR, "ld", "hc32f46x_param.ld"))),
         #"-Wl,--print-memory-usage",
         "--specs=nano.specs",
         "--specs=nosys.specs",
+        "-Wl,--gc-sections,--relax",
+        "-Wl,--check-sections",
+        "-Wl,--entry=Reset_Handler",
+        "-Wl,--unresolved-symbols=report-all",
+        "-Wl,--warn-common",
+        f"-Wl,-Map,{join('$BUILD_DIR', '${PROGNAME}.map')}"
     ],
 
     # c/c++ defines
