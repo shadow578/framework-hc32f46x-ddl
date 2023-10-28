@@ -189,9 +189,9 @@ typedef struct stc_can_init_config
 
 ## `/cores/ddl/library/src/hc32f460_interrupts.c`
 
-arduino core handles HardFault directly and needs its own handler to be the one set in the vector table.
-to allow this, the DDL HardFault handler is defined as weak so it can be overridden by the arduino core.
+to allow for a more flexible interrupt configuration, all handlers are defined as weak in the DDL.
 
+example for HardFault_Handler:
 ```cpp
 __WEAK HardFault_Handler(void)
 {
