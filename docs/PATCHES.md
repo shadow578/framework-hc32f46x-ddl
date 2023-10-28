@@ -223,3 +223,38 @@ void Ddl_AssertHandler(uint8_t *file, int16_t line);
 #define DDL_ASSERT(x)                               (void)(0)
 #endif /* __DEBUG */
 ```
+
+## `/cores/ddl/library/src/hc32f460_usart.c`
+
+to allow reduction of binary size, `addon_usart.h` provides hooks to individual functions to set the baud rate in different modes instead of the combined `USART_SetBaudrate` function.
+
+to make the individual functions accessible, the definitions in `hc32f460_usart.c` must be changed to non-static
+ 
+```diff
+-static en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
++en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
+                                 uint32_t u32Baudrate);
+-static en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
++en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
+                                 uint32_t u32Baudrate);
+-static en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
++en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
+                                 uint32_t u32Baudrate);
+ 
+-static en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
++en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
+                                 uint32_t u32Baudrate)
+ {
+
+
+-static en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
++en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
+                                 uint32_t u32Baudrate)
+ {
+
+
+-static en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
++en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
+                                 uint32_t u32Baudrate)
+ {
+```

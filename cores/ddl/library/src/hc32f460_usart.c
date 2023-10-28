@@ -146,11 +146,11 @@
  * Local function prototypes ('static')
  ******************************************************************************/
 static uint32_t UsartGetClk(const M4_USART_TypeDef *USARTx);
-static en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
+en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
                                 uint32_t u32Baudrate);
-static en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
+en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
                                 uint32_t u32Baudrate);
-static en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
+en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
                                 uint32_t u32Baudrate);
 
 /*******************************************************************************
@@ -1402,7 +1402,7 @@ en_result_t USART_SetBaudrate(M4_USART_TypeDef *USARTx,
  ** \retval ErrorInvalidParameter       USARTx is invalid
  **
  ******************************************************************************/
-static en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
+en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
                                 uint32_t u32Baudrate)
 {
     uint32_t B = 0ul;
@@ -1475,7 +1475,7 @@ static en_result_t SetUartBaudrate(M4_USART_TypeDef *USARTx,
  ** \retval ErrorInvalidParameter       USARTx is invalid
  **
  ******************************************************************************/
-static en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
+en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
                                 uint32_t u32Baudrate)
 {
     uint32_t B = 0ul;
@@ -1549,7 +1549,7 @@ static en_result_t SetScBaudrate(M4_USART_TypeDef *USARTx,
  ** \retval ErrorInvalidParameter       USARTx is invalid
  **
  ******************************************************************************/
-static en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
+en_result_t SetClkSyncBaudrate(M4_USART_TypeDef *USARTx,
                                 uint32_t u32Baudrate)
 {
     uint32_t C = 0ul;
