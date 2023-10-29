@@ -1,14 +1,20 @@
 /*
  * parameterized linker flag for the HC32F46x SOC.
- * flash size and start offset have to be set as symbols for the linker script, using 
- * the '--defsym' ('-Wl,'--defsym=<SYMBOL_NAME>=<SYMBOL_VALUE>'') flag.
+ * the linker script has to be pre-processed using the C preprocessor
+ * to allow for parameterization.
+ * 
+ * to do so, run "$CC -C -P -x c -E <SOURCE> -o <TARGET> -D<PARAM_NAME>=<VALUE>"", adding defines as described below.
+ * see https://stackoverflow.com/a/35824964/13942493 
  *
+ * 
+ * Parameter List:
+ * - LD_FLASH_START: start address of flash memory
+ * - LD_FLASH_SIZE: size of flash memory
+ *
+ * 
  * note: previously, ram options were also configurable. 
  * this was removed to simplify the linker script (all HC32F460 have the same ram anyway)
  */
-
-/* FLASH_START = 0x00000000; */
-/* FLASH_SIZE = 256K; */
 
 /*
 ;*******************************************************************************
@@ -27,13 +33,25 @@
 /*  Date        2019-03-13                                                   */
 /*****************************************************************************/
 
+/* ensure parameters are defined */
+#ifndef LD_FLASH_START
+  #error "LD_FLASH_START not defined"
+#endif
+
+#ifndef LD_FLASH_SIZE
+  #error "LD_FLASH_SIZE not defined"
+#endif
+
 /* flash start offset reduces effective flash size available */
-_FLASH_SIZE_REAL = FLASH_SIZE - FLASH_START;
+#define FLASH_SIZE_REAL (LD_FLASH_SIZE - LD_FLASH_START)
+#if FLASH_SIZE_REAL < 0
+  #error "effective flash size is negative! check your linker script parameters"
+#endif
 
 /* Use contiguous memory regions for simple. */
 MEMORY
 {
-    FLASH       (rx): ORIGIN = FLASH_START, LENGTH = _FLASH_SIZE_REAL
+    FLASH       (rx): ORIGIN = LD_FLASH_START, LENGTH = FLASH_SIZE_REAL
     OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
     RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
     RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
@@ -43,19 +61,18 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
-    /* 1024 bytes fixed size */
+    /* vector table: 0x000 - 0x27F + padding  */
     .vectors :
     {
-        KEEP(*(.vectors))
-        . = 1024;
+        KEEP(*(.vectors));
+        . = 0x400;
     } >FLASH
 
-
-    /* 32 bytes fixed size */
+    /* ICG: 0x400 - 0x41F*/
     .icg_sec :
     {
-        KEEP(*(.icg_sec))
-        . = 1024 + 32;
+        KEEP(*(.icg_sec));
+        . = 0x420;
     } >FLASH
 
     /* append all other FLASH sections after */
