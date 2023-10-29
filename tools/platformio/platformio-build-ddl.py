@@ -45,6 +45,7 @@ def get_ld_args() -> dict:
     # get parameters from board manifest
     flash_start = board.get("build.ld_args.flash_start", "0x0")
     flash_size = board.get("build.ld_args.flash_size", "256K")
+    boot_mode = board.get("build.ld_args.boot_mode", "1")
 
     # parse flash start (hex, convert to int)
     flash_start = int(flash_start, 16)
@@ -66,11 +67,26 @@ def get_ld_args() -> dict:
     # to equal FLASH_SIZE - FLASH_START
     board._manifest["upload"]["maximum_size"] = flash_size_usable
 
+    # parse boot mode
+    # 0 / 1 / "primary" = primary boot mode
+    # 2 / "secondary" = secondary boot mode
+    if boot_mode in [0, 1, "primary"]:
+        boot_mode = 1
+    elif boot_mode in [2, "secondary"]:
+        boot_mode = 2
+    else:
+        raise ValueError("boot_mode must be 0/1/'primary' or 2/'secondary'!")
+
+    # boot_mode must be primary if flash_start is 0
+    if flash_start == 0 and boot_mode != 1:
+        raise ValueError("flash_start is 0, but boot_mode is not 1 (primary)! This is not allowed, as a bootloader is required to use primary boot mode!")
+
     # print linker parameters
-    print(f"linker parameters: FLASH_START={flash_start}, FLASH_SIZE={flash_size}; usable flash size: {flash_size_usable}")
+    print(f"linker parameters: FLASH_START={flash_start}, FLASH_SIZE={flash_size}; BOOT_MODE={boot_mode}; usable flash size: {flash_size_usable}")
     return {
         flash_start: flash_start,
         flash_size: flash_size,
+        boot_mode: boot_mode,
     }
 
 
@@ -92,10 +108,11 @@ def preprocess_ld_script():
         ld_script_target = join("$BUILD_DIR", "${PROGNAME}.ld")
 
         # prepare CPP defines
-        flash_start, flash_size = get_ld_args()
+        flash_start, flash_size, boot_mode = get_ld_args()
         ld_args_defines = [
             f"LD_FLASH_START={flash_start}",
             f"LD_FLASH_SIZE={flash_size}",
+            f"LD_BOOT_MODE={boot_mode}",
         ]
 
         # setup the preprocessing command

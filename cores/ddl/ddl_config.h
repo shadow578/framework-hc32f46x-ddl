@@ -12,10 +12,17 @@
 #define DDL_ON 1u
 #define DDL_OFF 0u
 
-// ICG and UTILITY are always on
-// they are required by some of the other drivers
-// and it would be a pain to check if they are needed
-#define DDL_ICG_ENABLE DDL_ON
+// ICG is only enabled if compiling a firmware in primary boot mode (= a bootloader)
+// the ICG data contains information on how to initialize the chip on RESET, but
+// this information is not needed when the chip is already running
+// disabling it allows us to remove the ICG data (32 bytes) from the firmware image.
+// more importantly, it allows us to remove a bunch of padding bytes, which
+// add up to about 1.5k of extra space used.
+#define DDL_ICG_ENABLE (LD_BOOT_MODE == 1 ? DDL_ON : DDL_OFF)
+
+// UTILITY is always on
+// it is required by some of the other drivers
+// and it would be a pain to check if it is needed
 #define DDL_UTILITY_ENABLE DDL_ON
 
 // other drivers are configured in the build script
