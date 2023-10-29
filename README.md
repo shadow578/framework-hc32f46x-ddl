@@ -18,19 +18,25 @@ this framework is still in development, and not yet ready for production use. ex
 the linker script can be configured in the platformio environment using options in `board_build`.
 options are **directly** passed to the linker script using the `--defsym` option.
 
-| option          | description                           | example value (not actual values) |
-| --------------- | ------------------------------------- | --------------------------------- |
-| `flash_start`   | the start address of the flash memory | `0x0000`                          |
-| `flash_size`    | the size of the flash memory          | `256K`                            |
-| `ram_start`     | the start address of the ram          | `0x20000000`                      |
-| `ram_size`      | the size of the ram                   | `64K`                             |
-| `ram_ret_start` | the start address of retained ram     | `0x20010000`                      |
-| `ram_ret_size`  | the size of retained ram              | `4K`                              |
+| option        | description                           | default value |
+| ------------- | ------------------------------------- | ------------- |
+| `flash_start` | the start address of the flash memory | `0x0`         |
+| `flash_size`  | the size of the flash memory          | `256K`        |
+| `boot_mode`   | firmware boot mode                    | `primary`     |
+| `preprocess`  | enable linker script preprocessing    | `true`        |
 
-> Note: the linker script will automatically calculate the locations of the memory sections.
-> Note: parameters are **not** validated in any way, so make sure you pass sensible values.
+> [!NOTE]
+> linker script options can either be set in the board definition file, or in the platformio.ini file.
 
-these args can either be set in the board definition file, or in the platformio.ini file.
+> [!NOTE]
+> the build script will automatically calculate the end of flash memory based on the start address and size.
+
+> [!WARNING]
+> linker script options undergo a basic validation, but you should still make sure you pass sensible values.
+
+> [!IMPORTANT]
+> do not set `preprocess=false` unless you're using a custom linker script.
+> the default linker script is generated from the options passed to the linker, and disabling preprocessing will cause the build to fail.
 
 ### board definition
 
@@ -41,11 +47,7 @@ these args can either be set in the board definition file, or in the platformio.
     // ...
     "ld_args": {
       "flash_start": "0x00000000",
-      "flash_size": "256K",
-      "ram_start": "0x1FFF8000",
-      "ram_size": "188K",
-      "ram_ret_start": "0x200F0000",
-      "ram_ret_size": "4K"
+      "flash_size": "256K"
     }
   }
 }
@@ -58,11 +60,48 @@ these args can either be set in the board definition file, or in the platformio.
 # ...
 board_build.ld_args.flash_start = 0x0000C000
 board_build.ld_args.flash_size = 256K
-board_build.ld_args.ram_start = 0x1FFF8000
-board_build.ld_args.ram_size = 188K
-board_build.ld_args.ram_ret_start = 0x200F0000
-board_build.ld_args.ram_ret_size = 4K
+board_build.ld_args.boot_mode = primary
 ```
+
+### boot mode
+
+firmware on the hc32f46x includes a special "ICG" (**I**nitialisation **C**onfi**g**uration) section, which is used to configure the chip on reset. to include this section, a considerable amount of flash space is used as padding.
+But there is no need to include the ICG section if you're booting using a bootloader, since it is only used on reset.
+
+the `boot_mode` option allows you to choose between two modes:
+
+1. `primary`: the ICG section is included, and the firmware supports booting with _OR_ without a bootloader. This is the default.
+2. `secondary`: the ICG section is not included, and the firmware can only be booted with a bootloader. This saves about 1.5k of flash space.
+
+> [!NOTE]
+> the `primary` boot mode still supports booting with a bootloader, only the other way around is not supported.
+> If you are unsure which mode to use, use `primary`.
+
+> [!IMPORTANT]
+> do not attempt to boot a firmware with `boot_mode=secondary` without a bootloader.
+> since there will be code in the ICG section, the chip may be configured incorrectly.
+> this could cause anything from the chip not booting, to the chip being damaged.
+
+## extra build flags
+
+the core allows adding extra build flags to build commands. Available options are:
+
+- `board_build.flags.common`: added to all build commands
+- `board_build.flags.c`: added to C build commands only
+- `board_build.flags.cpp`: added to C++ build commands only
+- `board_build.flags.asm`: added to assembly build commands only
+- `board_build.flags.link`: added to linker commands only
+
+```ini
+[env:myenv]
+# ...
+board_build.flags.cpp =
+	-fno-threadsafe-statics
+	-fno-exceptions
+```
+
+> [!IMPORTANT]
+> only set extra build flags if you know what you're doing.
 
 ## DDL options
 
