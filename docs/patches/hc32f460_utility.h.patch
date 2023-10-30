@@ -1,0 +1,22 @@
+diff --git "..\\cores\\ddl\\library\\inc\\hc32f460_utility.h" "..\\cores\\ddl\\library\\inc\\hc32f460_utility.h"
+index d4eda98..74e6132 100644
+--- "..\\cores\\ddl\\library\\inc\\hc32f460_utility.h"
++++ "..\\cores\\ddl\\library\\inc\\hc32f460_utility.h"
+@@ -69,9 +69,16 @@ void SysTick_Resume(void);
+ /*! Ddl assert, you can add your own assert functions by implement the function
+ Ddl_AssertHook definition follow the function Ddl_AssertHook declaration */
+ #ifdef __DEBUG
++
++#ifdef __DEBUG_SHORT_FILENAMES
++#define __DDL_FILE__ __SOURCE_FILE_NAME__ /* use only filename */
++#else
++#define __DDL_FILE__ __FILE__ /* use file name + path */
++#endif
++
+ #define DDL_ASSERT(x)                                                          \
+ do{                                                                            \
+-    ((x) ? (void)0 : Ddl_AssertHandler((uint8_t *)__FILE__, __LINE__));        \
++    ((x) ? (void)0 : Ddl_AssertHandler((uint8_t *)__DDL_FILE__, __LINE__));    \
+ }while(0)
+ /* Exported function */
+ void Ddl_AssertHandler(uint8_t *file, int16_t line);

@@ -1,0 +1,15 @@
+diff --git "..\\cores\\ddl\\library\\inc\\hc32f460_pwc.h" "..\\cores\\ddl\\library\\inc\\hc32f460_pwc.h"
+index f170784..541015a 100644
+--- "..\\cores\\ddl\\library\\inc\\hc32f460_pwc.h"
++++ "..\\cores\\ddl\\library\\inc\\hc32f460_pwc.h"
+@@ -120,8 +120,8 @@ typedef enum en_pwc_waketime_sel
+  ******************************************************************************/
+ typedef enum en_pwc_stop_flash_sel
+ {
+-    Wait                            = 0u,  ///< wait flash stable.
+-    NotWait                         = 1u,  ///< Not Wait flash stable.
++    FlashWait                            = 0u,  ///< wait flash stable.
++    FlashNotWait                         = 1u,  ///< Not Wait flash stable.
+ }en_pwc_stop_flash_sel_t;
+ 
+ /**

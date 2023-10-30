@@ -4,12 +4,13 @@ This repository contains the [HUADA HC32F460 Series DDL](https://www.hdsc.com.cn
 
 Primary usage is for [Marlin](https://github.com/shadow578/Marlin-H32), tho other use cases should work too.
 
-Mapping of HUADA DDL files to the files in this repository can be found in [docs/FILES_MAPPING.md](docs/FILES_MAPPING.md).
-More details on the patches applied to the DDL can be found in [docs/PATCHES.md](docs/PATCHES.md).
+> [!WARNING]
+> this framework is still in development. expect things to break over time.
 
-# Notice
+# Files & Patches
 
-this framework is still in development, and not yet ready for production use. expect things to break over time.
+Mapping of HUADA DDL files to the files in this repository can be found in [docs/FILES_MAPPING.md](./docs/FILES_MAPPING.md).
+More details on the patches applied to the DDL can be found in [docs/patches/README.md](./docs/patches/README.md).
 
 # Configuration Options
 
