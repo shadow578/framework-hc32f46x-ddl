@@ -70,9 +70,9 @@ def get_ld_args() -> dict:
     # parse boot mode
     # 0 / 1 / "primary" = primary boot mode
     # 2 / "secondary" = secondary boot mode
-    if boot_mode in [0, 1, "primary"]:
+    if boot_mode in ["0", "1", "primary"]:
         boot_mode = 1
-    elif boot_mode in [2, "secondary"]:
+    elif boot_mode in ["2", "secondary"]:
         boot_mode = 2
     else:
         raise ValueError("boot_mode must be 0/1/'primary' or 2/'secondary'!")
