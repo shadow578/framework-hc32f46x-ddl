@@ -37,6 +37,111 @@ ddl_version = get_ddl_version(join(DDL_DIR, "version.txt"))
 print(f"Using DDL version {ddl_version}")
 
 
+def get_ld_args() -> dict:
+    """
+    Get linker script parameters from the board manifest
+    """
+
+    # get parameters from board manifest
+    flash_start = board.get("build.ld_args.flash_start", "0x0")
+    flash_size = board.get("build.ld_args.flash_size", "256K")
+    boot_mode = board.get("build.ld_args.boot_mode", "1")
+
+    # parse flash start (hex, convert to int)
+    flash_start = int(flash_start, 16)
+
+    # parse flash size (K or M suffix, convert to bytes)
+    if flash_size[-1] == "K":
+        flash_size = int(flash_size[:-1]) * 1024
+    elif flash_size[-1] == "M":
+        flash_size = int(flash_size[:-1]) * 1024 * 1024
+    else:
+        flash_size = int(flash_size)
+
+    # calculate and check usable flash size
+    flash_size_usable = flash_size - flash_start
+    if flash_size_usable <= 0:
+        raise ValueError("usable flash size is less than or equal to 0. check flash_start and flash_size in the board manifest")
+
+    # correct maximum_size parameter used by platformio
+    # to equal FLASH_SIZE - FLASH_START
+    board._manifest["upload"]["maximum_size"] = flash_size_usable
+
+    # parse boot mode
+    # 0 / 1 / "primary" = primary boot mode
+    # 2 / "secondary" = secondary boot mode
+    if boot_mode in ["0", "1", "primary"]:
+        boot_mode = 1
+    elif boot_mode in ["2", "secondary"]:
+        boot_mode = 2
+    else:
+        raise ValueError("boot_mode must be 0/1/'primary' or 2/'secondary'!")
+
+    # boot_mode must be primary if flash_start is 0
+    if flash_start == 0 and boot_mode != 1:
+        raise ValueError("flash_start is 0, but boot_mode is not 1 (primary)! This is not allowed, as a bootloader is required to use primary boot mode!")
+
+    # print linker parameters
+    print(f"linker parameters: FLASH_START={flash_start}, FLASH_SIZE={flash_size}; BOOT_MODE={boot_mode}; usable flash size: {flash_size_usable}")
+    return {
+        flash_start: flash_start,
+        flash_size: flash_size,
+        boot_mode: boot_mode,
+    }
+
+
+def preprocess_ld_script():
+    """
+    Preprocess the linker script to allow c-style preprocessor directives
+    
+    :see: https://stackoverflow.com/a/35824964/13942493
+    """
+
+    # get linker script source
+    # either from the board manifest, or the default one
+    ld_script_source = board.get("build.ldscript", join(FRAMEWORK_DIR, "ld", "hc32f46x_param.ld"))
+
+    # allow disabling preprocessing using board_build.ld_args.preprocess
+    if board.get("build.ld_args.preprocess", "true") == "true":
+        # preprocess the linker script
+        # output will be written to $BUILD_DIR/PROGNAME.ld
+        ld_script_target = join("$BUILD_DIR", "${PROGNAME}.ld")
+
+        # prepare CPP defines
+        flash_start, flash_size, boot_mode = get_ld_args()
+        ld_args_defines = [
+            f"LD_FLASH_START={flash_start}",
+            f"LD_FLASH_SIZE={flash_size}",
+            f"LD_BOOT_MODE={boot_mode}",
+        ]
+
+        # setup the preprocessing command
+        ld_preprocess_args = [
+            *[f"-D {d}" for d in ld_args_defines],
+        ]
+        ld_preprocess = env.Command(
+            ld_script_target,
+            ld_script_source,
+            env.VerboseAction(
+                f"$CC -C -P -x c -E $SOURCE -o $TARGET {' '.join(ld_preprocess_args)}",
+                "Generating LD script $TARGET",
+            )
+        )
+
+        # ensure the linker script is built before the program is linked
+        # by adding it as a dependency to firmware.elf
+        env.Depends("$BUILD_DIR/$PROGNAME$PROGSUFFIX", ld_preprocess)
+        env.Replace(LDSCRIPT_PATH=ld_script_target)
+
+        # add defines to the build environment so they can be used in c/c++ code as well
+        env.Append(CPPDEFINES=ld_args_defines)
+    else:
+        # no preprocessing, just use the source file directly
+        env.Replace(LDSCRIPT_PATH=ld_script_source)
+
+preprocess_ld_script()
+
+
 # get a list from the board manifest
 def get_manifest_list(key: str) -> list[str]:
     # get raw list
@@ -93,13 +198,11 @@ env.Append(
 
     # linker
     LINKFLAGS=common_gcc_flags + extra_link_flags + [
-        ("-Wl,--default-script", board.get("build.ldscript", join(FRAMEWORK_DIR, "ld", "hc32f46x_param.ld"))),
         #"-Wl,--print-memory-usage",
         "--specs=nano.specs",
         "--specs=nosys.specs",
         "-Wl,--gc-sections,--relax",
         "-Wl,--check-sections",
-        "-Wl,--entry=Reset_Handler",
         "-Wl,--unresolved-symbols=report-all",
         "-Wl,--warn-common",
         f"-Wl,-Map,{join('$BUILD_DIR', '${PROGNAME}.map')}"
@@ -140,52 +243,6 @@ env.Replace(
     SIZEDATAREGEXP=r"^(?:\.data|\.bss)\s+(\d+).*",
 )
 
-
-# resolve and append linker script parameters to ld command line
-# parameters are passed into the linker script via the --defsym flag, as symbols
-# this allows the linker script to be generic, and the parameters to be passed in using the board manifest
-# however, this could cause issues as it's not *exactly* what this flag is for, but it should work for a while...
-def setup_ld_params():
-    # get the parameters from the board manifest
-    flash_start = board.get("build.ld_args.flash_start", "0x0")
-    flash_size = board.get("build.ld_args.flash_size", "256K")
-
-    # parse flash start (hex, convert to int)
-    flash_start = int(flash_start, 16)
-
-    # parse flash size (K or M suffix, convert to bytes)
-    if flash_size[-1] == "K":
-        flash_size = int(flash_size[:-1]) * 1024
-    elif flash_size[-1] == "M":
-        flash_size = int(flash_size[:-1]) * 1024 * 1024
-    else:
-        flash_size = int(flash_size)
-
-    # calculate and check usable flash size
-    flash_size_usable = flash_size - flash_start
-    if flash_size_usable <= 0:
-        raise ValueError("usable flash size is less than or equal to 0. check flash_start and flash_size in the board manifest")
-
-    # add compile flags to the build environment
-    print(f"linker parameters: FLASH_START={flash_start}, FLASH_SIZE={flash_size}; usable flash size: {flash_size_usable}")
-    env.Append(
-        # linker script parameters
-        LINKFLAGS=[
-            f"-Wl,--defsym=FLASH_START={flash_start}",
-            f"-Wl,--defsym=FLASH_SIZE={flash_size}",
-        ],
-
-        # c/c++ defines
-        CPPDEFINES=[
-            f"LD_FLASH_START={flash_start}",
-            f"LD_FLASH_SIZE={flash_size}",
-        ]
-    )
-
-    # correct maximum_size parameter used by platformio
-    # to equal FLASH_SIZE - FLASH_START
-    board._manifest["upload"]["maximum_size"] = flash_size_usable
-setup_ld_params()
 
 # resolve and add ddl configuration to defines
 env.Append(CPPDEFINES=get_ddl_configuration_defines(board))
