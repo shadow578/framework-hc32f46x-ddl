@@ -1,6 +1,6 @@
 """
-HC32F46x DDL
-Device Driver Libraries for the HC32F46x series of microcontrollers
+HC32F460 DDL
+Device Driver Libraries for the HC32F460 series of microcontrollers
 """
 import os
 import re
@@ -15,31 +15,18 @@ from ddl_options import get_ddl_configuration_defines
 env = DefaultEnvironment()
 platform = env.PioPlatform()
 board = env.BoardConfig()
-build_core = board.get("build.core", "")
 
-
-# ensure framework is installed
+# ensure framework is installed correctly
 FRAMEWORK_DIR = platform.get_package_dir("framework-hc32f46x-ddl")
 DDL_DIR = join(FRAMEWORK_DIR, "cores", "ddl")
 assert isdir(FRAMEWORK_DIR)
 assert isdir(DDL_DIR)
 
-
-# find and print ddl version from version.txt
-def get_ddl_version(version_file: str) -> str:
-    with open(version_file, "r") as f:
-        for line in f.readlines():
-            if re.match(r"\d+\.\d+\.\d+", line):
-                return line.split()[0]
-    
-    return "unknown"
-ddl_version = get_ddl_version(join(DDL_DIR, "version.txt"))
-print(f"Using DDL version {ddl_version}")
-
-
 def get_ld_args() -> dict:
     """
     Get linker script parameters from the board manifest
+
+    :return: dict with flash_start, flash_size and boot_mode
     """
 
     # get parameters from board manifest
@@ -89,10 +76,10 @@ def get_ld_args() -> dict:
         boot_mode: boot_mode,
     }
 
-
 def preprocess_ld_script():
     """
-    Preprocess the linker script to allow c-style preprocessor directives
+    Preprocess the linker script to allow c-style preprocessor directives. 
+    also parses & adds linker script parameters from the board manifest
     
     :see: https://stackoverflow.com/a/35824964/13942493
     """
@@ -139,12 +126,17 @@ def preprocess_ld_script():
         # no preprocessing, just use the source file directly
         env.Replace(LDSCRIPT_PATH=ld_script_source)
 
+# preprocess the linker script before starting the build
 preprocess_ld_script()
 
 
-# get a list from the board manifest
 def get_manifest_list(key: str) -> list[str]:
-    # get raw list
+    """
+    get a list of strings from the board manifest
+
+    :param key: key in the board manifest
+    :return: list of strings under that key
+    """
     l =  board.get(key, "").split("\n")
 
     # strip lines & remove empty lines
@@ -173,7 +165,7 @@ common_gcc_flags = extra_common_gcc_flags + [
 	"-ffunction-sections",
 	"-fdata-sections",
 	"-Wall",
-	"-g3"
+	#"-g3"
 ]
 
 # build flags for all languages
