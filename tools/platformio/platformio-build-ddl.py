@@ -15,6 +15,7 @@ from ddl_options import get_ddl_configuration_defines
 env = DefaultEnvironment()
 platform = env.PioPlatform()
 board = env.BoardConfig()
+is_debug_build = "debug" in env.GetBuildType()
 
 # ensure framework is installed correctly
 FRAMEWORK_DIR = platform.get_package_dir("framework-hc32f46x-ddl")
@@ -165,7 +166,9 @@ common_gcc_flags = extra_common_gcc_flags + [
 	"-ffunction-sections",
 	"-fdata-sections",
 	"-Wall",
-	#"-g3"
+
+    # compile with full debug symbols if debug build
+    "-g3" if is_debug_build else "",
 ]
 
 # build flags for all languages
