@@ -101,6 +101,9 @@ board_build.flags.cpp =
 	-fno-exceptions
 ```
 
+> [!NOTE]
+> build flags are added **after** the default flags, so you can override them if needed.
+
 > [!IMPORTANT]
 > only set extra build flags if you know what you're doing.
 
