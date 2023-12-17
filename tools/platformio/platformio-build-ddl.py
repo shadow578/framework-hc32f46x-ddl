@@ -156,7 +156,7 @@ extra_link_flags = get_manifest_list("build.flags.link")
 # prepare basic compile environment
 # as far as i understood, the flags in 'CCFLAGS' should be added to all the other flags, but it doesn't seem to work that way...
 # as such, i'm adding them to all the other flags manually, which is kinda hacky, but seems to work just fine
-common_gcc_flags = extra_common_gcc_flags + [
+common_gcc_flags = [
     f"-mcpu={board.get('build.cpu')}",
 	"-mthumb",
 	"-mthumb-interwork",
@@ -169,30 +169,30 @@ common_gcc_flags = extra_common_gcc_flags + [
 
     # compile with full debug symbols if debug build
     "-g3" if is_debug_build else "",
-]
+] + extra_common_gcc_flags
 
 # build flags for all languages
 env.Append(
     # common gcc (?)
-    CCFLAGS=common_gcc_flags + [],
+    CCFLAGS=common_gcc_flags,
 
     # c
-    CFLAGS=common_gcc_flags + extra_c_flags + [
+    CFLAGS=common_gcc_flags + [
         "-std=gnu17"
-    ],
+    ] + extra_c_flags,
     
     # c++
-    CXXFLAGS=common_gcc_flags + extra_cxx_flags + [
+    CXXFLAGS=common_gcc_flags + [
         "-std=gnu++17"
-    ],
+    ] + extra_cxx_flags,
 
     # asm
-    ASFLAGS=common_gcc_flags + extra_asm_flags + [
+    ASFLAGS=common_gcc_flags + [
         "-x", "assembler-with-cpp"
-    ],
+    ] + extra_asm_flags,
 
     # linker
-    LINKFLAGS=common_gcc_flags + extra_link_flags + [
+    LINKFLAGS=common_gcc_flags + [
         #"-Wl,--print-memory-usage",
         "--specs=nano.specs",
         "--specs=nosys.specs",
@@ -201,7 +201,7 @@ env.Append(
         "-Wl,--unresolved-symbols=report-all",
         "-Wl,--warn-common",
         f"-Wl,-Map,{join('$BUILD_DIR', '${PROGNAME}.map')}"
-    ],
+    ] + extra_link_flags,
 
     # c/c++ defines
     CPPDEFINES=[
