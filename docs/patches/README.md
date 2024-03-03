@@ -63,6 +63,7 @@ to allow for this, a macro `__SOURCE_FILE_NAME__` is defined by the build script
 
 ## `startup_hc32f460xc.S`
 
+### 1. `__libc_init_array` call
 the startup code needs some adjustments to work correctly with libc.
 
 <details>
@@ -71,5 +72,9 @@ the startup code needs some adjustments to work correctly with libc.
 to initialize libc, a call to `__libc_init_array` is required before `main` is called.
 
 </details>
+
+### 2. allow custom stack and heap size
+the stack and heap size are set in `startup_hc32f460xc.S`.
+by adding some defines (and `#ifdef` guards for defaults), the stack and heap size can be set from the build system using `-D DDL_STACK_SIZE=...` and `-D DDL_HEAP_SIZE=...`.
 
 [patch](./startup_hc32f460.S.patch)
