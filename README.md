@@ -219,3 +219,20 @@ middleware not specified will be disabled by default.
 # ...
 board_build.mw.sd_card = true
 ```
+
+## Custom Stack and Heap sizes
+
+the stack and heap sizes can be configured using the `DDL_STACK_SIZE` and `DDL_HEAP_SIZE` defines.
+
+| Define           | Default | Description           |
+| ---------------- | ------- | --------------------- |
+| `DDL_STACK_SIZE` | `0x400` | the size of the stack |
+| `DDL_HEAP_SIZE`  | `0xC00` | the size of the heap  |
+
+example:
+
+```ini
+[env:myenv]
+# ...
+build_flags = -D DDL_STACK_SIZE=0x800 -D DDL_HEAP_SIZE=0x1000
+```
