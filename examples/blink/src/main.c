@@ -1,3 +1,9 @@
+/**
+ * simple blink example showcasing how to use the DDL and GPIO library.
+ * 
+ * The example toggles the LED attached to PA01 every 500ms.
+ */
+
 #include <hc32_ddl.h>
 
 // led attached to PA01
