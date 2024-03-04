@@ -15,8 +15,11 @@ jobs:
 
     # run all examples in a matrix
     strategy:
+      fail-fast: false
       matrix:
-        platformio_ini: [ ./examples/**/platformio.ini ]
+        example:
+          - blink
+          - uart
 
     steps:
       # checkout the repository
@@ -41,8 +44,8 @@ jobs:
       
       # print the platformio.ini file path
       - name: Print platformio ini
-        run: echo ${{ matrix.platformio_ini }}
+        run: echo ${{ matrix.example }}
 
       # build the 'CI' environment
       - name: Build 'ci' environment
-        run: pio run --project-dir ${{ matrix.platformio_ini }} --environment ci
+        run: pio run --project-dir ./examples/${{ matrix.example }} --environment ci
