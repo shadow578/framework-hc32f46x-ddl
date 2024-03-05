@@ -1,5 +1,17 @@
 # PlatformIO support for HUADA HC32F460 Series DDL
 
+<p align="center">
+    <a href="" alt="Version">
+        <img src="https://img.shields.io/github/package-json/v/shadow578/framework-hc32f46x-ddl" />
+    </a>
+    <a href="https://github.com/shadow578/framework-hc32f46x-ddl/pulse" alt="Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/shadow578/framework-hc32f46x-ddl" />
+    </a>
+    <a href="https://github.com/shadow578/framework-hc32f46x-ddl/actions/workflows/ci.yaml">
+        <img src="https://github.com/shadow578/framework-hc32f46x-ddl/actions/workflows/ci.yaml/badge.svg?branch=main" alt="ci status">
+    </a>
+</p>
+
 This repository contains the [HUADA HC32F460 Series DDL](https://www.hdsc.com.cn/Category83-1487), adapted to work with platformio and [the hc32f46x platform](https://github.com/shadow578/platform-hc32f46x).
 
 Primary usage is for [Marlin](https://github.com/shadow578/Marlin-H32), tho other use cases should work too.
