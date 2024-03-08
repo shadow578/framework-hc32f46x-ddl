@@ -9,7 +9,7 @@
 //
 
 #ifndef DDL_STACK_SIZE
-#define DDL_STACK_SIZE 0x00000400
+#define DDL_STACK_SIZE 0x00000400 // 1KB
 #endif
 
 /**
@@ -24,7 +24,7 @@ static_assert(sizeof(stack) == DDL_STACK_SIZE, "stack size does not match expect
 //
 
 #ifndef DDL_HEAP_SIZE
-#define DDL_HEAP_SIZE 0x00000400
+#define DDL_HEAP_SIZE 0x00002000 // 8KB
 #endif
 
 /**
@@ -312,12 +312,12 @@ typedef void (*irq_vector_t)(void);
 /**
  * @brief vector table definition of HC32F460
  */
-typedef struct __attribute__((aligned(2)))
+typedef struct
 {
   /**
    * @brief top of stack
    */
-  uint32_t stackTop;
+  uint32_t *stackTop;
 
   /**
    * @brief reset handler
@@ -395,8 +395,8 @@ static_assert(sizeof(vector_table_t) == (16 + 144) * 4, "vector_table_t does not
 /**
  * @brief vector table definition
  */
-__attribute__((section(".vectors"))) volatile const vector_table_t vectors = {
-    .stackTop = reinterpret_cast<uint32_t>(&__StackTop),
+__attribute__((section(".vectors"), aligned(2))) volatile const vector_table_t vectors = {
+    .stackTop = &__StackTop,
     .reset = Reset_Handler,
     .nmi = NMI_Handler,
     .hardFault = HardFault_Handler,
