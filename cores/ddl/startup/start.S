@@ -29,12 +29,12 @@
 /*
 ;<h> Reset handler start.
 */
-                .section    .text.Reset_Handler_C
+                .section    .text.Reset_Handler
                 .align      2
-                .weak       Reset_Handler_C
-                .type       Reset_Handler_C, %function
-                .globl      Reset_Handler_C
-Reset_Handler_C:
+                .weak       Reset_Handler
+                .type       Reset_Handler, %function
+                .globl      Reset_Handler
+Reset_Handler:
                 /* Set stack top pointer. */
                 ldr         sp, =__StackTop
 /* Single section scheme.
@@ -138,7 +138,7 @@ SetSRAM3Wait:
                 /* Call the application's entry point. */
                 bl          main
                 bx          lr
-                .size       Reset_Handler_C, . - Reset_Handler_C
+                .size       Reset_Handler, . - Reset_Handler
 /*
 ;<h> Reset handler end.
 */

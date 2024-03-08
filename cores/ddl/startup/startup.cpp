@@ -5,36 +5,6 @@
 #warning "using new startup.cpp"
 
 //
-// stack
-//
-
-#ifndef DDL_STACK_SIZE
-#define DDL_STACK_SIZE 0x00000400 // 1KB
-#endif
-
-/**
- * @brief stack definition
- */
-__attribute__((section(".stack"))) uint8_t stack[DDL_STACK_SIZE];
-
-static_assert(sizeof(stack) == DDL_STACK_SIZE, "stack size does not match expected size");
-
-//
-// heap
-//
-
-#ifndef DDL_HEAP_SIZE
-#define DDL_HEAP_SIZE 0x00002000 // 8KB
-#endif
-
-/**
- * @brief heap definition
- */
-__attribute__((section(".heap"))) uint8_t heap[DDL_HEAP_SIZE];
-
-static_assert(sizeof(heap) == DDL_HEAP_SIZE, "heap size does not match expected size");
-
-//
 // extern symbols (by linker or other modules)
 //
 extern "C"
@@ -104,7 +74,6 @@ extern "C"
    */
   extern uint32_t __bss_end_ret_ram__;
 
-
   extern uint32_t __HeapLimit;
   extern uint32_t __StackLimit;
   extern uint32_t __StackTop;
@@ -115,24 +84,6 @@ extern "C"
 //
 
 #define __ALWAYS_INLINE __attribute__((always_inline)) inline
-
-
-extern "C" __attribute__((noreturn)) void Reset_Handler_C(void);
-
-/**
- * @brief system reset handler
- */
-extern "C" __attribute__((interrupt)) void Reset_Handler(void)
-{
-  __asm__ volatile(
-      // set stack pointer
-      // required in case we boot from a bootloader
-      //"ldr sp, =newSp\n"
-
-      // branch to the reset handler written in C
-      "b Reset_Handler_C\n");
-}
-
 
 //
 // default irq handlers, weak symbols
@@ -312,7 +263,7 @@ typedef void (*irq_vector_t)(void);
 /**
  * @brief vector table definition of HC32F460
  */
-typedef struct
+typedef struct __attribute__((packed))
 {
   /**
    * @brief top of stack
@@ -392,166 +343,175 @@ static_assert(sizeof(irq_vector_t) == 4, "irq_vector_t must be 4 bytes");
 static_assert(sizeof(uint32_t) == 4, "uint32_t must be 4 bytes");
 static_assert(sizeof(vector_table_t) == (16 + 144) * 4, "vector_table_t does not match expected size");
 
+extern "C" void Reset_Handler(void);
+
 /**
  * @brief vector table definition
  */
-__attribute__((section(".vectors"), aligned(2))) volatile const vector_table_t vectors = {
-    .stackTop = &__StackTop,
-    .reset = Reset_Handler,
-    .nmi = NMI_Handler,
-    .hardFault = HardFault_Handler,
-    .memManageFault = MemManage_Handler,
-    .busFault = BusFault_Handler,
-    .usageFault = UsageFault_Handler,
-    .svCall = SVC_Handler,
-    .debugMonitor = DebugMon_Handler,
-    .pendSV = PendSV_Handler,
-    .sysTick = SysTick_Handler,
+__attribute__((section(".vectors"))) const volatile uintptr_t vectors[] = {
+    reinterpret_cast<uintptr_t>(&__StackTop),
+    reinterpret_cast<uintptr_t>(Reset_Handler),
+    reinterpret_cast<uintptr_t>(NMI_Handler),
+    reinterpret_cast<uintptr_t>(HardFault_Handler),
+    reinterpret_cast<uintptr_t>(MemManage_Handler),
+    reinterpret_cast<uintptr_t>(BusFault_Handler),
+    reinterpret_cast<uintptr_t>(UsageFault_Handler),
 
-    .irqs = {
-        IRQ000_Handler,
-        IRQ001_Handler,
-        IRQ002_Handler,
-        IRQ003_Handler,
-        IRQ004_Handler,
-        IRQ005_Handler,
-        IRQ006_Handler,
-        IRQ007_Handler,
-        IRQ008_Handler,
-        IRQ009_Handler,
-        IRQ010_Handler,
-        IRQ011_Handler,
-        IRQ012_Handler,
-        IRQ013_Handler,
-        IRQ014_Handler,
-        IRQ015_Handler,
-        IRQ016_Handler,
-        IRQ017_Handler,
-        IRQ018_Handler,
-        IRQ019_Handler,
-        IRQ020_Handler,
-        IRQ021_Handler,
-        IRQ022_Handler,
-        IRQ023_Handler,
-        IRQ024_Handler,
-        IRQ025_Handler,
-        IRQ026_Handler,
-        IRQ027_Handler,
-        IRQ028_Handler,
-        IRQ029_Handler,
-        IRQ030_Handler,
-        IRQ031_Handler,
-        IRQ032_Handler,
-        IRQ033_Handler,
-        IRQ034_Handler,
-        IRQ035_Handler,
-        IRQ036_Handler,
-        IRQ037_Handler,
-        IRQ038_Handler,
-        IRQ039_Handler,
-        IRQ040_Handler,
-        IRQ041_Handler,
-        IRQ042_Handler,
-        IRQ043_Handler,
-        IRQ044_Handler,
-        IRQ045_Handler,
-        IRQ046_Handler,
-        IRQ047_Handler,
-        IRQ048_Handler,
-        IRQ049_Handler,
-        IRQ050_Handler,
-        IRQ051_Handler,
-        IRQ052_Handler,
-        IRQ053_Handler,
-        IRQ054_Handler,
-        IRQ055_Handler,
-        IRQ056_Handler,
-        IRQ057_Handler,
-        IRQ058_Handler,
-        IRQ059_Handler,
-        IRQ060_Handler,
-        IRQ061_Handler,
-        IRQ062_Handler,
-        IRQ063_Handler,
-        IRQ064_Handler,
-        IRQ065_Handler,
-        IRQ066_Handler,
-        IRQ067_Handler,
-        IRQ068_Handler,
-        IRQ069_Handler,
-        IRQ070_Handler,
-        IRQ071_Handler,
-        IRQ072_Handler,
-        IRQ073_Handler,
-        IRQ074_Handler,
-        IRQ075_Handler,
-        IRQ076_Handler,
-        IRQ077_Handler,
-        IRQ078_Handler,
-        IRQ079_Handler,
-        IRQ080_Handler,
-        IRQ081_Handler,
-        IRQ082_Handler,
-        IRQ083_Handler,
-        IRQ084_Handler,
-        IRQ085_Handler,
-        IRQ086_Handler,
-        IRQ087_Handler,
-        IRQ088_Handler,
-        IRQ089_Handler,
-        IRQ090_Handler,
-        IRQ091_Handler,
-        IRQ092_Handler,
-        IRQ093_Handler,
-        IRQ094_Handler,
-        IRQ095_Handler,
-        IRQ096_Handler,
-        IRQ097_Handler,
-        IRQ098_Handler,
-        IRQ099_Handler,
-        IRQ100_Handler,
-        IRQ101_Handler,
-        IRQ102_Handler,
-        IRQ103_Handler,
-        IRQ104_Handler,
-        IRQ105_Handler,
-        IRQ106_Handler,
-        IRQ107_Handler,
-        IRQ108_Handler,
-        IRQ109_Handler,
-        IRQ110_Handler,
-        IRQ111_Handler,
-        IRQ112_Handler,
-        IRQ113_Handler,
-        IRQ114_Handler,
-        IRQ115_Handler,
-        IRQ116_Handler,
-        IRQ117_Handler,
-        IRQ118_Handler,
-        IRQ119_Handler,
-        IRQ120_Handler,
-        IRQ121_Handler,
-        IRQ122_Handler,
-        IRQ123_Handler,
-        IRQ124_Handler,
-        IRQ125_Handler,
-        IRQ126_Handler,
-        IRQ127_Handler,
-        IRQ128_Handler,
-        IRQ129_Handler,
-        IRQ130_Handler,
-        IRQ131_Handler,
-        IRQ132_Handler,
-        IRQ133_Handler,
-        IRQ134_Handler,
-        IRQ135_Handler,
-        IRQ136_Handler,
-        IRQ137_Handler,
-        IRQ138_Handler,
-        IRQ139_Handler,
-        IRQ140_Handler,
-        IRQ141_Handler,
-        IRQ142_Handler,
-        IRQ143_Handler,
-    },
+    reinterpret_cast<uintptr_t>(nullptr),
+    reinterpret_cast<uintptr_t>(nullptr),
+    reinterpret_cast<uintptr_t>(nullptr),
+    reinterpret_cast<uintptr_t>(nullptr),
+
+    reinterpret_cast<uintptr_t>(SVC_Handler),
+    reinterpret_cast<uintptr_t>(DebugMon_Handler),
+
+    reinterpret_cast<uintptr_t>(nullptr),
+
+    reinterpret_cast<uintptr_t>(PendSV_Handler),
+    reinterpret_cast<uintptr_t>(SysTick_Handler),
+
+    reinterpret_cast<uintptr_t>(IRQ000_Handler),
+    reinterpret_cast<uintptr_t>(IRQ001_Handler),
+    reinterpret_cast<uintptr_t>(IRQ002_Handler),
+    reinterpret_cast<uintptr_t>(IRQ003_Handler),
+    reinterpret_cast<uintptr_t>(IRQ004_Handler),
+    reinterpret_cast<uintptr_t>(IRQ005_Handler),
+    reinterpret_cast<uintptr_t>(IRQ006_Handler),
+    reinterpret_cast<uintptr_t>(IRQ007_Handler),
+    reinterpret_cast<uintptr_t>(IRQ008_Handler),
+    reinterpret_cast<uintptr_t>(IRQ009_Handler),
+    reinterpret_cast<uintptr_t>(IRQ010_Handler),
+    reinterpret_cast<uintptr_t>(IRQ011_Handler),
+    reinterpret_cast<uintptr_t>(IRQ012_Handler),
+    reinterpret_cast<uintptr_t>(IRQ013_Handler),
+    reinterpret_cast<uintptr_t>(IRQ014_Handler),
+    reinterpret_cast<uintptr_t>(IRQ015_Handler),
+    reinterpret_cast<uintptr_t>(IRQ016_Handler),
+    reinterpret_cast<uintptr_t>(IRQ017_Handler),
+    reinterpret_cast<uintptr_t>(IRQ018_Handler),
+    reinterpret_cast<uintptr_t>(IRQ019_Handler),
+    reinterpret_cast<uintptr_t>(IRQ020_Handler),
+    reinterpret_cast<uintptr_t>(IRQ021_Handler),
+    reinterpret_cast<uintptr_t>(IRQ022_Handler),
+    reinterpret_cast<uintptr_t>(IRQ023_Handler),
+    reinterpret_cast<uintptr_t>(IRQ024_Handler),
+    reinterpret_cast<uintptr_t>(IRQ025_Handler),
+    reinterpret_cast<uintptr_t>(IRQ026_Handler),
+    reinterpret_cast<uintptr_t>(IRQ027_Handler),
+    reinterpret_cast<uintptr_t>(IRQ028_Handler),
+    reinterpret_cast<uintptr_t>(IRQ029_Handler),
+    reinterpret_cast<uintptr_t>(IRQ030_Handler),
+    reinterpret_cast<uintptr_t>(IRQ031_Handler),
+    reinterpret_cast<uintptr_t>(IRQ032_Handler),
+    reinterpret_cast<uintptr_t>(IRQ033_Handler),
+    reinterpret_cast<uintptr_t>(IRQ034_Handler),
+    reinterpret_cast<uintptr_t>(IRQ035_Handler),
+    reinterpret_cast<uintptr_t>(IRQ036_Handler),
+    reinterpret_cast<uintptr_t>(IRQ037_Handler),
+    reinterpret_cast<uintptr_t>(IRQ038_Handler),
+    reinterpret_cast<uintptr_t>(IRQ039_Handler),
+    reinterpret_cast<uintptr_t>(IRQ040_Handler),
+    reinterpret_cast<uintptr_t>(IRQ041_Handler),
+    reinterpret_cast<uintptr_t>(IRQ042_Handler),
+    reinterpret_cast<uintptr_t>(IRQ043_Handler),
+    reinterpret_cast<uintptr_t>(IRQ044_Handler),
+    reinterpret_cast<uintptr_t>(IRQ045_Handler),
+    reinterpret_cast<uintptr_t>(IRQ046_Handler),
+    reinterpret_cast<uintptr_t>(IRQ047_Handler),
+    reinterpret_cast<uintptr_t>(IRQ048_Handler),
+    reinterpret_cast<uintptr_t>(IRQ049_Handler),
+    reinterpret_cast<uintptr_t>(IRQ050_Handler),
+    reinterpret_cast<uintptr_t>(IRQ051_Handler),
+    reinterpret_cast<uintptr_t>(IRQ052_Handler),
+    reinterpret_cast<uintptr_t>(IRQ053_Handler),
+    reinterpret_cast<uintptr_t>(IRQ054_Handler),
+    reinterpret_cast<uintptr_t>(IRQ055_Handler),
+    reinterpret_cast<uintptr_t>(IRQ056_Handler),
+    reinterpret_cast<uintptr_t>(IRQ057_Handler),
+    reinterpret_cast<uintptr_t>(IRQ058_Handler),
+    reinterpret_cast<uintptr_t>(IRQ059_Handler),
+    reinterpret_cast<uintptr_t>(IRQ060_Handler),
+    reinterpret_cast<uintptr_t>(IRQ061_Handler),
+    reinterpret_cast<uintptr_t>(IRQ062_Handler),
+    reinterpret_cast<uintptr_t>(IRQ063_Handler),
+    reinterpret_cast<uintptr_t>(IRQ064_Handler),
+    reinterpret_cast<uintptr_t>(IRQ065_Handler),
+    reinterpret_cast<uintptr_t>(IRQ066_Handler),
+    reinterpret_cast<uintptr_t>(IRQ067_Handler),
+    reinterpret_cast<uintptr_t>(IRQ068_Handler),
+    reinterpret_cast<uintptr_t>(IRQ069_Handler),
+    reinterpret_cast<uintptr_t>(IRQ070_Handler),
+    reinterpret_cast<uintptr_t>(IRQ071_Handler),
+    reinterpret_cast<uintptr_t>(IRQ072_Handler),
+    reinterpret_cast<uintptr_t>(IRQ073_Handler),
+    reinterpret_cast<uintptr_t>(IRQ074_Handler),
+    reinterpret_cast<uintptr_t>(IRQ075_Handler),
+    reinterpret_cast<uintptr_t>(IRQ076_Handler),
+    reinterpret_cast<uintptr_t>(IRQ077_Handler),
+    reinterpret_cast<uintptr_t>(IRQ078_Handler),
+    reinterpret_cast<uintptr_t>(IRQ079_Handler),
+    reinterpret_cast<uintptr_t>(IRQ080_Handler),
+    reinterpret_cast<uintptr_t>(IRQ081_Handler),
+    reinterpret_cast<uintptr_t>(IRQ082_Handler),
+    reinterpret_cast<uintptr_t>(IRQ083_Handler),
+    reinterpret_cast<uintptr_t>(IRQ084_Handler),
+    reinterpret_cast<uintptr_t>(IRQ085_Handler),
+    reinterpret_cast<uintptr_t>(IRQ086_Handler),
+    reinterpret_cast<uintptr_t>(IRQ087_Handler),
+    reinterpret_cast<uintptr_t>(IRQ088_Handler),
+    reinterpret_cast<uintptr_t>(IRQ089_Handler),
+    reinterpret_cast<uintptr_t>(IRQ090_Handler),
+    reinterpret_cast<uintptr_t>(IRQ091_Handler),
+    reinterpret_cast<uintptr_t>(IRQ092_Handler),
+    reinterpret_cast<uintptr_t>(IRQ093_Handler),
+    reinterpret_cast<uintptr_t>(IRQ094_Handler),
+    reinterpret_cast<uintptr_t>(IRQ095_Handler),
+    reinterpret_cast<uintptr_t>(IRQ096_Handler),
+    reinterpret_cast<uintptr_t>(IRQ097_Handler),
+    reinterpret_cast<uintptr_t>(IRQ098_Handler),
+    reinterpret_cast<uintptr_t>(IRQ099_Handler),
+    reinterpret_cast<uintptr_t>(IRQ100_Handler),
+    reinterpret_cast<uintptr_t>(IRQ101_Handler),
+    reinterpret_cast<uintptr_t>(IRQ102_Handler),
+    reinterpret_cast<uintptr_t>(IRQ103_Handler),
+    reinterpret_cast<uintptr_t>(IRQ104_Handler),
+    reinterpret_cast<uintptr_t>(IRQ105_Handler),
+    reinterpret_cast<uintptr_t>(IRQ106_Handler),
+    reinterpret_cast<uintptr_t>(IRQ107_Handler),
+    reinterpret_cast<uintptr_t>(IRQ108_Handler),
+    reinterpret_cast<uintptr_t>(IRQ109_Handler),
+    reinterpret_cast<uintptr_t>(IRQ110_Handler),
+    reinterpret_cast<uintptr_t>(IRQ111_Handler),
+    reinterpret_cast<uintptr_t>(IRQ112_Handler),
+    reinterpret_cast<uintptr_t>(IRQ113_Handler),
+    reinterpret_cast<uintptr_t>(IRQ114_Handler),
+    reinterpret_cast<uintptr_t>(IRQ115_Handler),
+    reinterpret_cast<uintptr_t>(IRQ116_Handler),
+    reinterpret_cast<uintptr_t>(IRQ117_Handler),
+    reinterpret_cast<uintptr_t>(IRQ118_Handler),
+    reinterpret_cast<uintptr_t>(IRQ119_Handler),
+    reinterpret_cast<uintptr_t>(IRQ120_Handler),
+    reinterpret_cast<uintptr_t>(IRQ121_Handler),
+    reinterpret_cast<uintptr_t>(IRQ122_Handler),
+    reinterpret_cast<uintptr_t>(IRQ123_Handler),
+    reinterpret_cast<uintptr_t>(IRQ124_Handler),
+    reinterpret_cast<uintptr_t>(IRQ125_Handler),
+    reinterpret_cast<uintptr_t>(IRQ126_Handler),
+    reinterpret_cast<uintptr_t>(IRQ127_Handler),
+    reinterpret_cast<uintptr_t>(IRQ128_Handler),
+    reinterpret_cast<uintptr_t>(IRQ129_Handler),
+    reinterpret_cast<uintptr_t>(IRQ130_Handler),
+    reinterpret_cast<uintptr_t>(IRQ131_Handler),
+    reinterpret_cast<uintptr_t>(IRQ132_Handler),
+    reinterpret_cast<uintptr_t>(IRQ133_Handler),
+    reinterpret_cast<uintptr_t>(IRQ134_Handler),
+    reinterpret_cast<uintptr_t>(IRQ135_Handler),
+    reinterpret_cast<uintptr_t>(IRQ136_Handler),
+    reinterpret_cast<uintptr_t>(IRQ137_Handler),
+    reinterpret_cast<uintptr_t>(IRQ138_Handler),
+    reinterpret_cast<uintptr_t>(IRQ139_Handler),
+    reinterpret_cast<uintptr_t>(IRQ140_Handler),
+    reinterpret_cast<uintptr_t>(IRQ141_Handler),
+    reinterpret_cast<uintptr_t>(IRQ142_Handler),
+    reinterpret_cast<uintptr_t>(IRQ143_Handler),
 };
