@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 #include <hc32f460.h> // for SRAM
 
 #warning "using new startup.cpp"
@@ -34,6 +35,8 @@ static_assert(sizeof(stack) == DDL_STACK_SIZE, "stack size does not match expect
 __attribute__((section(".heap"))) uint8_t heap[DDL_HEAP_SIZE];
 const uint8_t *heapBase = heap;
 const uint8_t *heapTop = heap + DDL_HEAP_SIZE;
+
+static_assert(sizeof(heap) == DDL_HEAP_SIZE, "heap size does not match expected size");
 
 //
 // extern symbols (by linker or other modules)
@@ -163,17 +166,17 @@ __ALWAYS_INLINE void clearBss()
  */
 __ALWAYS_INLINE void setSram3WaitStates()
 {
-// TODO remove this
-//#define SET_REG(reg, value) *(reinterpret_cast<volatile uint32_t *>(reg)) = (value)
-//#define SRAM_WTCR 0x40050800 // SRAM wait control register
-//#define SRAM_WTPR 0x40050804 // SRAM wait protection register
-//#define SRAM_CKPR 0x4005080C // SRAM check protection register
-//
-//  SET_REG(SRAM_WTPR, 0x77);
-//  SET_REG(SRAM_CKPR, 0x77);
-//  SET_REG(SRAM_WTCR, 0x1100);
-//  SET_REG(SRAM_WTPR, 0x76);
-//  SET_REG(SRAM_CKPR, 0x76);
+  // TODO remove this
+  // #define SET_REG(reg, value) *(reinterpret_cast<volatile uint32_t *>(reg)) = (value)
+  // #define SRAM_WTCR 0x40050800 // SRAM wait control register
+  // #define SRAM_WTPR 0x40050804 // SRAM wait protection register
+  // #define SRAM_CKPR 0x4005080C // SRAM check protection register
+  //
+  //  SET_REG(SRAM_WTPR, 0x77);
+  //  SET_REG(SRAM_CKPR, 0x77);
+  //  SET_REG(SRAM_WTCR, 0x1100);
+  //  SET_REG(SRAM_WTPR, 0x76);
+  //  SET_REG(SRAM_CKPR, 0x76);
 
   M4_SRAMC->WTPR = 0x77;
   M4_SRAMC->CKPR = 0x77;
@@ -183,12 +186,25 @@ __ALWAYS_INLINE void setSram3WaitStates()
 }
 
 /**
- * @brief reset handler
+ * @brief system reset handler
  */
-extern "C" __attribute__((naked, noreturn)) void Reset_Handler(void)
+extern "C" __attribute__((interrupt)) void Reset_Handler(void)
 {
-  // set stack top pointer
-  __asm__ volatile("ldr sp, =stackTop");
+  __asm__ volatile(
+      // set stack pointer
+      // required in case we boot from a bootloader
+      //"ldr sp, =stackTop\n"
+
+      // branch to the reset handler written in C
+      "b Reset_Handler_C\n");
+}
+
+/**
+ * @brief reset handler in C
+ */
+extern "C" __attribute__((noreturn)) void Reset_Handler_C(void)
+{
+  __NVIC_SystemReset();
 
   // copy .data and .ret_ram_data sections to SRAM
   copyData();
@@ -205,6 +221,10 @@ extern "C" __attribute__((naked, noreturn)) void Reset_Handler(void)
 
   // call main function
   main();
+
+  // we should NEVER EVER get here!
+  // if we do, let's reset the MCU
+  __NVIC_SystemReset();
 }
 
 //
@@ -216,7 +236,7 @@ extern "C" void __default_handler(void)
     ;
 }
 
-#define IRQ_HANDLER_ATTR __attribute__((weak, alias("__default_handler")))
+#define IRQ_HANDLER_ATTR __attribute__((interrupt, weak, alias("__default_handler")))
 
 extern "C" IRQ_HANDLER_ATTR void NMI_Handler(void);
 extern "C" IRQ_HANDLER_ATTR void HardFault_Handler(void);
@@ -385,7 +405,7 @@ typedef void (*irq_vector_t)(void);
 /**
  * @brief vector table definition of HC32F460
  */
-typedef struct __attribute__((aligned(2)))
+typedef struct __attribute__((aligned(4)))
 {
   /**
    * @brief top of stack
@@ -468,9 +488,9 @@ static_assert(sizeof(vector_table_t) == (16 + 144) * 4, "vector_table_t does not
 /**
  * @brief vector table definition
  */
-extern "C" __attribute__((section(".vectors"))) const vector_table_t vectors = {
+extern "C" __attribute__((section(".vectors"))) volatile const vector_table_t vectors = {
     .stackTop = reinterpret_cast<uint32_t>(stackTop),
-    .reset = Reset_Handler,
+    .reset = &Reset_Handler,
     .nmi = NMI_Handler,
     .hardFault = HardFault_Handler,
     .memManageFault = MemManage_Handler,
