@@ -1,8 +1,8 @@
 #include "startup.h"
 #include <hc32f460.h>
 
-volatile char stack[DDL_STACK_SIZE] __attribute__((section(".stack"), aligned(8)));
-volatile char heap[DDL_HEAP_SIZE] __attribute__((section(".heap"), aligned(8)));
+volatile char stack[DDL_STACK_SIZE] __attribute__((section(".stack"), aligned(8), used));
+volatile char heap[DDL_HEAP_SIZE] __attribute__((section(".heap"), aligned(8), used));
 
 //
 // reset handler implementation
