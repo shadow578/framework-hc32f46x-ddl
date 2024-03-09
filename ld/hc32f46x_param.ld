@@ -235,6 +235,8 @@ SECTIONS
         __end__ = .;
         PROVIDE(end = .);
         PROVIDE(_end = .);
+
+        __HeapBase = .;
         *(.heap*)
         . = ALIGN(8);
         __HeapLimit = .;
