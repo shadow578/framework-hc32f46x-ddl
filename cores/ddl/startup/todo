@@ -1,0 +1,7 @@
+- [X] vector table
+- [X] stack
+- [ ] heap
+- [X] reset_handler
+  - FIXME ret_ram stuff not working...
+- [ ] other interrupt handlers (weak, default_handler)
+  
