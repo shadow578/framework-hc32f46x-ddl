@@ -32,24 +32,6 @@
                 .thumb
 
 /*
-;<h> Stack Configuration
-;  <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
-;</h>
-*/
-                .equ        Stack_Size, DDL_STACK_SIZE
-
-                .section    .stack
-                .align      3
-                .globl      __StackTop
-                .globl      __StackLimit
-__StackLimit:
-                .space      Stack_Size
-                .size       __StackLimit, . - __StackLimit
-__StackTop:
-                .size       __StackTop, . - __StackTop
-
-
-/*
 ;<h> Heap Configuration
 ;  <o> Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ;</h>
