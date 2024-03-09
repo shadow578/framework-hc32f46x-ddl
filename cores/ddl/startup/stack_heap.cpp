@@ -8,6 +8,6 @@
 #define DDL_HEAP_SIZE 0x00000C00
 #endif
 
-char stack[DDL_STACK_SIZE] __attribute__((section(".stack"), aligned(8)));
+volatile char stack[DDL_STACK_SIZE] __attribute__((section(".stack"), aligned(8)));
 
-
+volatile char heap[DDL_HEAP_SIZE] __attribute__((section(".heap"), aligned(8)));
