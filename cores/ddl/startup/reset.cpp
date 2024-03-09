@@ -51,7 +51,7 @@ __ALWAYS_INLINE __O0 void initRetDataSection()
     register uint32_t *src = &__etext_ret_ram;
     register uint32_t *dst = &__data_start_ret_ram__;
     register uint32_t *end = &__data_end_ret_ram__;
-    for (; src < end; src++, dst++)
+    for (; dst < end; src++, dst++)
     {
         *dst = *src;
     }
@@ -106,13 +106,11 @@ extern "C" int main(void);
 
 extern "C" __O0 void Reset_Handler_C(void)
 {
-    //FIXME: init ret_ram functions crash the system...
-
     initDataSection();
-    //initRetDataSection();
+    initRetDataSection();
 
     initBssSection();
-    //initRetBssSection();
+    initRetBssSection();
 
     setSRAM3Wait();
 

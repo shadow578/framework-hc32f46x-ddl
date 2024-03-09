@@ -2,6 +2,6 @@
 - [X] stack
 - [X] heap
 - [X] reset_handler
-  - FIXME ret_ram stuff not working...
+  - [X] ret_ram stuff not working...
 - [X] other interrupt handlers (weak, default_handler)
   
