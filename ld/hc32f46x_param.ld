@@ -237,12 +237,12 @@ SECTIONS
         PROVIDE(_end = .);
 
         __HeapBase = .;
-        *(.heap*)
+        . += 0x2000; /* 8kB of heap memory */
         . = ALIGN(8);
         __HeapLimit = .;
 
         __StackLimit = .;
-        *(.stack*)
+        . += 0x1000; /* 4kB of stack memory */
         . = ALIGN(8);
         __StackTop = .;
     } >RAM
