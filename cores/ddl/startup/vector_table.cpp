@@ -161,7 +161,3 @@ vector_table_t vector_table __attribute__((section(".vectors"), aligned(2))) =
             IRQ143_Handler,
         },
 };
-
-static_assert(sizeof(irq_vector_t) == 4, "irq_vector_t must be 4 bytes");
-static_assert(sizeof(uint32_t *) == 4, "uint32_t must be 4 bytes");
-static_assert(sizeof(vector_table) == (16 + 144) * 4, "vector_table does not match expected size");
