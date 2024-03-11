@@ -1,69 +1,11 @@
 #include "startup.h"
+#include <algorithm>
 #include <hc32f460.h>
 
 //
 // reset handler implementation
 //
-#define __ALWAYS_INLINE __attribute__((always_inline)) inline
 #define __O0 __attribute__((optimize("O0")))
-
-__ALWAYS_INLINE __O0 void initDataSection()
-{
-    // copy .data from ROM to RAM
-    register uint32_t *src = &__etext;
-    register uint32_t *dst = &__data_start__;
-    register uint32_t *end = &__data_end__;
-    for (; dst < end; dst++, src++)
-    {
-        *dst = *src;
-    }
-}
-
-__ALWAYS_INLINE __O0 void initRetDataSection()
-{
-    // copy .retdata from ROM to RAM
-    register uint32_t *src = &__etext_ret_ram;
-    register uint32_t *dst = &__data_start_ret_ram__;
-    register uint32_t *end = &__data_end_ret_ram__;
-    for (; dst < end; src++, dst++)
-    {
-        *dst = *src;
-    }
-}
-
-__ALWAYS_INLINE __O0 void initBssSection()
-{
-    // clear .bss
-    register uint32_t *dst = &__bss_start__;
-    register uint32_t *end = &__bss_end__;
-    for (; dst < end; dst++)
-    {
-        *dst = 0;
-    }
-}
-
-__ALWAYS_INLINE __O0 void initRetBssSection()
-{
-    // clear .retbss
-    register uint32_t *dst = &__bss_start_ret_ram__;
-    register uint32_t *end = &__bss_end_ret_ram__;
-    for (; dst < end; dst++)
-    {
-        *dst = 0;
-    }
-}
-
-/**
- * @brief set SRAM3 wait states
- */
-__ALWAYS_INLINE __O0 void setSRAM3Wait()
-{
-    M4_SRAMC->WTPR = 0x77;
-    M4_SRAMC->CKPR = 0x77;
-    M4_SRAMC->WTCR = 0x1100;
-    M4_SRAMC->WTPR = 0x76;
-    M4_SRAMC->CKPR = 0x76;
-}
 
 extern "C" __attribute__((naked, used)) __O0 void Reset_Handler(void)
 {
@@ -77,18 +19,50 @@ extern "C" __attribute__((naked, used)) __O0 void Reset_Handler(void)
 
 extern "C" __O0 void Reset_Handler_C(void)
 {
-    initDataSection();
-    initRetDataSection();
+    // copy .data from ROM to RAM
+    static_assert(&__data_end__ >= &__data_start__, "data end must be greater than or equal to data start");
+    size_t size = &__data_end__ - &__data_start__;
+    std::copy(&__etext, &__etext + size, &__data_start__);
 
-    initBssSection();
-    initRetBssSection();
+    // copy .retdata from ROM to RAM
+    static_assert(&__data_end_ret_ram__ >= &__data_start_ret_ram__, "retdata end must be greater than or equal to retdata start");
+    size = &__data_end_ret_ram__ - &__data_start_ret_ram__;
+    std::copy(&__etext_ret_ram, &__etext_ret_ram + size, &__data_start_ret_ram__);
 
-    setSRAM3Wait();
+    // clear .bss
+    static_assert(&__bss_end__ >= &__bss_start__, "bss end must be greater than or equal to bss start");
+    size = &__bss_end__ - &__bss_start__;
+    std::fill(&__bss_start__, &__bss_end__, 0);
 
+    // clear .retbss
+    static_assert(&__bss_end_ret_ram__ >= &__bss_start_ret_ram__, "retbss end must be greater than or equal to retbss start");
+    size = &__bss_end_ret_ram__ - &__bss_start_ret_ram__;
+    std::fill(&__bss_start_ret_ram__, &__bss_end_ret_ram__, 0);
+
+    // set SRAM3 wait states
+    M4_SRAMC->WTPR = 0x77;
+    M4_SRAMC->CKPR = 0x77;
+    M4_SRAMC->WTCR = 0x1100;
+    M4_SRAMC->WTPR = 0x76;
+    M4_SRAMC->CKPR = 0x76;
+
+    // init system and call main
     SystemInit();
     __libc_init_array();
     main();
 
+    // if main returns, hang
     while (1)
         ;
 }
+
+// expect the heap and stack to be outside of the .bss and .retbss sections
+// - heap starts at __HeapBase and grows up to __HeapLimit
+// - stack starts at __StackTop and grows down to __StackLimit
+#define __is_in_range(x, start, end) ((x) >= (start) && (x) < (end))
+#define __is_in_bss(x) (__is_in_range(x, &__bss_start__, &__bss_end__) || __is_in_range(x, &__bss_start_ret_ram__, &__bss_end_ret_ram__))
+
+static_assert(!__is_in_bss(&__HeapBase), "heap must not be in .bss or .retbss");
+static_assert(!__is_in_bss(&__HeapLimit), "heap must not be in .bss or .retbss");
+static_assert(!__is_in_bss(&__StackTop), "stack must not be in .bss or .retbss");
+static_assert(!__is_in_bss(&__StackLimit), "stack must not be in .bss or .retbss");

@@ -59,6 +59,21 @@ extern "C"
     extern uint32_t __bss_end_ret_ram__;
 
     /**
+     * @brief bottom of heap memory
+     */
+    extern uint32_t __HeapBase;
+
+    /**
+     * @brief top of heap memory
+     */
+    extern uint32_t __HeapLimit;
+
+    /**
+     * @brief bottom of the stack
+     */
+    extern uint32_t __StackLimit;
+
+    /**
      * @brief top of the stack
      */
     extern uint32_t __StackTop;
