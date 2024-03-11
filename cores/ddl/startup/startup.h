@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "ld_symbols.h"
 #include "interrupts.h"
+#include "vector_table.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -22,88 +23,6 @@ extern "C"
      * @brief application entry point
      */
     extern int main(void);
-
-    /**
-     * @brief IRQ handler pointer
-     */
-    typedef void (*irq_vector_t)(void);
-
-    /**
-     * @brief vector table definition of HC32F460
-     */
-    typedef struct
-    {
-        /**
-         * @brief top of stack
-         */
-        uint32_t *stackTop;
-
-        /**
-         * @brief reset handler
-         */
-        irq_vector_t reset;
-
-        /**
-         * @brief NMI handler
-         */
-        irq_vector_t nmi;
-
-        /**
-         * @brief hard fault handler
-         */
-        irq_vector_t hardFault;
-
-        /**
-         * @brief MPU fault handler
-         */
-        irq_vector_t memManageFault;
-
-        /**
-         * @brief bus fault handler
-         */
-        irq_vector_t busFault;
-
-        /**
-         * @brief usage fault handler
-         */
-        irq_vector_t usageFault;
-
-        /**
-         * @brief reserved, 4 x 32bit
-         */
-        uint32_t reserved1[4];
-
-        /**
-         * @brief SVCall handler
-         */
-        irq_vector_t svCall;
-
-        /**
-         * @brief debug monitor handler
-         */
-        irq_vector_t debugMonitor;
-
-        /**
-         * @brief reserved, 1 x 32bit
-         */
-        uint32_t reserved2;
-
-        /**
-         * @brief PendSV handler
-         */
-        irq_vector_t pendSV;
-
-        /**
-         * @brief SysTick handler
-         */
-        irq_vector_t sysTick;
-
-        /**
-         * @brief IRQ handlers, total 144 vectors
-         */
-        irq_vector_t irqs[144];
-    } vector_table_t;
-
 #ifdef __cplusplus
 }
 #endif
