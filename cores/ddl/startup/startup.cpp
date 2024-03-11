@@ -5,9 +5,7 @@
 //
 // reset handler implementation
 //
-#define __O0 __attribute__((optimize("O0")))
-
-extern "C" __attribute__((naked, used)) __O0 void Reset_Handler(void)
+extern "C" __attribute__((naked, used, optimize("O0"))) void Reset_Handler(void)
 {
     __asm__ __volatile__(
         // set stack pointer
@@ -17,7 +15,7 @@ extern "C" __attribute__((naked, used)) __O0 void Reset_Handler(void)
         "b Reset_Handler_C\n");
 }
 
-extern "C" __O0 void Reset_Handler_C(void)
+extern "C" void Reset_Handler_C(void)
 {
     // copy .data from ROM to RAM
     static_assert(&__data_end__ >= &__data_start__, "data end must be greater than or equal to data start");
