@@ -1,4 +1,6 @@
 #include "vector_table.h"
+#include "interrupts.h"
+#include "ld_symbols.h"
 
 vector_table_t vector_table __attribute__((section(".vectors"), aligned(2))) =
     {
