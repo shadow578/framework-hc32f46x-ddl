@@ -4,14 +4,6 @@
 #include "ld_symbols.h"
 #include "interrupts.h"
 
-#ifndef DDL_STACK_SIZE
-#define DDL_STACK_SIZE 0x00000400 // 1KB
-#endif
-
-#ifndef DDL_HEAP_SIZE
-#define DDL_HEAP_SIZE 0x00002000 // 8KB
-#endif
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -30,16 +22,6 @@ extern "C"
      * @brief application entry point
      */
     extern int main(void);
-
-    /**
-     * @brief stack memory
-     */
-    extern volatile char stack[];
-
-    /**
-     * @brief heap memory
-     */
-    extern volatile char heap[];
 
     /**
      * @brief IRQ handler pointer
