@@ -8,7 +8,7 @@
         ##__VA_ARGS__;           \
     }
 
-volatile vector_table_t dynvt;
+__attribute__((aligned(512))) volatile vector_table_t dynvt;
 
 const irq_vector_t *no_handler = &__default_handler;
 
@@ -20,8 +20,11 @@ void dynvt_init()
 
     // relocate vector table to RAM
     // this is done with interrupts disabled
+    // note:
+    // - vector table in SRAM must be aligned correctly
+    // - VTOR bit 29 indicates whether the vector table is in SRAM, so must be set
     __disable_irq();
-    SCB->VTOR = (uint32_t)&dynvt;
+    SCB->VTOR = ((uint32_t)&dynvt) & (1 << 29);
     _DSB();
     __enable_irq();
 }
