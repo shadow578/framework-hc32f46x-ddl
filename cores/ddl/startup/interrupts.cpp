@@ -1,6 +1,6 @@
 #include "interrupts.h"
 
-extern "C" void __default_handler()
+void __default_handler()
 {
     // default handler just hangs
     while (true)
