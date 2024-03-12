@@ -249,6 +249,19 @@ example:
 build_flags = -D DDL_STACK_SIZE=0x800 -D DDL_HEAP_SIZE=0x1000
 ```
 
+## Custom Interrupt Handler Management
+
+when defining `DDL_INTERRUPTS_CUSTOM_HANDLER_MANAGEMENT = 1`, the DDL will not provide a implementation for `enIrqRegistration` and `enIrqResign` functions.
+This allows you to implement your own interrupt management, which may be useful when using a vector table in ram.
+
+> [!WARNING]
+> do __not__ enable this option unless you know exactly what you're doing.
+
+> [!WARNING]
+> the `DDL_EXINT_NMI_SWI_ENABLE` ddl depends on the `NMI_IrqHandler` getting called when a NMI occurs.
+> please check your specific use case before enabling this option.
+
+
 ## Stack and Heap APIs
 
 the DDL provides the following functions in the `startup/util.h` header:
