@@ -5,6 +5,7 @@
 extern "C"
 {
 #endif
+    extern void __default_handler(void);
 
     extern void Reset_Handler(void);
     extern void NMI_Handler(void);

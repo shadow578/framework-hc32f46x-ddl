@@ -2,6 +2,8 @@
 #define __VECTOR_TABLE_H__
 #include <stdint.h>
 
+#define VECTOR_TABLE_IRQ_COUNT 144
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -84,7 +86,7 @@ extern "C"
         /**
          * @brief IRQ handlers, total 144 vectors
          */
-        irq_vector_t irqs[144];
+        irq_vector_t irqs[VECTOR_TABLE_IRQ_COUNT];
     } vector_table_t;
 
     /**
