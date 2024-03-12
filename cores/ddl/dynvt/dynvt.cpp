@@ -8,7 +8,15 @@
         ##__VA_ARGS__;           \
     }
 
-__attribute__((aligned(512))) volatile vector_table_t dynvt;
+/**
+ * @brief vector table in RAM
+ * @note
+ * required to be aligned to the boundary width of the lowest power
+ * of 2 that will fit the entire vector table.
+ * since the vector table takes [(144 + 16) * 4 =] 640 bytes, the 
+ * lowest power of 2 that will fit the entire vector table is 1024.
+ */
+__attribute__((aligned(1024))) volatile vector_table_t dynvt;
 
 const irq_vector_t *no_handler = &__default_handler;
 
