@@ -23,6 +23,12 @@ extern "C"
      * @brief application entry point
      */
     extern int main(void);
+
+    /**
+     * @brief called after main() returns
+     */
+    extern void __on_after_main(void);
+
 #ifdef __cplusplus
 }
 #endif

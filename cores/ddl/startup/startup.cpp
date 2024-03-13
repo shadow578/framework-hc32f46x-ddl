@@ -49,7 +49,14 @@ extern "C" void Reset_Handler_C(void)
     __libc_init_array();
     main();
 
-    // if main returns, hang
-    while (1)
+    // call on_after_main, reset system
+    __on_after_main();
+    __NVIC_SystemReset();
+}
+
+__attribute__((weak)) void __on_after_main(void)
+{
+    // default handler just hangs
+    while (true)
         ;
 }

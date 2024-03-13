@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include "startup.h"
 
+/**
+ * @brief get current heap base
+ */
 extern "C" char *_sbrk(int incr);
 
 /**

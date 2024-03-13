@@ -1,6 +1,6 @@
 #include "interrupts.h"
 
-void __default_handler()
+__attribute__((weak)) void __default_handler()
 {
     // default handler just hangs
     while (true)
