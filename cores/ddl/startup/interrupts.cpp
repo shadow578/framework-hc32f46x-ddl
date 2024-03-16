@@ -1,8 +1,9 @@
 #include "interrupts.h"
+#include "startup.h"
 
-__attribute__((weak)) void __default_handler()
+void __default_handler()
 {
-    // default handler just hangs
+    __on_default_handler();
     while (true)
         ;
 }

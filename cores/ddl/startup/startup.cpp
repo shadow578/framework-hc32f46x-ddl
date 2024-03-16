@@ -60,3 +60,10 @@ __attribute__((weak)) void __on_after_main(void)
     while (true)
         ;
 }
+
+__attribute__((weak)) void __on_default_handler(void)
+{
+    // default handler just hangs
+    while (true)
+        ;
+}

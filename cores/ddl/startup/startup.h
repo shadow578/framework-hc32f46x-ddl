@@ -29,6 +29,11 @@ extern "C"
      */
     extern void __on_after_main(void);
 
+    /**
+     * @brief called by the default interrupt handler
+     */
+    extern void __on_default_handler(void);
+
 #ifdef __cplusplus
 }
 #endif
