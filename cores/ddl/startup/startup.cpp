@@ -35,12 +35,21 @@ extern "C" void Reset_Handler_C(void)
     size = &__bss_end_ret_ram__ - &__bss_start_ret_ram__;
     std::fill(&__bss_start_ret_ram__, &__bss_end_ret_ram__, 0);
 
-    // set SRAM3 wait states
-    M4_SRAMC->WTPR = 0x77;
-    M4_SRAMC->CKPR = 0x77;
-    M4_SRAMC->WTCR = 0x1100;
-    M4_SRAMC->WTPR = 0x76;
-    M4_SRAMC->CKPR = 0x76;
+    // set SRAM3 wait cycles
+    M4_SRAMC->WTPR = 0x77; // unlock WTCR
+    M4_SRAMC->CKPR = 0x77; // unlock 
+    M4_SRAMC->WTCR_f = {
+        .SRAM12_RWT = 0, // SRAM1 + SRAM2
+        .SRAM12_WWT = 0, // SRAM1 + SRAM2
+        .SRAM3_RWT  = 1, // SRAM3
+        .SRAM3_WWT  = 1, // SRAM3
+        .SRAMH_RWT  = 0, // SRAMH
+        .SRAMH_WWT  = 0, // SRAMH
+        .SRAMR_RWT  = 0, // RET_RAM
+        .SRAMR_WWT  = 0, // RET_RAM
+    };
+    M4_SRAMC->WTPR = 0x76; // lock WTCR
+    M4_SRAMC->CKPR = 0x76; // lock CKCR
 
     // init system and call main
     SystemInit();
