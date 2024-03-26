@@ -2,9 +2,6 @@
 #include <algorithm>
 #include <hc32f460.h>
 
-//
-// reset handler implementation
-//
 extern "C" __attribute__((naked, used, optimize("O0"))) void Reset_Handler(void)
 {
     __asm__ __volatile__(
