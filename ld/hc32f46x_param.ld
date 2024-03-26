@@ -271,4 +271,10 @@ SECTIONS
 
     __RamEnd = ORIGIN(RAM) + LENGTH(RAM);
     ASSERT(__StackTop <= __RamEnd, "region RAM overflowed with stack")
+
+    /* ensure that HEAP and STACK don't overlap with each other OR bss */
+    ASSERT(__HeapBase <= __HeapLimit, "HEAP is broken")
+    ASSERT(__StackLimit <= __StackTop, "STACK is broken")
+    ASSERT(__bss_end__ <= __HeapBase, "HEAP should follow BSS in memory")
+    ASSERT(__HeapLimit <= __StackLimit, "STACK should follow HEAP in memory")
 }
