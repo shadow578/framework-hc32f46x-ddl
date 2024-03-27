@@ -1,6 +1,7 @@
 #include "startup.h"
 #include <algorithm>
 #include <hc32f460.h>
+#include "hc32f460_utility.h"
 
 extern "C" __attribute__((naked, used, optimize("O0"))) void Reset_Handler(void)
 {
@@ -15,22 +16,22 @@ extern "C" __attribute__((naked, used, optimize("O0"))) void Reset_Handler(void)
 extern "C" void Reset_Handler_C(void)
 {
     // copy .data from ROM to RAM
-    //static_assert(&__data_end__ >= &__data_start__, "data end must be greater than or equal to data start");
+    DDL_ASSERT(&__data_end__ >= &__data_start__); // data end must be greater than or equal to data start
     size_t size = &__data_end__ - &__data_start__;
     std::copy(&__etext, &__etext + size, &__data_start__);
 
     // copy .retdata from ROM to RAM
-    //static_assert(&__data_end_ret_ram__ >= &__data_start_ret_ram__, "retdata end must be greater than or equal to retdata start");
+    DDL_ASSERT(&__data_end_ret_ram__ >= &__data_start_ret_ram__); // retdata end must be greater than or equal to retdata start
     size = &__data_end_ret_ram__ - &__data_start_ret_ram__;
     std::copy(&__etext_ret_ram, &__etext_ret_ram + size, &__data_start_ret_ram__);
 
     // clear .bss
-    //static_assert(&__bss_end__ >= &__bss_start__, "bss end must be greater than or equal to bss start");
+    DDL_ASSERT(&__bss_end__ >= &__bss_start__); // bss end must be greater than or equal to bss start
     size = &__bss_end__ - &__bss_start__;
     std::fill(&__bss_start__, &__bss_end__, 0);
 
     // clear .retbss
-    //static_assert(&__bss_end_ret_ram__ >= &__bss_start_ret_ram__, "retbss end must be greater than or equal to retbss start");
+    DDL_ASSERT(&__bss_end_ret_ram__ >= &__bss_start_ret_ram__); // retbss end must be greater than or equal to retbss start
     size = &__bss_end_ret_ram__ - &__bss_start_ret_ram__;
     std::fill(&__bss_start_ret_ram__, &__bss_end_ret_ram__, 0);
 
