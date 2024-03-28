@@ -7,6 +7,9 @@ these range from minor changes to adapt the ddl to the build system, to changes 
 
 the linker script needs some adjustments to work with the platformio build system, mainly to support parameterisation of the flash start address and size.
 
+note that the `DDL_STACK_SIZE` and `DDL_HEAP_SIZE` don't follow the naming pattern of the other parameters.
+this is because they were added later and could not be changed without breaking backwards compatibility.
+
 [patch](./hc32f46x_param.ld.patch)
 
 ## `hc32f460_can.h`
@@ -18,6 +21,8 @@ in the can ddl, a multi-line comment ends with a `\`, which gcc does not like...
 ## `hc32f460_interrupts.c`
 
 to allow for a more flexible interrupt configuration, all handlers are defined as weak symbols.
+
+additionally, the `enIrqRegistration` and `enIrqResign` functions along with some other parts of the DDL are wrapped in a `#if !DDL_INTERRUPTS_CUSTOM_HANDLER_MANAGEMENT` block to allow for custom interrupt handler management.
 
 [patch](./hc32f460_interrupts.c.patch)
 
@@ -60,21 +65,3 @@ ddl has the option to use short file names in `DDL_ASSERT` messages to save flas
 to allow for this, a macro `__SOURCE_FILE_NAME__` is defined by the build script and used in the `DDL_ASSERT` macro when `__DEBUG_SHORT_FILENAMES` is defined.
 
 [patch](./hc32f460_utility.h.patch)
-
-## `startup_hc32f460xc.S`
-
-### 1. `__libc_init_array` call
-the startup code needs some adjustments to work correctly with libc.
-
-<details>
-<summary>Details</summary>
-
-to initialize libc, a call to `__libc_init_array` is required before `main` is called.
-
-</details>
-
-### 2. allow custom stack and heap size
-the stack and heap size are set in `startup_hc32f460xc.S`.
-by adding some defines (and `#ifdef` guards for defaults), the stack and heap size can be set from the build system using `-D DDL_STACK_SIZE=...` and `-D DDL_HEAP_SIZE=...`.
-
-[patch](./startup_hc32f460.S.patch)

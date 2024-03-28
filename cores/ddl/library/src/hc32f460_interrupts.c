@@ -58,6 +58,7 @@
 /*******************************************************************************
  * Function implementation - global ('extern') and local ('static')
  ******************************************************************************/
+#if !DDL_INTERRUPTS_CUSTOM_HANDLER_MANAGEMENT
 func_ptr_t IrqHandler[IRQ_NUM_MAX] = {NULL};
 
 /**
@@ -137,6 +138,7 @@ en_result_t enIrqResign(IRQn_Type enIRQn)
     }
     return enRet;
 }
+#endif // !DDL_INTERRUPTS_CUSTOM_HANDLER_MANAGEMENT
 
 /**
  *******************************************************************************
@@ -297,6 +299,8 @@ en_result_t enIntDisable(uint32_t u32Int)
     M4_INTC->IER &= ~u32Int;
     return Ok;
 }
+
+#if !DDL_INTERRUPTS_CUSTOM_HANDLER_MANAGEMENT
 
 /**
  *******************************************************************************
@@ -2051,6 +2055,8 @@ __WEAK void IRQ127_Handler(void)
         IrqHandler[Int127_IRQn]();
     }
 }
+
+#endif // !DDL_INTERRUPTS_CUSTOM_HANDLER_MANAGEMENT
 
 #if (DDL_INTERRUPTS_SHARE_ENABLE == DDL_ON)
 /**

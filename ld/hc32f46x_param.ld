@@ -13,7 +13,8 @@
  * - LD_BOOT_MODE: boot mode of the firmware image
  *   * 1: primary boot mode, e.g. bootloader (default)
  *   * 2: secondary boot mode, e.g. application firmware (called by a bootloader) (saves ~1.5k flash)
- *
+ * - DDL_STACK_SIZE: size of the stack, in bytes
+ * - DDL_HEAP_SIZE: size of the heap, in bytes
  * 
  * note: previously, ram options were also configurable. 
  * this was removed to simplify the linker script (all HC32F460 have the same ram anyway)
@@ -48,6 +49,14 @@
 #ifndef LD_BOOT_MODE
   #warning "LD_BOOT_MODE not defined, fallback to PRIMARY (1)"
   #define LD_BOOT_MODE 1
+#endif
+
+#ifndef DDL_STACK_SIZE
+  #define DDL_STACK_SIZE 0x00000400 // 1KB
+#endif
+
+#ifndef DDL_HEAP_SIZE
+  #define DDL_HEAP_SIZE 0x00002000 // 8KB
 #endif
 
 /* check if boot mode is valid */
@@ -235,12 +244,14 @@ SECTIONS
         __end__ = .;
         PROVIDE(end = .);
         PROVIDE(_end = .);
-        *(.heap*)
+
+        __HeapBase = .;
+        . += DDL_HEAP_SIZE;
         . = ALIGN(8);
         __HeapLimit = .;
 
         __StackLimit = .;
-        *(.stack*)
+        . += DDL_STACK_SIZE;
         . = ALIGN(8);
         __StackTop = .;
     } >RAM
@@ -260,4 +271,10 @@ SECTIONS
 
     __RamEnd = ORIGIN(RAM) + LENGTH(RAM);
     ASSERT(__StackTop <= __RamEnd, "region RAM overflowed with stack")
+
+    /* ensure that HEAP and STACK don't overlap with each other OR bss */
+    ASSERT(__HeapBase <= __HeapLimit, "HEAP is broken")
+    ASSERT(__StackLimit <= __StackTop, "STACK is broken")
+    ASSERT(__bss_end__ <= __HeapBase, "HEAP should follow BSS in memory")
+    ASSERT(__HeapLimit <= __StackLimit, "STACK should follow HEAP in memory")
 }
