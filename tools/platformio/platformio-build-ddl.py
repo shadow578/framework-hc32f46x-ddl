@@ -31,20 +31,22 @@ def get_ld_args() -> dict:
     """
 
     # get parameters from board manifest
-    flash_start = board.get("build.ld_args.flash_start", "0x0")
-    flash_size = board.get("build.ld_args.flash_size", "256K")
-    boot_mode = board.get("build.ld_args.boot_mode", "1")
+    flash_start = board.get("upload.offset_address", 0)
+    flash_size = board.get("upload.maximum_size", 262144)
+    boot_mode = board.get("build.boot_mode", "1")
 
     # parse flash start (hex, convert to int)
-    flash_start = int(flash_start, 16)
+    if isinstance(flash_start, str):
+        flash_start = int(flash_start, 16) if flash_start.startswith("0x") else int(flash_start)
 
     # parse flash size (K or M suffix, convert to bytes)
-    if flash_size[-1] == "K":
-        flash_size = int(flash_size[:-1]) * 1024
-    elif flash_size[-1] == "M":
-        flash_size = int(flash_size[:-1]) * 1024 * 1024
-    else:
-        flash_size = int(flash_size)
+    if isinstance(flash_size, str):
+        if flash_size[-1] == "K":
+            flash_size = int(flash_size[:-1]) * 1024
+        elif flash_size[-1] == "M":
+            flash_size = int(flash_size[:-1]) * 1024 * 1024
+        else:
+            flash_size = int(flash_size)
 
     # calculate and check usable flash size
     flash_size_usable = flash_size - flash_start
@@ -89,8 +91,8 @@ def preprocess_ld_script():
     # either from the board manifest, or the default one
     ld_script_source = board.get("build.ldscript", join(FRAMEWORK_DIR, "ld", "hc32f46x_param.ld"))
 
-    # allow disabling preprocessing using board_build.ld_args.preprocess
-    if board.get("build.ld_args.preprocess", "true") == "true":
+    # allow disabling preprocessing using board_build.ld_preprocess
+    if board.get("build.ld_preprocess", "true") == "true":
         # preprocess the linker script
         # output will be written to $BUILD_DIR/PROGNAME.ld
         ld_script_target = join("$BUILD_DIR", "${PROGNAME}.ld")

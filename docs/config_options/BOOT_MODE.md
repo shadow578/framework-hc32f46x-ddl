@@ -26,5 +26,5 @@ platformio.ini:
 ```ini
 [env:my_env]
 # ...
-board_build.ld_args.boot_mode = secondary
+board_build.boot_mode = secondary
 ```

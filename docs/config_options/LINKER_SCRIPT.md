@@ -35,9 +35,9 @@ platformio.ini:
 ```ini
 [env:my_env]
 # ...
-board_build.ld_args.flash_start = 0x0000C000
-board_build.ld_args.flash_size = 256K
-board_build.ld_args.boot_mode = primary
+board_upload.offset_address = 0x0000C000
+board_upload.maximum_size = 256K
+board_build.boot_mode = primary
 ```
 
 
@@ -45,12 +45,10 @@ board.json:
 ```json
 {
   // ...
-  "build": {
-    // ...
-    "ld_args": {
-      "flash_start": "0x00000000",
-      "flash_size": "256K"
-    }
+  "upload": {
+    "maximum_size": 262144,
+    "maximum_ram_size": 192512,
+    "offset_address": "0xc000"
   }
 }
 ```
