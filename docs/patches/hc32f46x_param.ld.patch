@@ -1,8 +1,8 @@
 diff --git "..\\ld\\hc32f46x_param.ld" "..\\ld\\hc32f46x_param.ld"
-index fc0136c..7620723 100644
+index fc0136c..ea9a833 100644
 --- "..\\ld\\hc32f46x_param.ld"
 +++ "..\\ld\\hc32f46x_param.ld"
-@@ -1,3 +1,24 @@
+@@ -1,3 +1,25 @@
 +/*
 + * parameterized linker flag for the HC32F46x SOC.
 + * the linker script has to be pre-processed using the C preprocessor
@@ -18,7 +18,8 @@ index fc0136c..7620723 100644
 + * - LD_BOOT_MODE: boot mode of the firmware image
 + *   * 1: primary boot mode, e.g. bootloader (default)
 + *   * 2: secondary boot mode, e.g. application firmware (called by a bootloader) (saves ~1.5k flash)
-+ *
++ * - DDL_STACK_SIZE: size of the stack, in bytes
++ * - DDL_HEAP_SIZE: size of the heap, in bytes
 + * 
 + * note: previously, ram options were also configurable. 
 + * this was removed to simplify the linker script (all HC32F460 have the same ram anyway)
@@ -27,7 +28,7 @@ index fc0136c..7620723 100644
  /*
  ;*******************************************************************************
  ; * Copyright (C) 2020, Huada Semiconductor Co., Ltd. All rights reserved.
-@@ -15,10 +36,40 @@
+@@ -15,10 +37,48 @@
  /*  Date        2019-03-13                                                   */
  /*****************************************************************************/
  
@@ -43,6 +44,14 @@ index fc0136c..7620723 100644
 +#ifndef LD_BOOT_MODE
 +  #warning "LD_BOOT_MODE not defined, fallback to PRIMARY (1)"
 +  #define LD_BOOT_MODE 1
++#endif
++
++#ifndef DDL_STACK_SIZE
++  #define DDL_STACK_SIZE 0x00000400 // 1KB
++#endif
++
++#ifndef DDL_HEAP_SIZE
++  #define DDL_HEAP_SIZE 0x00002000 // 8KB
 +#endif
 +
 +/* check if boot mode is valid */
@@ -69,7 +78,7 @@ index fc0136c..7620723 100644
      OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
      RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
      RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
-@@ -28,18 +79,30 @@ ENTRY(Reset_Handler)
+@@ -28,18 +88,30 @@ ENTRY(Reset_Handler)
  
  SECTIONS
  {
@@ -107,3 +116,31 @@ index fc0136c..7620723 100644
      .text :
      {
          . = ALIGN(4);
+@@ -172,12 +244,14 @@ SECTIONS
+         __end__ = .;
+         PROVIDE(end = .);
+         PROVIDE(_end = .);
+-        *(.heap*)
++
++        __HeapBase = .;
++        . += DDL_HEAP_SIZE;
+         . = ALIGN(8);
+         __HeapLimit = .;
+ 
+         __StackLimit = .;
+-        *(.stack*)
++        . += DDL_STACK_SIZE;
+         . = ALIGN(8);
+         __StackTop = .;
+     } >RAM
+@@ -197,4 +271,10 @@ SECTIONS
+ 
+     __RamEnd = ORIGIN(RAM) + LENGTH(RAM);
+     ASSERT(__StackTop <= __RamEnd, "region RAM overflowed with stack")
++
++    /* ensure that HEAP and STACK don't overlap with each other OR bss */
++    ASSERT(__HeapBase <= __HeapLimit, "HEAP is broken")
++    ASSERT(__StackLimit <= __StackTop, "STACK is broken")
++    ASSERT(__bss_end__ <= __HeapBase, "HEAP should follow BSS in memory")
++    ASSERT(__HeapLimit <= __StackLimit, "STACK should follow HEAP in memory")
+ }

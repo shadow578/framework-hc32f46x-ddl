@@ -65,6 +65,14 @@ see the following list for a list of available configuration options and their d
 - [Boot Mode Configuration](./docs/config_options/BOOT_MODE.md)
 - [Linker Script Options](./docs/config_options/LINKER_SCRIPT.md)
 - [Custom Build Flags](./docs/config_options/BUILD_FLAGS.md)
+- [Custom Interrupt Management](./docs/config_options/CUSTOM_INTERRUPT_MANAGEMENT.md)
+
+
+## C APIs
+
+the DDL framework adds some C apis to the standard DDL, the documentation for these can be found in the following files:
+
+- [Heap and Stack APIs](./docs/STACK_AND_HEAP_APIS.md)
 
 
 ## Files and Patches
