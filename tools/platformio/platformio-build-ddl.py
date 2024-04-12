@@ -28,16 +28,16 @@ def apply_legacy_ld_args() -> dict:
     """
     Get legacy linker script parameters (build.ld_args.x) from board manifest and write to new keys (upload.x)
     """
-    flash_start = board.get("build.ld_args.flash_start")
+    flash_start = board.get("build.ld_args.flash_start", None)
     if not flash_start == None:
         # parse flash start (hex, convert to int)
         flash_start = int(flash_start, 16)
 
         board._manifest["upload"]["offset_address"] = flash_start
-        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.flash_start'! Use 'upload.offset_address' instead.")
+        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.flash_start'! Use 'upload.offset_address' instead.\n")
     
 
-    flash_size = board.get("build.ld_args.flash_size")
+    flash_size = board.get("build.ld_args.flash_size", None)
     if not flash_size == None:
         # parse flash size (K or M suffix, convert to bytes)
         if flash_size[-1] == "K":
@@ -48,10 +48,10 @@ def apply_legacy_ld_args() -> dict:
             flash_size = int(flash_size)
         
         board._manifest["upload"]["maximum_size"] = flash_size
-        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.flash_size'! Use 'upload.maximum_size' instead.")
+        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.flash_size'! Use 'upload.maximum_size' instead.\n")
 
 
-    boot_mode = board.get("build.ld_args.boot_mode")
+    boot_mode = board.get("build.ld_args.boot_mode", None)
     if not boot_mode == None:
         # parse boot mode
         # 0 / 1 / "primary" = primary boot mode
@@ -64,7 +64,7 @@ def apply_legacy_ld_args() -> dict:
             raise ValueError("legacy boot_mode must be 0/1/'primary' or 2/'secondary'!")
 
         board._manifest["build"]["boot_mode"] = boot_mode
-        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.boot_mode'! Use 'build.boot_mode' instead.")
+        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.boot_mode'! Use 'build.boot_mode' instead.\n")
         
 
 def get_ld_args() -> dict:
@@ -79,7 +79,7 @@ def get_ld_args() -> dict:
     # get parameters from board manifest
     flash_start = board.get("upload.offset_address", 0)
     flash_size = board.get("upload.maximum_size", 262144)
-    boot_mode = board.get("build.boot_mode", "1")
+    boot_mode = board.get("build.boot_mode", "primary")
 
     # parse flash start (hex, convert to int)
     if isinstance(flash_start, str):
@@ -102,7 +102,7 @@ def get_ld_args() -> dict:
     elif boot_mode in ["secondary"]:
         boot_mode = 2
     else:
-        raise ValueError("boot_mode must be 0/1/'primary' or 2/'secondary'!")
+        raise ValueError("boot_mode must be 'primary' or 'secondary'!")
 
     # boot_mode must be primary if flash_start is 0
     if flash_start == 0 and boot_mode != 1:

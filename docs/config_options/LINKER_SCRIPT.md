@@ -1,17 +1,16 @@
 # Linker Script Configuration
 
-the linker script can be configured in the platformio environment using options in `board_build`.
-options are **directly** passed to the linker script using the `--defsym` option.
+the linker script can be configured in the platformio environment using options in `board_build` and `board_upload`.
 
-| option        | description                           | default value |
-| ------------- | ------------------------------------- | ------------- |
-| `flash_start` | the start address of the flash memory | `0x0`         |
-| `flash_size`  | the size of the flash memory          | `256K`        |
-| `boot_mode`   | firmware boot mode                    | `primary`     |
-| `preprocess`  | enable linker script preprocessing    | `true`        |
+| option                  | description                           | default value |
+| ----------------------- | ------------------------------------- | ------------- |
+| `upload.offset_address` | the start address of the flash memory | `0x0`         |
+| `upload.maximum_size`   | the size of the flash memory          | `262144`      |
+| `build.boot_mode`       | firmware boot mode                    | `primary`     |
+| `build.ld_preprocess`   | enable linker script preprocessing    | `true`        |
 
 > [!TIP]
-> the `flash_size` option describes the **total** size of the flash memory in bytes.
+> the `upload.maximum_size` option describes the **total** size of the flash memory in bytes.
 > do not subtract the bootloader size from the flash size, as this is done automatically by the build script.
 
 > [!NOTE]
@@ -36,7 +35,7 @@ platformio.ini:
 [env:my_env]
 # ...
 board_upload.offset_address = 0x0000C000
-board_upload.maximum_size = 256K
+board_upload.maximum_size = 262144
 board_build.boot_mode = primary
 ```
 
