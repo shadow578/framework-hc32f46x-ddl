@@ -3,6 +3,7 @@ HC32F460 DDL
 Device Driver Libraries for the HC32F460 series of microcontrollers
 """
 import os
+import sys
 import re
 from os.path import isdir, join
 
@@ -23,12 +24,57 @@ DDL_DIR = join(FRAMEWORK_DIR, "cores", "ddl")
 assert isdir(FRAMEWORK_DIR)
 assert isdir(DDL_DIR)
 
+def apply_legacy_ld_args() -> dict:
+    """
+    Get legacy linker script parameters (build.ld_args.x) from board manifest and write to new keys (upload.x)
+    """
+    flash_start = board.get("build.ld_args.flash_start")
+    if not flash_start == None:
+        # parse flash start (hex, convert to int)
+        flash_start = int(flash_start, 16)
+
+        board._manifest["upload"]["offset_address"] = flash_start
+        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.flash_start'! Use 'upload.offset_address' instead.")
+    
+
+    flash_size = board.get("build.ld_args.flash_size")
+    if not flash_size == None:
+        # parse flash size (K or M suffix, convert to bytes)
+        if flash_size[-1] == "K":
+            flash_size = int(flash_size[:-1]) * 1024
+        elif flash_size[-1] == "M":
+            flash_size = int(flash_size[:-1]) * 1024 * 1024
+        else:
+            flash_size = int(flash_size)
+        
+        board._manifest["upload"]["maximum_size"] = flash_size
+        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.flash_size'! Use 'upload.maximum_size' instead.")
+
+
+    boot_mode = board.get("build.ld_args.boot_mode")
+    if not boot_mode == None:
+        # parse boot mode
+        # 0 / 1 / "primary" = primary boot mode
+        # 2 / "secondary" = secondary boot mode
+        if boot_mode in ["0", "1", "primary"]:
+            boot_mode = "primary"
+        elif boot_mode in ["2", "secondary"]:
+            boot_mode = "secondary"
+        else:
+            raise ValueError("legacy boot_mode must be 0/1/'primary' or 2/'secondary'!")
+
+        board._manifest["build"]["boot_mode"] = boot_mode
+        sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.boot_mode'! Use 'build.boot_mode' instead.")
+        
+
 def get_ld_args() -> dict:
     """
     Get linker script parameters from the board manifest
 
     :return: dict with flash_start, flash_size and boot_mode
     """
+
+    apply_legacy_ld_args()
 
     # get parameters from board manifest
     flash_start = board.get("upload.offset_address", 0)
@@ -38,15 +84,6 @@ def get_ld_args() -> dict:
     # parse flash start (hex, convert to int)
     if isinstance(flash_start, str):
         flash_start = int(flash_start, 16) if flash_start.startswith("0x") else int(flash_start)
-
-    # parse flash size (K or M suffix, convert to bytes)
-    if isinstance(flash_size, str):
-        if flash_size[-1] == "K":
-            flash_size = int(flash_size[:-1]) * 1024
-        elif flash_size[-1] == "M":
-            flash_size = int(flash_size[:-1]) * 1024 * 1024
-        else:
-            flash_size = int(flash_size)
 
     # calculate and check usable flash size
     flash_size_usable = flash_size - flash_start
@@ -58,11 +95,11 @@ def get_ld_args() -> dict:
     board._manifest["upload"]["maximum_size"] = flash_size_usable
 
     # parse boot mode
-    # 0 / 1 / "primary" = primary boot mode
-    # 2 / "secondary" = secondary boot mode
-    if boot_mode in ["0", "1", "primary"]:
+    # "primary" = primary boot mode
+    # "secondary" = secondary boot mode
+    if boot_mode in ["primary"]:
         boot_mode = 1
-    elif boot_mode in ["2", "secondary"]:
+    elif boot_mode in ["secondary"]:
         boot_mode = 2
     else:
         raise ValueError("boot_mode must be 0/1/'primary' or 2/'secondary'!")
