@@ -78,7 +78,7 @@ index fc0136c..ea9a833 100644
      OTP         (rx): ORIGIN = 0x03000C00, LENGTH = 1020
      RAM        (rwx): ORIGIN = 0x1FFF8000, LENGTH = 188K
      RET_RAM    (rwx): ORIGIN = 0x200F0000, LENGTH = 4K
-@@ -28,18 +88,30 @@ ENTRY(Reset_Handler)
+@@ -28,18 +88,31 @@ ENTRY(Reset_Handler)
  
  SECTIONS
  {
@@ -107,8 +107,9 @@ index fc0136c..ea9a833 100644
 +        /* ICG: 0x400 - 0x41F*/
 +        .icg_sec :
 +        {
++            ASSERT(. == (ORIGIN(FLASH) + 0x400), "icg_sec alignment issue");
 +            KEEP(*(.icg_sec));
-+            . = 0x420;
++            ASSERT(. == (ORIGIN(FLASH) + 0x420), "icg_sec alignment issue");
 +        } >FLASH
 +    #endif
 +
@@ -116,7 +117,7 @@ index fc0136c..ea9a833 100644
      .text :
      {
          . = ALIGN(4);
-@@ -172,12 +244,14 @@ SECTIONS
+@@ -172,12 +245,14 @@ SECTIONS
          __end__ = .;
          PROVIDE(end = .);
          PROVIDE(_end = .);
@@ -133,7 +134,7 @@ index fc0136c..ea9a833 100644
          . = ALIGN(8);
          __StackTop = .;
      } >RAM
-@@ -197,4 +271,10 @@ SECTIONS
+@@ -197,4 +272,10 @@ SECTIONS
  
      __RamEnd = ORIGIN(RAM) + LENGTH(RAM);
      ASSERT(__StackTop <= __RamEnd, "region RAM overflowed with stack")
