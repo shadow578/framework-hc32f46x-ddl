@@ -62,6 +62,7 @@ see the following list for a list of available configuration options and their d
 - [Device Driver Selection](./docs/config_options/DDL_SELECTION.md)
 - [Middleware Selection](./docs/config_options/MIDDLEWARE_SELECTION.md)
 - [Heap and Stack Configuration](./docs/config_options/HEAP_AND_STACK.md)
+- [Flash size and Application Offset configuration](./docs/config_options/FLASH_SIZE.md)
 - [Boot Mode Configuration](./docs/config_options/BOOT_MODE.md)
 - [Linker Script Options](./docs/config_options/LINKER_SCRIPT.md)
 - [Custom Build Flags](./docs/config_options/BUILD_FLAGS.md)
