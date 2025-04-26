@@ -65,13 +65,32 @@ def apply_legacy_ld_args() -> dict:
 
         board._manifest["build"]["boot_mode"] = boot_mode
         sys.stderr.write("Warning: you appear to be using legacy option 'build.ld_args.boot_mode'! Use 'build.boot_mode' instead.\n")
-        
 
-def get_ld_args() -> dict:
+
+def get_heap_and_stack_defines() -> list[str]:
+    """
+    Get DDL_STACK_SIZE and DDL_HEAP_SIZE defines according to board configuration.
+    
+    :return: list of defines present as needed
+    """
+
+    defines = []
+    stack_size = board.get("build.stack_size", None)
+    heap_size = board.get("build.heap_size", None)
+
+    if stack_size is not None:
+        defines.append(f"-D DDL_STACK_SIZE={stack_size}")
+    if heap_size is not None:
+        defines.append(f"-D DDL_HEAP_SIZE={heap_size}")
+    
+    return defines
+
+
+def get_ld_args() -> tuple:
     """
     Get linker script parameters from the board manifest
 
-    :return: dict with flash_start, flash_size and boot_mode
+    :return: tuple with flash_start, flash_size and boot_mode
     """
 
     apply_legacy_ld_args()
@@ -109,12 +128,13 @@ def get_ld_args() -> dict:
         raise ValueError("flash_start is 0, but boot_mode is not 1 (primary)! This is not allowed, as a bootloader is required to use primary boot mode!")
 
     # print linker parameters
-    print(f"linker parameters: FLASH_START={flash_start}, FLASH_SIZE={flash_size}; BOOT_MODE={boot_mode}; usable flash size: {flash_size_usable}")
-    return {
-        flash_start: flash_start,
-        flash_size: flash_size,
-        boot_mode: boot_mode,
-    }
+    #print(f"linker parameters: FLASH_START={flash_start}, FLASH_SIZE={flash_size}, BOOT_MODE={boot_mode}; usable flash size: {flash_size_usable}")
+    return (
+        flash_start,
+        flash_size,
+        boot_mode,
+    )
+
 
 def preprocess_ld_script():
     """
@@ -146,6 +166,9 @@ def preprocess_ld_script():
         ld_preprocess_args = [
             *[f"-D {d}" for d in ld_args_defines],
         ]
+        ld_preprocess_args += get_heap_and_stack_defines()
+        print(f"linker script arguments: {ld_preprocess_args}")
+
         ld_preprocess = env.Command(
             ld_script_target,
             ld_script_source,
@@ -252,7 +275,8 @@ env.Append(
 	    "ARM_MATH_CM4",
 	    "ARM_MATH_MATRIX_CHECK",
 	    "ARM_MATH_ROUNDING",
-        ('__SOURCE_FILE_NAME__', '\\"${SOURCE.file}\\"') # add the source file name to the defines, so it can be used in the code
+        ('__SOURCE_FILE_NAME__', '\\"${SOURCE.file}\\"'), # add the source file name to the defines, so it can be used in the code
+        *get_heap_and_stack_defines() # make DDL_STACK_SIZE and DDL_HEAP_SIZE accessible from c / c++
     ],
 
     # c/c++ include paths
