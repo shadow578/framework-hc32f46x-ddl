@@ -298,7 +298,7 @@ env.Replace(
     # note: .data is included in both, as it's copied from flash to ram
     # this yields different sizes between ld and pio, but flash size matches the final binary size (which is what we want)
     SIZEPROGREGEXP=r"^(?:\.vectors|\.icg_sec|\.rodata|\.text|\.ARM.extab|\.ARM.exidx|\.preinit_array|\.init_array|\.fini_array|\.data)\s+(\d+).*",
-    SIZEDATAREGEXP=r"^(?:\.data|\.bss)\s+(\d+).*",
+    SIZEDATAREGEXP=r"^(?:\.data|\.bss|\.heap_stack)\s+(\d+).*",
 )
 
 
